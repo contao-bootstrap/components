@@ -12,8 +12,18 @@ $GLOBALS['TL_DCA']['tl_module']['metapalettes']['bootstrap_modal'] = array
 	'expert'                    => array(':hide', 'guests', 'cssID', 'space'),
 );
 
+$GLOBALS['TL_DCA']['tl_module']['metapalettes']['bootstrap_navbar'] = array
+(
+	'title'                     => array('name', 'type'),
+	'config'                    => array('bootstrap_isResponsive', 'bootstrap_addHeader', 'bootstrap_navbarModules'),
+	'protected'                 => array(':hide', 'protected'),
+	'expert'                    => array(':hide', 'guests', 'cssID', 'space'),
+	'template'                  => array(':hide', 'bootstrap_navbarTemplate'),
+);
+
+
 /**
- * subplaettes
+ * subpalettes
  */
 $GLOBALS['TL_DCA']['tl_module']['metasubselectpalettes']['bootstrap_modalContentType'] = array
 (
@@ -25,6 +35,12 @@ $GLOBALS['TL_DCA']['tl_module']['metasubselectpalettes']['bootstrap_modalContent
 	'url'       => array('bootstrap_remoteUrl'),
 	'template'  => array('bootstrap_modalTemplate'),
 );
+
+$GLOBALS['TL_DCA']['tl_module']['metasubpalettes']['bootstrap_addHeader'] = array
+(
+	'bootstrap_navbarBrandTemplate',
+);
+
 
 $GLOBALS['TL_DCA']['tl_module']['metasubpalettes']['bootstrap_addModalFooter'] = array
 (
