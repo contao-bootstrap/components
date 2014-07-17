@@ -9,6 +9,13 @@ $GLOBALS['TL_CTE']['bootstrap_carousel']['bootstrap_carouselPart']  = 'Netzmacht
 $GLOBALS['TL_CTE']['bootstrap_carousel']['bootstrap_carouselEnd']   = 'Netzmacht\Bootstrap\Components\Contao\ContentElement\Carousel';
 
 
+// Frontend modules
+$GLOBALS['FE_MOD']['miscellaneous']['bootstrap_modal'] = 'Netzmacht\Bootstrap\Components\Contao\Module\Modal';
+
+
+// Event Subscribers
+$GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Bootstrap\Components\Modal\Subscriber';
+
 // Wrapper settings
 $GLOBALS['TL_WRAPPERS']['start'][]      = 'bootstrap_carouselStart';
 $GLOBALS['TL_WRAPPERS']['stop'][]       = 'bootstrap_carouselEnd';
@@ -36,4 +43,14 @@ $GLOBALS['BOOTSTRAP']['wrappers']['carousel'] = array(
 		'autoCreate'    => true,
 		'autoDelete'    => true,
 	),
+);
+
+
+// Bootstrap modal
+$GLOBALS['BOOTSTRAP']['modal'] = array
+(
+	'dismiss'          => '&times;',
+	'adjustForm'       => true,
+	'remoteUrl'        => 'SimpleAjax.php?page=%s&amp;modal=%s',
+	'remoteDynamicUrl' => 'SimpleAjax.php?page=%s&amp;modal=%s&amp;dynamic=%s&amp;id=%s',
 );
