@@ -1,0 +1,9 @@
+<?php if($this->addContainer): ?>
+<div class="<?php echo $this->containerClass; ?>">
+	<?php endif; ?>
+
+	<?php echo $this->buttons; ?>
+
+<?php if($this->addContainer): ?>
+</div>
+<?php endif; ?>

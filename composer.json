@@ -1,0 +1,45 @@
+{
+    "name":"contao-bootstrap/components",
+    "description":"Bootstrap components for Contao CMS",
+    "keywords":["bootstrap", "components", "contao", "modal", "navbar", "tab", "panel", "button"],
+    "type":"contao-module",
+    "license":"LGPL-3.0+",
+    "authors":[
+        {
+            "name":"David Molineus",
+            "email":"mail@netzmacht.de",
+            "homepage":"http://www.netzmacht.de",
+            "role":"Project leader"
+        }
+    ],
+    "support":{
+        "email":"mail@netzmacht.de",
+        "issues":"https://github.com/contao-bootstrap/buttons/issues",
+        "wiki":"http://contao-bootstrap.netzmacht.de",
+        "source":"https://github.com/contao-bootstrap/buttons"
+    },
+    "require":{
+        "php":">=5.3.4",
+        "contao-community-alliance/composer-plugin": "~2.0",
+        "contao/core":">=3.2,<3.4",
+        "netzmacht/html": "*",
+        "contao-bootstrap/core": "~1.0",
+        "menatwork/contao-multicolumnwizard":"~3.2"
+    },
+    "conflict": {
+        "netzmacht/contao-bootstrap": "*"
+    },
+    "autoload": {
+        "psr-0": { "Netzmacht\\Bootstrap\\Components\\": "src/" }
+    },
+    "extra":{
+        "contao": {
+            "sources":{
+                "module": "system/modules/bootstrap-components"
+            }
+        },
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    }
+}
