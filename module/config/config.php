@@ -8,18 +8,25 @@ $GLOBALS['TL_CTE']['bootstrap_carousel']['bootstrap_carouselStart'] = 'Netzmacht
 $GLOBALS['TL_CTE']['bootstrap_carousel']['bootstrap_carouselPart']  = 'Netzmacht\Bootstrap\Components\Contao\ContentElement\Carousel';
 $GLOBALS['TL_CTE']['bootstrap_carousel']['bootstrap_carouselEnd']   = 'Netzmacht\Bootstrap\Components\Contao\ContentElement\Carousel';
 
+$GLOBALS['TL_CTE']['accordion']['bootstrap_accordionGroupStart']    = 'Netzmacht\Bootstrap\Components\Contao\ContentElement\AccordionGroup';
+$GLOBALS['TL_CTE']['accordion']['bootstrap_accordionGroupEnd']      = 'Netzmacht\Bootstrap\Components\Contao\ContentElement\AccordionGroup';
+
 
 // Frontend modules
 $GLOBALS['FE_MOD']['miscellaneous']['bootstrap_modal']  = 'Netzmacht\Bootstrap\Components\Contao\Module\Modal';
 $GLOBALS['FE_MOD']['navigationMenu']['bootstrap_navbar'] = 'Netzmacht\Bootstrap\Components\Contao\Module\Navbar';
 
+
 // Event Subscribers
 $GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Bootstrap\Components\Modal\Subscriber';
 
+
 // Wrapper settings
 $GLOBALS['TL_WRAPPERS']['start'][]      = 'bootstrap_carouselStart';
-$GLOBALS['TL_WRAPPERS']['stop'][]       = 'bootstrap_carouselEnd';
+$GLOBALS['TL_WRAPPERS']['start'][]      = 'bootstrap_accordionGroupStart';
 $GLOBALS['TL_WRAPPERS']['separator'][]  = 'bootstrap_carouselPart';
+$GLOBALS['TL_WRAPPERS']['stop'][]       = 'bootstrap_carouselEnd';
+$GLOBALS['TL_WRAPPERS']['stop'][]       = 'bootstrap_accordionGroupEnd';
 
 
 // Bootstrap wrapper configuration
@@ -42,6 +49,26 @@ $GLOBALS['BOOTSTRAP']['wrappers']['carousel'] = array(
 		'name'          => 'bootstrap_carouselEnd',
 		'autoCreate'    => true,
 		'autoDelete'    => true,
+	),
+);
+
+$GLOBALS['BOOTSTRAP']['wrappers']['accordion'] = array(
+	'start' => array
+	(
+		'name'          => 'bootstrap_accordionGroupStart',
+		'autoCreate'    => true,
+		'autoDelete'    => true,
+		'triggerCreate' => true,
+		'triggerDelete' => true,
+	),
+
+	'stop' => array
+	(
+		'name'          => 'bootstrap_accordionGroupEnd',
+		'autoCreate'    => true,
+		'autoDelete'    => true,
+		'triggerCreate' => true,
+		'triggerDelete' => true,
 	),
 );
 

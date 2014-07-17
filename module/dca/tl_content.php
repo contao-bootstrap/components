@@ -12,6 +12,10 @@ $GLOBALS['TL_DCA']['tl_content']['metapalettes']['bootstrap_button extends _boot
 	'invisible' => array(':hide', 'invisible', 'start', 'stop'),
 );
 
+// panel palettes
+$GLOBALS['TL_DCA']['tl_content']['metapalettes']['bootstrap_accordionGroupStart extends _bootstrap_default_'] = array();
+$GLOBALS['TL_DCA']['tl_content']['metapalettes']['bootstrap_accordionGroupEnd extends _bootstrap_default_'] = array();
+
 // carousel palettes
 $GLOBALS['TL_DCA']['tl_content']['metapalettes']['bootstrap_carouselPart extends _bootstrap_empty_']  = array();
 $GLOBALS['TL_DCA']['tl_content']['metapalettes']['bootstrap_carouselEnd extends _bootstrap_empty_']   = array();
