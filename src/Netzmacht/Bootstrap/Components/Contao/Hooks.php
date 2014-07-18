@@ -9,26 +9,38 @@ class Hooks
 {
 
 	/**
-	 * @param \Template $template
-	 * @return mixed|string
+	 * @param \Model $element
+	 * @return bool
 	 */
-	public static function setRuntimeNavClass(\Template $template)
+	public static function setRuntimeNavClass(\Model $element)
 	{
-		$class = '';
+		if(!$element instanceof \ModuleModel) {
+			return true;
+		}
 
-		if($template->bootstrap_inNavbar) {
-			if($template->bootstrap_navbarFloating == 'right') {
+		$modules = Bootstrap::getConfigVar('navigation.modules', array());
+
+		if(!in_array($element->type, $modules)) {
+			return true;
+		}
+
+		$class   = '';
+
+		if($element->bootstrap_inNavbar) {
+			if($element->bootstrap_navbarFloating == 'right') {
 				$class = 'navbar-right';
 			}
 		}
-		elseif($template->bootstrap_navClass) {
-			$class = $template->bootstrap_navClass;
+		elseif($element->bootstrap_navClass) {
+			$class = $element->bootstrap_navClass;
 		}
 		else {
 			$class = 'nav nav-default';
 		}
 
 		Bootstrap::setConfigVar('runtime.nav-class', $class);
+
+		return true;
 	}
 
 } 

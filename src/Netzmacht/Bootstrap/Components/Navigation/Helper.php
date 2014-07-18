@@ -145,13 +145,11 @@ class Helper
 		switch($level) {
 			case '1':
 				$class = Bootstrap::getConfigVar('runtime.nav-class');
+
 				if($class) {
 					$attributes->addClass('nav');
 					$attributes->addClass($class);
 					Bootstrap::setConfigVar('runtime.nav-class', '');
-				}
-				else {
-					$attributes->addClass('__NAVCLASS__');
 				}
 
 				break;

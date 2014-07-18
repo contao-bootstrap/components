@@ -16,6 +16,8 @@ $GLOBALS['TL_CTE']['accordion']['bootstrap_accordionGroupEnd']      = 'Netzmacht
 $GLOBALS['FE_MOD']['miscellaneous']['bootstrap_modal']  = 'Netzmacht\Bootstrap\Components\Contao\Module\Modal';
 $GLOBALS['FE_MOD']['navigationMenu']['bootstrap_navbar'] = 'Netzmacht\Bootstrap\Components\Contao\Module\Navbar';
 
+// Hooks
+$GLOBALS['TL_HOOKS']['isVisibleElement'][] = array('Netzmacht\Bootstrap\Components\Contao\Hooks', 'setRuntimeNavClass');
 
 // Event Subscribers
 $GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Bootstrap\Components\Modal\Subscriber';
@@ -82,16 +84,14 @@ $GLOBALS['BOOTSTRAP']['modal'] = array
 	'remoteDynamicUrl' => 'SimpleAjax.php?page=%s&amp;modal=%s&amp;dynamic=%s&amp;id=%s',
 );
 
-// #navClass# placeholder is used for injecting defined nav classes to the rendered items
-$GLOBALS['BOOTSTRAP']['templates']['modifiers']['callback.setRuntimeNavClass'] = array
-(
-	'type'      => 'callback',
-	'replace'   => array('Netzmacht\Bootstrap\Components\Contao\Hooks', 'setRuntimeNavClass'),
-	'templates' => array
-	(
-		'mod_navigation*',
-		'mod_customnav*',
-	),
-);
-
+// navigation stragety is used to render items
 $GLOBALS['BOOTSTRAP']['navigation']['strategies']['navbar'] = 'Netzmacht\Bootstrap\Components\Navigation\ItemHelper\NavbarItemHelper';
+
+
+// navigation modules, used to set runtime nav class
+$GLOBALS['BOOTSTRAP']['navigation']['modules'][] = 'navigation';
+$GLOBALS['BOOTSTRAP']['navigation']['modules'][] = 'customnav';
+$GLOBALS['BOOTSTRAP']['navigation']['modules'][] = 'quicknav';
+$GLOBALS['BOOTSTRAP']['navigation']['modules'][] = 'quicklink';
+$GLOBALS['BOOTSTRAP']['navigation']['modules'][] = 'articlenav';
+$GLOBALS['BOOTSTRAP']['navigation']['modules'][] = 'breadcrumb';
