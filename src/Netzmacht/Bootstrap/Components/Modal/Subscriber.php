@@ -9,6 +9,7 @@ use Netzmacht\Bootstrap\Core\Event\InitializeEvent;
 use Netzmacht\Bootstrap\Core\Event\ReplaceInsertTagEvent;
 use Netzmacht\FormHelper\Event\GenerateEvent;
 use Netzmacht\FormHelper\Event\SelectLayoutEvent;
+use Netzmacht\Html\Element;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class Subscriber implements EventSubscriberInterface
@@ -78,6 +79,7 @@ class Subscriber implements EventSubscriberInterface
 
 		if($this->isPartOfModalFooter($widget)) {
 			// create copy for footer
+			/** @var Element $element */
 			$copy = clone $element;
 			$copy->setAttribute('onclick', sprintf('$(\'#ctrl_%s\').click();', $widget->id));
 			$copy->setId('md_' . $element->getId());
