@@ -81,3 +81,17 @@ $GLOBALS['BOOTSTRAP']['modal'] = array
 	'remoteUrl'        => 'SimpleAjax.php?page=%s&amp;modal=%s',
 	'remoteDynamicUrl' => 'SimpleAjax.php?page=%s&amp;modal=%s&amp;dynamic=%s&amp;id=%s',
 );
+
+// #navClass# placeholder is used for injecting defined nav classes to the rendered items
+$GLOBALS['BOOTSTRAP']['templates']['modifiers']['callback.setRuntimeNavClass'] = array
+(
+	'type'      => 'callback',
+	'replace'   => array('Netzmacht\Bootstrap\Components\Contao\Hooks', 'setRuntimeNavClass'),
+	'templates' => array
+	(
+		'mod_navigation*',
+		'mod_customnav*',
+	),
+);
+
+$GLOBALS['BOOTSTRAP']['navigation']['strategies']['navbar'] = 'Netzmacht\Bootstrap\Components\Navigation\ItemHelper\NavbarItemHelper';

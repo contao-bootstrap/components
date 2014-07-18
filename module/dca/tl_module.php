@@ -21,6 +21,10 @@ $GLOBALS['TL_DCA']['tl_module']['metapalettes']['bootstrap_navbar'] = array
 	'template'                  => array(':hide', 'bootstrap_navbarTemplate'),
 );
 
+\MetaPalettes::appendFields('tl_module', 'navigation', 'template', array('bootstrap_navClass'));
+\MetaPalettes::appendFields('tl_module', 'customnav', 'template', array('bootstrap_navClass'));
+\MetaPalettes::appendFields('tl_module', 'quicklink', 'template', array('bootstrap_navClass'));
+
 
 /**
  * subpalettes
@@ -242,4 +246,13 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['bootstrap_modalDynamicContent'] = arr
 	'default'                 => true,
 	'eval'                    => array('tl_class' => 'w50'),
 	'sql'                     => "char(1) NOT NULL default ''",
+);
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['bootstrap_navClass'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['bootstrap_navClass'],
+	'exclude'                 => true,
+	'inputType'               => 'text',
+	'eval'                    => array('tl_class' => 'w50'),
+	'sql'                     => "varchar(100) NOT NULL default ''",
 );

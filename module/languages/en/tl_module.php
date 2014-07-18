@@ -54,6 +54,8 @@ $GLOBALS['TL_LANG']['tl_module']['bootstrap_modalDynamicContent'][0]    = 'Conte
 $GLOBALS['TL_LANG']['tl_module']['bootstrap_modalDynamicContent'][1]    = 'Content of modal window can vary. Load content by SimpleAjax.php?modal=ID&page=PAGE_ID&dynamic=article|form|module&id=DYNAMIC_ID';
 $GLOBALS['TL_LANG']['tl_module']['bootstrap_buttons_attributes_name']   = 'Attribute';
 $GLOBALS['TL_LANG']['tl_module']['bootstrap_buttons_attributes_value']  = 'Value';
+$GLOBALS['TL_LANG']['tl_module']['bootstrap_navClass'][0]               = 'Bootstrap navigation classes';
+$GLOBALS['TL_LANG']['tl_module']['bootstrap_navClass'][1]               = 'Please set the Bootstrap related navigation classes. You have to assign the common <em>nav</em> class too.';
 
 /**
  * values
