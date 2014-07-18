@@ -52,6 +52,8 @@ class Navbar extends \Module
 
 		while($collection->next()) {
 			$model = $collection->current();
+			$model->bootstrap_inNavbar = true;
+
 			$models[$model->id] = $model;
 		}
 

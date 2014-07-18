@@ -24,11 +24,10 @@ class Hooks
 			return true;
 		}
 
-		$class   = '';
-
 		if($element->bootstrap_inNavbar) {
+			$class = 'nav navbar-nav';
 			if($element->bootstrap_navbarFloating == 'right') {
-				$class = 'navbar-right';
+				$class .= 'navbar-right';
 			}
 		}
 		elseif($element->bootstrap_navClass) {
