@@ -3,9 +3,10 @@
 
 namespace Netzmacht\Bootstrap\Components\Contao\Module;
 
-
 use Netzmacht\Bootstrap\Components\Button\Factory;
 use Netzmacht\Bootstrap\Core\Bootstrap;
+use Netzmacht\FormHelper\Element\StaticHtml;
+use Netzmacht\Html\Attributes;
 
 class Modal extends \Module
 {
@@ -54,7 +55,8 @@ class Modal extends \Module
 			}
 		}
 
-		$config = Bootstrap::getConfig();
+		$config      = Bootstrap::getConfig();
+		$formButtons = null;
 
 		switch($this->bootstrap_modalContentType)
 		{
@@ -65,7 +67,8 @@ class Modal extends \Module
 			case 'form':
 				$config->set('runtime.modal-footer', '');
 				$this->Template->content = $this->getForm($this->form);
-				$this->Template->footer  = $config->get('runtime.modal-footer');
+
+				$formButtons = $config->get('runtime.modal-footer');
 				$config->set('runtime.modal-footer', false);
 
 				// render style select if it is used
@@ -103,13 +106,49 @@ class Modal extends \Module
 		}
 
 		if($this->bootstrap_addModalFooter) {
+			$style   = $this->bootstrap_buttonStyle ? : 'btn-default';
 			$buttons = Factory::createFromFieldset($this->bootstrap_buttons);
-			$buttons->addClass($this->bootstrap_buttonStyle ? $this->bootstrap_buttonStyle : 'btn-default');
 
-			$this->Template->footerButtons = $buttons;
+			if($formButtons) {
+				$old     = $buttons;
+				$buttons = Factory::createGroup();
+
+				foreach($formButtons as $button) {
+					if(is_string($button)) {
+						$button = new StaticHtml($button);
+					}
+
+					$buttons->addChild($button);
+				}
+
+				foreach($old->getChildren() as $button) {
+					$buttons->addChild($button);
+				}
+			}
+
+			$buttons->eachChild(function($item) use($style) {
+				if(!$item instanceof Attributes) {
+					return;
+				}
+
+				$classes = $item->getAttribute('class');
+				$classes = array_filter($classes, function($class) {
+					return strpos($class, 'btn-') !== false;
+				});
+
+				if(empty($classes)) {
+					$item->addClass($style);
+				}
+			});
+
+			$buttons->removeClass('btn-group');
+		}
+		else {
+			$buttons = implode('', (array)$formButtons);
 		}
 
-		$this->Template->headerClose = $config->get('modal.dismiss');
+		$this->Template->footerButtons = $buttons;
+		$this->Template->headerClose   = $config->get('modal.dismiss');
 	}
 
 
@@ -120,7 +159,10 @@ class Modal extends \Module
 	{
 		// add content to TL_BODY
 		if(!$this->bootstrap_modalAjax || !$this->bootstrap_isAjax) {
-			$GLOBALS['TL_BODY']['bootstrap-modal-' . $this->id] = parent::generate();
+			$content = parent::generate();
+			$content = $this->replaceInsertTags($content);
+
+			$GLOBALS['TL_BODY']['bootstrap-modal-' . $this->id] = $content;
 			return '';
 		}
 

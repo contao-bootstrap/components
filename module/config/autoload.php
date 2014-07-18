@@ -21,12 +21,12 @@ TemplateLoader::addFiles(array
 if(version_compare(VERSION, '3.3', '<')) {
 	TemplateLoader::addFiles(array
 	(
-		'formhelper_layout_bootstrap_hidden' => 'system/modules/bootstrap-modal/templates/3.2',
+		'formhelper_layout_bootstrap_hidden' => 'system/modules/bootstrap-components/templates/3.2',
 	));
 }
 else {
 	TemplateLoader::addFiles(array
 	(
-		'formhelper_layout_bootstrap_hidden' => 'system/modules/bootstrap-modal/templates/3.3',
+		'formhelper_layout_bootstrap_hidden' => 'system/modules/bootstrap-components/templates/3.3',
 	));
 }

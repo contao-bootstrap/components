@@ -3,6 +3,7 @@
 namespace Netzmacht\Bootstrap\Components\Modal;
 
 
+use MetaModels\BackendIntegration\Boot;
 use Netzmacht\Bootstrap\Core\Bootstrap;
 use Netzmacht\Bootstrap\Core\Event\Events as CoreEvents;
 use Netzmacht\Bootstrap\Core\Event\InitializeEvent;
@@ -78,6 +79,8 @@ class Subscriber implements EventSubscriberInterface
 		$element = $event->getContainer()->getElement();
 
 		if($this->isPartOfModalFooter($widget)) {
+			$buttons = (array) Bootstrap::getConfigVar('runtime.modal-footer');
+
 			// create copy for footer
 			/** @var Element $element */
 			$copy = clone $element;
@@ -85,7 +88,8 @@ class Subscriber implements EventSubscriberInterface
 			$copy->setId('md_' . $element->getId());
 			$copy->addClass('btn');
 
-			Bootstrap::setConfigVar('runtime.modal-footer', $copy->generate());
+			$buttons[] = $copy;
+			Bootstrap::setConfigVar('runtime.modal-footer', $buttons);
 		}
 	}
 
