@@ -176,3 +176,43 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['bootstrap_interval'] = array
 	'eval'                    => array('tl_class'=>'clr'),
 	'sql'                     => "int(10) unsigned NOT NULL default '0'"
 );
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['bootstrap_tabs'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_content']['bootstrap_tabs'],
+	'exclude'                 => true,
+	'inputType'               => 'multiColumnWizard',
+	'eval'                    => array(
+		'tl_class'=>'clr',
+		'submitOnChange' => true,
+		'columnFields' => array
+		(
+			'title' => array
+			(
+				'label'                   => &$GLOBALS['TL_LANG']['tl_content']['bootstrap_tabs_title'],
+				'exclude'                 => true,
+				'inputType'               => 'text',
+				'eval'                    => array(),
+			),
+			'type' => array
+			(
+				'label'                   => &$GLOBALS['TL_LANG']['tl_content']['bootstrap_tabs_type'],
+				'exclude'                 => true,
+				'inputType'               => 'select',
+				'options'                 => array('dropdown', 'child'),
+				'reference'               => &$GLOBALS['TL_LANG']['tl_content']['bootstrap_tabs_type'],
+				'eval'                    => array('includeBlankOption' => true, 'style' => 'width: 140px;'),
+			),
+		)
+	),
+	'sql'                     => "blob NULL"
+);
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['bootstrap_fade'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_content']['bootstrap_fade'],
+	'exclude'                 => true,
+	'inputType'               => 'checkbox',
+	'eval'                    => array('tl_class'=>'w50'),
+	'sql'                     => "char(1) NOT NULL default ''"
+);
