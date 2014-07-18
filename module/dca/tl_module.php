@@ -256,3 +256,84 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['bootstrap_navClass'] = array
 	'eval'                    => array('tl_class' => 'w50'),
 	'sql'                     => "varchar(100) NOT NULL default ''",
 );
+
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['bootstrap_isResponsive'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['bootstrap_isResponsive'],
+	'exclude'                 => true,
+	'inputType'               => 'checkbox',
+	'default'                 => true,
+	'eval'                    => array('tl_class' => 'w50'),
+	'sql'                     => "char(1) NOT NULL default ''",
+);
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['bootstrap_addHeader'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['bootstrap_addHeader'],
+	'exclude'                 => true,
+	'inputType'               => 'checkbox',
+	'eval'                    => array('tl_class' => 'w50', 'submitOnChange' => true),
+	'sql'                     => "char(1) NOT NULL default ''",
+);
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['bootstrap_navbarModules'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['bootstrap_navbarModules'],
+	'exclude'                 => true,
+	'inputType'               => 'multiColumnWizard',
+	'eval'                    => array(
+		'tl_class'     => '" style="clear:both;',
+		'columnFields' => array
+		(
+			'module'   => array
+			(
+				'label'            => $GLOBALS['TL_LANG']['tl_module']['bootstrap_navbarModules_module'],
+				'inputType'        => 'select',
+				'options_callback' => array('Netzmacht\Bootstrap\Core\Contao\DataContainer\Module', 'getAllModules'),
+				'eval'             => array('style' => 'width: 300px', 'includeBlankOption' => true, 'chosen' => true),
+			),
+
+			'floating' => array
+			(
+				'label'     => $GLOBALS['TL_LANG']['tl_module']['bootstrap_navbarModules_floating'],
+				'inputType' => 'select',
+				'options'   => array('left', 'right'),
+				'reference' => &$GLOBALS['TL_LANG']['MSC'],
+				'eval'      => array('style' => 'width: 80px', 'includeBlankOption' => true),
+			),
+
+			'cssClass' => array
+			(
+				'label'     => $GLOBALS['TL_LANG']['tl_module']['bootstrap_navbarModules_cssClass'],
+				'inputType' => 'text',
+				'eval'      => array('style' => 'width: 200px', 'rgxp' => 'txt'),
+			),
+		)
+	),
+	'sql'                     => "blob NULL"
+);
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['bootstrap_navbarTemplate'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['bootstrap_navbarTemplate'],
+	'default'                 => 'mod_navbar',
+	'exclude'                 => true,
+	'inputType'               => 'select',
+	'options_callback'        => array('Netzmacht\Bootstrap\Core\Contao\DataContainer\Module', 'getTemplates'),
+	'reference'               => &$GLOBALS['TL_LANG']['tl_module'],
+	'eval'                    => array('templatePrefix' => 'mod_navbar', 'templateThemeId' => 'pid'),
+	'sql'                     => "varchar(32) NOT NULL default ''",
+);
+
+$GLOBALS['TL_DCA']['tl_module']['fields']['bootstrap_navbarBrandTemplate'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['bootstrap_navbarBrandTemplate'],
+	'default'                 => 'mod_navbar',
+	'exclude'                 => true,
+	'inputType'               => 'select',
+	'reference'               => &$GLOBALS['TL_LANG']['tl_module'],
+	'options_callback'        => array('Netzmacht\Bootstrap\Core\Contao\DataContainer\Module', 'getTemplates'),
+	'eval'                    => array('templatePrefix' => 'navbar_brand', 'templateThemeId' => 'pid', 'chosen' => true, 'tl_class' => 'clr'),
+	'sql'                     => "varchar(64) NOT NULL default ''",
+);
