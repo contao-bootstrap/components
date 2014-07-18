@@ -14,9 +14,9 @@
     ],
     "support":{
         "email":"mail@netzmacht.de",
-        "issues":"https://github.com/contao-bootstrap/buttons/issues",
+        "issues":"https://github.com/contao-bootstrap/components/issues",
         "wiki":"http://contao-bootstrap.netzmacht.de",
-        "source":"https://github.com/contao-bootstrap/buttons"
+        "source":"https://github.com/contao-bootstrap/components"
     },
     "require":{
         "php":">=5.3.4",
