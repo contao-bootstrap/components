@@ -60,7 +60,7 @@ class Helper
 	 */
 	public static function create(\FrontendTemplate $template, $strategy)
 	{
-		$factory = Bootstrap::getConfigVar('navigation.strategies' . $strategy);
+		$factory = Bootstrap::getConfigVar('navigation.strategies.' . $strategy);
 
 		if(!$factory) {
 			throw new \InvalidArgumentException(sprintf('Navigation strategy "%s" is not registered', $strategy));
