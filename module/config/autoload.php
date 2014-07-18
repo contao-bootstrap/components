@@ -8,6 +8,7 @@ TemplateLoader::addFiles(array
 	'ce_accordion'           => 'system/modules/bootstrap-components/templates',
 	'ce_accordion_group'     => 'system/modules/bootstrap-components/templates',
 	'ce_accordion_start'     => 'system/modules/bootstrap-components/templates',
+	'ce_bootstrap_tab'       => 'system/modules/bootstrap-components/templates',
 	'mod_bootstrap_modal'    => 'system/modules/bootstrap-components/templates',
 	'mod_navbar'             => 'system/modules/bootstrap-components/templates',
 	'mod_navbar_container'   => 'system/modules/bootstrap-components/templates',

@@ -31,6 +31,15 @@ $GLOBALS['TL_DCA']['tl_content']['metapalettes']['bootstrap_carouselStart extend
 	'invisible' => array(':hide', 'invisible', 'start', 'stop'),
 );
 
+// bootstrap tabs palette
+$GLOBALS['TL_DCA']['tl_content']['metapalettes']['bootstrap_tabPart extends _bootstrap_default_']  = array();
+$GLOBALS['TL_DCA']['tl_content']['metapalettes']['bootstrap_tabEnd extends _bootstrap_default_']   = array();
+$GLOBALS['TL_DCA']['tl_content']['metapalettes']['bootstrap_tabStart extends _bootstrap_default_'] = array
+(
+	'config' => array(
+		'bootstrap_tabs', 'bootstrap_fade',
+	)
+);
 
 /*
  * Fields
