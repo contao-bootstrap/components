@@ -3,11 +3,9 @@
 namespace Netzmacht\Bootstrap\Components\Modal;
 
 
-use MetaModels\BackendIntegration\Boot;
 use Netzmacht\Bootstrap\Core\Bootstrap;
-use Netzmacht\Bootstrap\Core\Event\Events as CoreEvents;
 use Netzmacht\Bootstrap\Core\Event\InitializeEnvironmentEvent;
-use Netzmacht\Bootstrap\Core\Event\ReplaceInsertTagEvent;
+use Netzmacht\Bootstrap\Core\Event\ReplaceInsertTagsEvent;
 use Netzmacht\FormHelper\Event\GenerateEvent;
 use Netzmacht\FormHelper\Event\SelectLayoutEvent;
 use Netzmacht\Html\Element;
@@ -39,8 +37,8 @@ class Subscriber implements EventSubscriberInterface
 	public static function getSubscribedEvents()
 	{
 		return array (
-			CoreEvents::INITIALZE 			   => 'presetConfig',
-			CoreEvents::REPLACE_INSERT_TAGS    => 'replaceInsertTags',
+			InitializeEnvironmentEvent::NAME   => 'presetConfig',
+			ReplaceInsertTagsEvent::NAME       => 'replaceInsertTags',
 			'form-helper.select-widget-layout' => 'selectLayout',
 			'form-helper.generate-widget'      =>  'createModalFooter',
 		);
@@ -52,7 +50,7 @@ class Subscriber implements EventSubscriberInterface
 	 */
 	public function presetConfig(InitializeEnvironmentEvent $event)
 	{
-		$config = $event->getConfig();
+		$config = $event->getEnvironment();
 		$config->set('runtime.modal-footer', false);
 	}
 
@@ -117,10 +115,10 @@ class Subscriber implements EventSubscriberInterface
 	 *
 	 * modal::url::
 	 *
-	 * @param ReplaceInsertTagEvent $event
+	 * @param ReplaceInsertTagsEvent $event
 	 * @return void
 	 */
-	public function replaceInsertTags(ReplaceInsertTagEvent $event)
+	public function replaceInsertTags(ReplaceInsertTagsEvent $event)
 	{
 		if($event->getTag() != 'modal') {
 			return;
