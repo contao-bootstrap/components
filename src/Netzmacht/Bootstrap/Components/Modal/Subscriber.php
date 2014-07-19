@@ -6,7 +6,7 @@ namespace Netzmacht\Bootstrap\Components\Modal;
 use MetaModels\BackendIntegration\Boot;
 use Netzmacht\Bootstrap\Core\Bootstrap;
 use Netzmacht\Bootstrap\Core\Event\Events as CoreEvents;
-use Netzmacht\Bootstrap\Core\Event\InitializeEvent;
+use Netzmacht\Bootstrap\Core\Event\InitializeEnvironmentEvent;
 use Netzmacht\Bootstrap\Core\Event\ReplaceInsertTagEvent;
 use Netzmacht\FormHelper\Event\GenerateEvent;
 use Netzmacht\FormHelper\Event\SelectLayoutEvent;
@@ -48,9 +48,9 @@ class Subscriber implements EventSubscriberInterface
 
 
 	/**
-	 * @param InitializeEvent $event
+	 * @param InitializeEnvironmentEvent $event
 	 */
-	public function presetConfig(InitializeEvent $event)
+	public function presetConfig(InitializeEnvironmentEvent $event)
 	{
 		$config = $event->getConfig();
 		$config->set('runtime.modal-footer', false);
