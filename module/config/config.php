@@ -96,7 +96,7 @@ $GLOBALS['BOOTSTRAP']['navigation']['modules'][] = 'quicklink';
 $GLOBALS['BOOTSTRAP']['navigation']['modules'][] = 'articlenav';
 $GLOBALS['BOOTSTRAP']['navigation']['modules'][] = 'breadcrumb';
 
-//
+// parse modal templates, as it is usually added after parseTemplate hooks
 $GLOBALS['BOOTSTRAP']['templates']['parsers']['callback.replaceClasses']['templates'][]        = 'mod_bootstrap_modal*';
 $GLOBALS['BOOTSTRAP']['templates']['modifiers']['callback.replaceImageClasses']['templates'][] = 'mod_bootstrap_modal*';
 $GLOBALS['BOOTSTRAP']['templates']['modifiers']['callback.replaceTableClasses']['templates'][] = 'mod_bootstrap_modal*';
