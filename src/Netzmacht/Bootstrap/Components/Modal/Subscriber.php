@@ -50,7 +50,7 @@ class Subscriber implements EventSubscriberInterface
 	 */
 	public function presetConfig(InitializeEnvironmentEvent $event)
 	{
-		$config = $event->getEnvironment();
+		$config = $event->getEnvironment()->getConfig();
 		$config->set('runtime.modal-footer', false);
 	}
 
