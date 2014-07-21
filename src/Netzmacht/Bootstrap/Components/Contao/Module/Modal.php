@@ -4,9 +4,11 @@
 namespace Netzmacht\Bootstrap\Components\Contao\Module;
 
 use Netzmacht\Bootstrap\Components\Button\Factory;
+use Netzmacht\Bootstrap\Components\Modal\Modal as Component;
 use Netzmacht\Bootstrap\Core\Bootstrap;
 use Netzmacht\FormHelper\Element\StaticHtml;
 use Netzmacht\Html\Attributes;
+use Netzmacht\Html\Element;
 
 class Modal extends \Module
 {
@@ -16,19 +18,28 @@ class Modal extends \Module
 	 */
 	protected $strTemplate = 'mod_bootstrap_modal';
 
+	/**
+	 * @var
+	 */
+	private $formButtons;
+
 
 	/**
 	 * compile
 	 */
 	protected function compile()
 	{
-		if($this->cssID[0] == '')
-		{
+		if($this->cssID[0] == '') {
 			$cssID = $this->cssID;
 			$cssID[0] = 'modal-' . $this->id;
 			$cssID[1] .= $this->bootstrap_modalDynamicContent ? ' modal-reloadable' : '';
 			$this->cssID = $cssID;
 		}
+
+		$modal = new Component();
+		$modal
+			->setId($this->cssID[0])
+			->addClass($this->cssID[1]);
 
 		// check if ajax is used
 		if($this->bootstrap_modalAjax) {
@@ -55,39 +66,72 @@ class Modal extends \Module
 			}
 		}
 
-		$config      = Bootstrap::getConfig();
-		$formButtons = null;
+		if($this->headline) {
+			$headline = Element::create($this->hl)
+				->addClass('modal-title')
+				->addChild($this->headline);
 
-		switch($this->bootstrap_modalContentType)
-		{
+			$modal->setTitle($headline);
+		}
+
+		$modal
+			->setContent($this->getContent())
+			->setFooter($this->getButtons())
+			->setCloseButton(Bootstrap::getConfigVar('modal.dismiss'), true)
+			->render($this->Template);
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function generate()
+	{
+		// add content to TL_BODY
+		if(!$this->bootstrap_modalAjax || !$this->bootstrap_isAjax) {
+			$content = parent::generate();
+			$content = $this->replaceInsertTags($content);
+
+			$GLOBALS['TL_BODY']['bootstrap-modal-' . $this->id] = $content;
+			return '';
+		}
+
+		return parent::generate();
+	}
+
+	private function getContent()
+	{
+		$config = Bootstrap::getConfig();
+
+		switch($this->bootstrap_modalContentType) {
 			case 'article':
-				$this->Template->content = $this->getArticle($this->bootstrap_article, false, true);
+				return $this->getArticle($this->bootstrap_article, false, true);
 				break;
 
 			case 'form':
 				$config->set('runtime.modal-footer', '');
-				$this->Template->content = $this->getForm($this->form);
-
-				$formButtons = $config->get('runtime.modal-footer');
+				$content     = $this->getForm($this->form);
+				$this->formButtons = $config->get('runtime.modal-footer');
 				$config->set('runtime.modal-footer', false);
 
 				// render style select if it is used
 				// TODO move this to an event or hook
 				if($this->bootstrap_isAjax && $config->get('form.styleSelect.enabled')) {
-					$this->Template->content .= sprintf(
+					$content .= sprintf(
 						'<script>$(\'.%s\').selectpicker(\'render\');</script>',
 						$config->get('form.styleSelect.class')
 					);
 				}
 
+				return $content;
 				break;
 
 			case 'module':
-				$this->Template->content = $this->getFrontendModule($this->bootstrap_module);
+				return $this->getFrontendModule($this->bootstrap_module);
 				break;
 
 			case 'html':
-				$this->Template->content = (TL_MODE == 'FE') ? $this->html : htmlspecialchars($this->bootstrap_html);
+				return (TL_MODE == 'FE') ? $this->html : htmlspecialchars($this->bootstrap_html);
 				break;
 
 			case 'template':
@@ -96,15 +140,18 @@ class Modal extends \Module
 				$buffer = ob_get_contents();
 				ob_end_clean();
 
-				$this->Template->content = $buffer;
-
+				return $buffer;
 				break;
 
 			case 'text':
-				$this->Template->content = \String::toHtml5($this->bootstrap_text);
+				return \String::toHtml5($this->bootstrap_text);
 				break;
 		}
+	}
 
+
+	public function getButtons()
+	{
 		if($this->bootstrap_addModalFooter) {
 			$style   = $this->bootstrap_buttonStyle ? : 'btn-default';
 			$buttons = Factory::createFromFieldset($this->bootstrap_buttons);
@@ -147,25 +194,6 @@ class Modal extends \Module
 			$buttons = implode('', (array)$formButtons);
 		}
 
-		$this->Template->footerButtons = $buttons;
-		$this->Template->headerClose   = $config->get('modal.dismiss');
-	}
-
-
-	/**
-	 * @return string
-	 */
-	public function generate()
-	{
-		// add content to TL_BODY
-		if(!$this->bootstrap_modalAjax || !$this->bootstrap_isAjax) {
-			$content = parent::generate();
-			$content = $this->replaceInsertTags($content);
-
-			$GLOBALS['TL_BODY']['bootstrap-modal-' . $this->id] = $content;
-			return '';
-		}
-
-		return parent::generate();
+		return $buttons;
 	}
 } 

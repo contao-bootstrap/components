@@ -2,6 +2,7 @@
 
 TemplateLoader::addFiles(array
 (
+	'bootstrap_modal'        => 'system/modules/bootstrap-components/templates',
 	'ce_bootstrap_buttons'   => 'system/modules/bootstrap-components/templates',
 	'ce_bootstrap_button'    => 'system/modules/bootstrap-components/templates',
 	'ce_bootstrap_carousel'  => 'system/modules/bootstrap-components/templates',

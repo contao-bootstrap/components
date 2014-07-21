@@ -23,7 +23,7 @@
         "contao-community-alliance/composer-plugin": "~2.0",
         "contao/core":">=3.2,<3.4",
         "contao-bootstrap/core": "~1.0",
-        "netzmacht/html": "~1.0",
+        "netzmacht/html": "~1.1",
         "bit3/contao-meta-palettes":"~1.4",
         "menatwork/contao-multicolumnwizard":"~3.2",
         "leounglaub/contao-simple-ajax":"~1.0"
