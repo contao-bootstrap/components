@@ -121,7 +121,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['bootstrap_buttons'] = array
 							'eval'      => array
 							(
 								'includeBlankOption' => true,
-								'style'              => 'width: 100px;',
+								'style'              => 'width: 80px;',
 								'placeholder'        => &$GLOBALS['TL_LANG']['tl_content']['bootstrap_buttons_attributes_name'],
 							),
 						),

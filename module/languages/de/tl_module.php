@@ -10,10 +10,10 @@ $GLOBALS['TL_LANG']['tl_module']['footer_legend'] = 'Fußbereich';
 /**
  * fields
  */
+$GLOBALS['TL_LANG']['tl_module']['bootstrap_modalSize'][0]              = 'Dialoggröße';
+$GLOBALS['TL_LANG']['tl_module']['bootstrap_modalSize'][1]              = 'Optionale Auswahl der Dialoggröße';
 $GLOBALS['TL_LANG']['tl_module']['bootstrap_modalAjax'][0]              = 'Inhalt dynamisch laden';
 $GLOBALS['TL_LANG']['tl_module']['bootstrap_modalAjax'][1]              = 'Inhalt wird erst beim Öffnen des modalen Fensters mit Ajax dynamisch geladen.';
-$GLOBALS['TL_LANG']['tl_module']['bootstrap_modalDynamicContent'][0]    = 'Inhalt austasuchbar';
-$GLOBALS['TL_LANG']['tl_module']['bootstrap_modalDynamicContent'][1]    = 'Der Inhalt des modalen Fensters kann variieren. Laden Sie den Inhalt über SimpleAjax.php?modal=ID&page=PAGE_ID&dynamic=article|form|module&id=DYNAMIC_ID';
 $GLOBALS['TL_LANG']['tl_module']['bootstrap_buttons_attributes_name']   = 'Attribut';
 $GLOBALS['TL_LANG']['tl_module']['bootstrap_buttons_attributes_value']  = 'Wert';
 $GLOBALS['TL_LANG']['tl_module']['bootstrap_addHeader'][0]              = 'Kopfbereich hinzufügen';
@@ -34,6 +34,39 @@ $GLOBALS['TL_LANG']['tl_module']['bootstrap_navbarBrandTemplate'][0]    = 'Templ
 $GLOBALS['TL_LANG']['tl_module']['bootstrap_navbarBrandTemplate'][1]    = 'Welches Template soll für den Header-Title verwendet werden.';
 $GLOBALS['TL_LANG']['tl_module']['bootstrap_navClass'][0]               = 'Bootstrap Navigations-Klassen';
 $GLOBALS['TL_LANG']['tl_module']['bootstrap_navClass'][1]               = 'Geben Sie die Navigations-Klassen an, die Bootstrap bietet. Sie müssen die allgemeine <em>nav</em> Klasse auch zuweisen.';
+$GLOBALS['TL_LANG']['tl_module']['bootstrap_addModalFooter'][0] = 'Fußbereich hinzufügen';
+$GLOBALS['TL_LANG']['tl_module']['bootstrap_addModalFooter'][1] = 'Aktivieren Sie die Option, wenn Sie dem modalen Fenster einen Fußbereich hinzufügen wollen.';
+
+$GLOBALS['TL_LANG']['tl_module']['bootstrap_modalContentType'][0] = 'Typ des Inhaltes';
+$GLOBALS['TL_LANG']['tl_module']['bootstrap_modalContentType'][1] = 'Entscheiden Sie, welcher Inhalt im modalen Fenster dargestellt wird.';
+
+$GLOBALS['TL_LANG']['tl_module']['bootstrap_modalTemplate'][0] = 'Template';
+$GLOBALS['TL_LANG']['tl_module']['bootstrap_modalTemplate'][1] = 'Template auswählen, das innerhalb des modalen Fensters angezeigt werden soll.';
+
+$GLOBALS['TL_LANG']['tl_module']['bootstrap_text'][0] = 'Text';
+$GLOBALS['TL_LANG']['tl_module']['bootstrap_text'][1] = 'Sie können HTML-Tags verwenden, um den Text zu formatieren.';
+
+$GLOBALS['TL_LANG']['tl_module']['bootstrap_module'][0] = 'Module';
+$GLOBALS['TL_LANG']['tl_module']['bootstrap_module'][1] = 'Wählen Sie ein Modul aus.';
+
+$GLOBALS['TL_LANG']['tl_module']['bootstrap_article'][0] = 'Artikel';
+$GLOBALS['TL_LANG']['tl_module']['bootstrap_article'][1] = 'Wählen Sie einen Artikel aus.';
+
+$GLOBALS['TL_LANG']['tl_module']['bootstrap_buttons'][0] = 'Schaltflächen';
+$GLOBALS['TL_LANG']['tl_module']['bootstrap_buttons'][1] = 'Hier können Sie Schaltflächen anlegen. Sowohl die Gruppierung von Schaltflächen als auch Dropdown-Listen sind möglich.';
+
+$GLOBALS['TL_LANG']['tl_module']['bootstrap_buttons_type'][0] = 'Typ';
+$GLOBALS['TL_LANG']['tl_module']['bootstrap_buttons_type'][1] = 'Art der Schaltfläche';
+
+$GLOBALS['TL_LANG']['tl_module']['bootstrap_buttons_label'][0] = 'Beschriftung';
+$GLOBALS['TL_LANG']['tl_module']['bootstrap_buttons_label'][1] = 'Beschriftung der Schaltfläche.';
+
+$GLOBALS['TL_LANG']['tl_module']['bootstrap_buttons_url'][0] = 'Link-Adresse';
+$GLOBALS['TL_LANG']['tl_module']['bootstrap_buttons_url'][1] = 'Worauf soll die Schaltfläche verlinken.';
+
+$GLOBALS['TL_LANG']['tl_module']['bootstrap_buttons_attributes'][0] = 'HTML Attribute';
+$GLOBALS['TL_LANG']['tl_module']['bootstrap_buttons_attributes'][1] = 'Weitere HTML-Attribute definieren.';
+
 /**
  * values
  */

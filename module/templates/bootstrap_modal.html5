@@ -1,5 +1,5 @@
 <div <?php echo $this->attributes; ?>>
-	<div class="modal-dialog">
+	<div class="modal-dialog<?php echo $this->size; ?>">
 		<div class="modal-content">
 			<?php if($this->title || $this->closeButton): ?>
 			<div class="modal-header">

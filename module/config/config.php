@@ -78,10 +78,10 @@ $GLOBALS['BOOTSTRAP']['wrappers']['accordion'] = array(
 // Bootstrap modal
 $GLOBALS['BOOTSTRAP']['modal'] = array
 (
-	'dismiss'          => '&times;',
+	'dismiss'          => '<span aria-hidden="true">&times;</span>',
 	'adjustForm'       => true,
-	'remoteUrl'        => 'SimpleAjax.php?page=%s&amp;modal=%s',
-	'remoteDynamicUrl' => 'SimpleAjax.php?page=%s&amp;modal=%s&amp;dynamic=%s&amp;id=%s',
+	'remoteUrl'        => 'SimpleAjax.php?action=bootstrap_modal&page=%s&modal=%s',
+	'remoteDynamicUrl' => 'SimpleAjax.php?action=bootstrap_modal&page=%s&modal=%s&dynamic=%s&id=%s',
 );
 
 // navigation stragety is used to render items

@@ -30,6 +30,11 @@ class Modal extends Attributes
 	private $title;
 
 	/**
+	 * @var string
+	 */
+	private $size;
+
+	/**
 	 * @var CastsToString
 	 */
 	private $content;
@@ -88,6 +93,7 @@ class Modal extends Attributes
 		$template->title       = $this->title;
 		$template->content     = $this->content;
 		$template->footer      = $this->footer;
+		$template->size        = $this->size ? (' ' . $this->size) : '';
 
 		return $this;
 	}
@@ -181,6 +187,23 @@ class Modal extends Attributes
 		$this->title = $title;
 
 		return $this;
+	}
+
+
+	/**
+	 * @param string $size
+	 */
+	public function setSize($size)
+	{
+		$this->size = $size;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getSize()
+	{
+		return $this->size;
 	}
 
 
