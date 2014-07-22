@@ -47,7 +47,7 @@ class Navbar extends \Module
 
 		// prefetch modules, so only 1 query is required
 		$ids        = implode(',', $ids);
-		$collection = \ModuleModel::findBy(array('tl_module.id IN(?)'), array($ids));
+		$collection = \ModuleModel::findBy(array('tl_module.id IN(' . $ids . ')'), array());
 		$models     = array();
 
 		while($collection->next()) {
