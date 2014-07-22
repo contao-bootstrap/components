@@ -25,7 +25,7 @@ class Factory
 
 		foreach($definition as $button) {
 			// dont add empty items
-			if($button['label'] == '' && $button['type'] != 'group') {
+			if($button['label'] == '' && $button['type'] != 'group' && $button['type'] != 'dropdown') {
 				continue;
 			}
 

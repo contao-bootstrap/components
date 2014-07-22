@@ -45,7 +45,7 @@ class Buttons extends \ContentElement
 		if($child instanceof Group || $child instanceof Toolbar) {
 			$child->eachChild(array($this, 'addButtonStyle'));
 		}
-		else {
+		elseif(!$child->getAttribute('class')) {
 			$child->addClass($this->bootstrap_buttonStyle);
 		}
 	}
