@@ -143,7 +143,7 @@ class Subscriber implements EventSubscriberInterface
 		if($count == 2 || $count == 3) {
 			switch($params[0]) {
 				case 'remote':
-					$buffer = sprintf(Bootstrap::getConfigVar('modal.remoteUrl'), $GLOBALS['objPage']->id, $params[1]);
+					$buffer = \Controller::generateFrontendUrl($GLOBALS['objPage']->row()) . '?bootstrap_modal=' . $params[1];
 					break;
 
 				case 'url':
