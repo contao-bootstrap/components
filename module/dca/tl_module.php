@@ -292,7 +292,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['bootstrap_navbarModules'] = array
 			(
 				'label'            => $GLOBALS['TL_LANG']['tl_module']['bootstrap_navbarModules_module'],
 				'inputType'        => 'select',
-				'options_callback' => array('Netzmacht\Bootstrap\Core\Contao\DataContainer\Module', 'getAllModules'),
+				'options_callback' => array('Netzmacht\Bootstrap\Components\Contao\DataContainer\Module', 'getAllModules'),
 				'eval'             => array('style' => 'width: 300px', 'includeBlankOption' => true, 'chosen' => true),
 			),
 

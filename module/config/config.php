@@ -11,6 +11,9 @@ $GLOBALS['TL_CTE']['bootstrap_carousel']['bootstrap_carouselEnd']   = 'Netzmacht
 $GLOBALS['TL_CTE']['accordion']['bootstrap_accordionGroupStart']    = 'Netzmacht\Bootstrap\Components\Contao\ContentElement\AccordionGroup';
 $GLOBALS['TL_CTE']['accordion']['bootstrap_accordionGroupEnd']      = 'Netzmacht\Bootstrap\Components\Contao\ContentElement\AccordionGroup';
 
+$GLOBALS['TL_CTE']['bootstrap_tabs']['bootstrap_tabStart']          = 'Netzmacht\Bootstrap\Components\Contao\ContentElement\Tab';
+$GLOBALS['TL_CTE']['bootstrap_tabs']['bootstrap_tabPart']           = 'Netzmacht\Bootstrap\Components\Contao\ContentElement\Tab';
+$GLOBALS['TL_CTE']['bootstrap_tabs']['bootstrap_tabEnd']            = 'Netzmacht\Bootstrap\Components\Contao\ContentElement\Tab';
 
 // Frontend modules
 $GLOBALS['FE_MOD']['miscellaneous']['bootstrap_modal']  = 'Netzmacht\Bootstrap\Components\Contao\Module\Modal';
@@ -29,7 +32,9 @@ $GLOBALS['TL_WRAPPERS']['start'][]      = 'bootstrap_accordionGroupStart';
 $GLOBALS['TL_WRAPPERS']['separator'][]  = 'bootstrap_carouselPart';
 $GLOBALS['TL_WRAPPERS']['stop'][]       = 'bootstrap_carouselEnd';
 $GLOBALS['TL_WRAPPERS']['stop'][]       = 'bootstrap_accordionGroupEnd';
-
+$GLOBALS['TL_WRAPPERS']['start'][]      = 'bootstrap_tabStart';
+$GLOBALS['TL_WRAPPERS']['stop'][]       = 'bootstrap_tabEnd';
+$GLOBALS['TL_WRAPPERS']['separator'][]  = 'bootstrap_tabPart';
 
 // Bootstrap wrapper configuration
 $GLOBALS['BOOTSTRAP']['wrappers']['carousel'] = array(
@@ -74,6 +79,36 @@ $GLOBALS['BOOTSTRAP']['wrappers']['accordion'] = array(
 	),
 );
 
+$GLOBALS['BOOTSTRAP']['wrappers']['tabs'] = array
+(
+	'start' => array
+	(
+		'name'          => 'bootstrap_tabStart',
+		'triggerCreate' => true, // auto create separators and stop element
+		'triggerDelete' => true, // auto delete separators and stop element
+	),
+
+	'separator' => array
+	(
+		'name'          => 'bootstrap_tabPart',
+		'autoCreate'    => true, // can be auto created
+		'autoDelete'    => true, // can be auto deleted
+
+		// callback to detect how many separators exists
+		'countExisting' => array('Netzmacht\Bootstrap\Components\Contao\DataContainer\Content', 'countExistingTabSeparators'),
+
+		// callback to detect how many separators are required
+		'countRequired' => array('Netzmacht\Bootstrap\Components\Contao\DataContainer\Content', 'countRequiredTabSeparators'),
+	),
+
+	'stop' => array
+	(
+		'name'       => 'bootstrap_tabEnd',
+		'autoCreate' => true,
+		'autoDelete' => true,
+	),
+);
+
 
 // Bootstrap modal
 $GLOBALS['BOOTSTRAP']['modal'] = array
@@ -84,9 +119,9 @@ $GLOBALS['BOOTSTRAP']['modal'] = array
 	'remoteDynamicUrl' => 'SimpleAjax.php?action=bootstrap_modal&page=%s&modal=%s&dynamic=%s&id=%s',
 );
 
+
 // navigation stragety is used to render items
 $GLOBALS['BOOTSTRAP']['navigation']['strategies']['navbar'] = 'Netzmacht\Bootstrap\Components\Navigation\ItemHelper\NavbarItemHelper';
-
 
 // navigation modules, used to set runtime nav class
 $GLOBALS['BOOTSTRAP']['navigation']['modules'][] = 'navigation';

@@ -25,8 +25,7 @@
         "contao-bootstrap/core": "~1.0",
         "netzmacht/html": "~1.1",
         "bit3/contao-meta-palettes":"~1.4",
-        "menatwork/contao-multicolumnwizard":"~3.2",
-        "leounglaub/contao-simple-ajax":"~1.0"
+        "menatwork/contao-multicolumnwizard":"~3.2"
     },
     "conflict": {
         "netzmacht/contao-bootstrap": "*"
