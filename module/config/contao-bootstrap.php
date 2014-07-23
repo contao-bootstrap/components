@@ -81,7 +81,7 @@ return array(
 
 	'navigation' => array(
 		'item-helper' => array(
-			'dropdown' => 'Netzmacht\Bootstrap\Components\Navigation\ItemHelper\NavbarItemHelper'
+			'dropdown' => 'Netzmacht\Bootstrap\Components\Navigation\ItemHelper\DropdownItemHelper'
 		),
 	),
 

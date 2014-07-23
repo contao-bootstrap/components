@@ -20,7 +20,7 @@ use Netzmacht\Html\Attributes;
  * Class NavbarItemHelper
  * @package Netzmacht\Bootstrap\Navigation\ItemHelper
  */
-class NavbarItemHelper extends Attributes implements ItemHelper
+class DropdownItemHelper extends Attributes implements ItemHelper
 {
 	/**
 	 * @var array
@@ -146,6 +146,10 @@ class NavbarItemHelper extends Attributes implements ItemHelper
 			$classes = trimsplit(' ', $this->item['class']);
 			foreach($classes as $class) {
 				$this->itemClass[] = $class;
+			}
+
+			if(in_array('trail', $this->itemClass)) {
+				$this->itemClass[] = 'active';
 			}
 		}
 
