@@ -54,16 +54,16 @@ class Helper
 
 	/**
 	 * @param \FrontendTemplate $template
-	 * @param $strategy
+	 * @param $itemHelper
 	 * @throws \InvalidArgumentException
 	 * @return static
 	 */
-	public static function create(\FrontendTemplate $template, $strategy)
+	public static function create(\FrontendTemplate $template, $itemHelper)
 	{
-		$factory = Bootstrap::getConfigVar('navigation.strategies.' . $strategy);
+		$factory = Bootstrap::getConfigVar('navigation.item-helper.' . $itemHelper);
 
 		if(!$factory) {
-			throw new \InvalidArgumentException(sprintf('Navigation strategy "%s" is not registered', $strategy));
+			throw new \InvalidArgumentException(sprintf('Navigation item helper "%s" is not registered', $itemHelper));
 		}
 
 		return new static($template, $factory);

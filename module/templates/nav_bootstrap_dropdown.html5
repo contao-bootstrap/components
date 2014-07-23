@@ -1,5 +1,5 @@
 
-<?php $helper = \Netzmacht\Bootstrap\Components\Navigation\Helper::create($this, 'navbar'); ?>
+<?php $helper = \Netzmacht\Bootstrap\Components\Navigation\Helper::create($this, 'dropdown'); ?>
 <?php if($helper->isChildrenList()): ?>
 <ul <?php echo $helper->getListAttributes(); ?>>
 <?php endif; ?>
