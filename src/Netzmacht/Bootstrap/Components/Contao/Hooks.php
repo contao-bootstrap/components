@@ -14,18 +14,21 @@ class Hooks
 	 */
 	public static function setRuntimeNavClass(\Model $element)
 	{
+		// load module if it is a module include element
+		if($element instanceof \ContentModel && $element->type == 'module') {
+			$element = \ModuleModel::findByPK($element->module);
+		}
+
 		if(!$element instanceof \ModuleModel) {
 			return true;
 		}
 
-		$modules = Bootstrap::getConfigVar('navigation.modules', array());
+		// do not limit for navigation module. so every module can access it
 
-		if(!in_array($element->type, $modules)) {
-			return true;
-		}
-
+		// bootstrap_inNavbar is dynamically set of navbar module
 		if($element->bootstrap_inNavbar) {
 			$class = 'nav navbar-nav';
+
 			if($element->bootstrap_navbarFloating == 'right') {
 				$class .= 'navbar-right';
 			}
