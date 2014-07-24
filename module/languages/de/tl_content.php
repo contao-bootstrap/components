@@ -42,3 +42,22 @@ $GLOBALS['TL_LANG']['tl_content']['bootstrap_tabs_type']['child'] = 'Kind-Elemen
 
 $GLOBALS['TL_LANG']['tl_content']['bootstrap_fade'][0] = 'Überblendeffekt aktivieren';
 $GLOBALS['TL_LANG']['tl_content']['bootstrap_fade'][1] = 'Verwendet einen Überblendeffekt beim Wechseln der Tabs.';
+
+$GLOBALS['TL_LANG']['tl_content']['bootstrap_subType'][0] = 'Betriebsart';
+$GLOBALS['TL_LANG']['tl_content']['bootstrap_subType'][1] = 'Bitte wählen Sie die Betriebsart des Elements.';
+
+$GLOBALS['TL_LANG']['tl_content']['bootstrap_subType']['start'] = 'Anfang';
+$GLOBALS['TL_LANG']['tl_content']['bootstrap_subType']['part'] = 'Trennelement';
+$GLOBALS['TL_LANG']['tl_content']['bootstrap_subType']['end'] = 'Ende';
+
+$GLOBALS['TL_LANG']['tl_content']['bootstrap_showIndicators'][0] = 'Indikatoren anzeigen';
+$GLOBALS['TL_LANG']['tl_content']['bootstrap_showIndicators'][1] = 'Indikatoren des aktuellen Slider-Elements werden eingeblendet';
+
+$GLOBALS['TL_LANG']['tl_content']['bootstrap_showControls'][0] = 'Steuerelemente anzeigen';
+$GLOBALS['TL_LANG']['tl_content']['bootstrap_showControls'][1] = 'Rechts/Link Schaltflächen werden anzeigt.';
+
+$GLOBALS['TL_LANG']['tl_content']['bootstrap_autostart'][0] = 'Automatisch abspielen';
+$GLOBALS['TL_LANG']['tl_content']['bootstrap_autostart'][1] = 'Animation des Elements werden automatisch gestartet.';
+
+$GLOBALS['TL_LANG']['tl_content']['bootstrap_interval'][0] = 'Anzeigedauer';
+$GLOBALS['TL_LANG']['tl_content']['bootstrap_interval'][1] = 'Anzeigedauer in Millisekunden des einzelnen Elements.';

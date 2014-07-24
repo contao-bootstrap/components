@@ -3,18 +3,14 @@
 	<?php if($this->bootstrap_showIndicators): ?>
 		<?php
 		$attributes = new \Netzmacht\Html\Attributes();
-		$attributes->setAttribute('data-target', $this->bootstrap_identifier);
+		$attributes->setAttribute('data-target', '#' . $this->attributes->getId());
+		$attributes->addClass('active');
 		?>
 		<ol class="carousel-indicators">
 			<?php for($i=0; $i < $this->count; $i++): ?>
 				<?php
-				$attributes->setAttribute('data.slide-to', $i);
-				if($i == 0) {
-					$attributes->addClass('active');
-				}
-				elseif($i == 1) {
-					$attributes->removeClass('active');
-				}
+				    $attributes->setAttribute('data-slide-to', $i);
+					if($i == 1) $attributes->removeClass('active');
 				?>
 				<li <?php echo $attributes; ?>></li>
 			<?php endfor; ?>
