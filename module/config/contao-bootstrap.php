@@ -6,70 +6,70 @@ return array(
 			'start' => array
 			(
 				'name'          => 'bootstrap_accordionGroupStart',
-				'autoCreate'    => true,
-				'autoDelete'    => true,
-				'triggerCreate' => true,
-				'triggerDelete' => true,
+				'auto-create'    => true,
+				'auto-delete'    => true,
+				'trigger-create' => true,
+				'trigger-delete' => true,
 			),
 
 			'stop' => array
 			(
 				'name'          => 'bootstrap_accordionGroupEnd',
-				'autoCreate'    => true,
-				'autoDelete'    => true,
-				'triggerCreate' => true,
-				'triggerDelete' => true,
+				'auto-create'    => true,
+				'auto-delete'    => true,
+				'trigger-create' => true,
+				'trigger-delete' => true,
 			),
 		),
 
 		'carousel' => array(
 			'start' => array(
-				'name'          => 'bootstrap_carouselStart',
-				'autoCreate'    => true,
-				'triggerCreate' => true,
-				'triggerDelete' => true,
+				'name'           => 'bootstrap_carouselStart',
+				'auto-create'    => true,
+				'trigger-create' => true,
+				'trigger-delete' => true,
 			),
 
 			'separator' => array(
-				'name'          => 'bootstrap_carouselPart',
-				'triggerCreate' => false,
-				'autoDelete'    => true,
+				'name'           => 'bootstrap_carouselPart',
+				'trigger-create' => false,
+				'auto-delete'    => true,
 
 			),
 
 			'stop' => array(
-				'name'          => 'bootstrap_carouselEnd',
-				'autoCreate'    => true,
-				'autoDelete'    => true,
+				'name'           => 'bootstrap_carouselEnd',
+				'auto-create'    => true,
+				'auto-delete'    => true,
 			),
 		),
 
 		'tabs' => array(
 			'start' => array
 			(
-				'name'          => 'bootstrap_tabStart',
-				'triggerCreate' => true, // auto create separators and stop element
-				'triggerDelete' => true, // auto delete separators and stop element
+				'name'           => 'bootstrap_tabStart',
+				'trigger-create' => true, // auto create separators and stop element
+				'trigger-delete' => true, // auto delete separators and stop element
 			),
 
 			'separator' => array
 			(
-				'name'          => 'bootstrap_tabPart',
-				'autoCreate'    => true, // can be auto created
-				'autoDelete'    => true, // can be auto deleted
+				'name'           => 'bootstrap_tabPart',
+				'auto-create'    => true, // can be auto created
+				'auto-delete'    => true, // can be auto deleted
 
 				// callback to detect how many separators exists
-				'countExisting' => array('Netzmacht\Bootstrap\Components\Contao\DataContainer\Content', 'countExistingTabSeparators'),
+				'count-existing' => array('Netzmacht\Bootstrap\Components\Contao\DataContainer\Content', 'countExistingTabSeparators'),
 
 				// callback to detect how many separators are required
-				'countRequired' => array('Netzmacht\Bootstrap\Components\Contao\DataContainer\Content', 'countRequiredTabSeparators'),
+				'count-required' => array('Netzmacht\Bootstrap\Components\Contao\DataContainer\Content', 'countRequiredTabSeparators'),
 			),
 
 			'stop' => array
 			(
-				'name'       => 'bootstrap_tabEnd',
-				'autoCreate' => true,
-				'autoDelete' => true,
+				'name'        => 'bootstrap_tabEnd',
+				'auto-create' => true,
+				'auto-delete' => true,
 			),
 		),
 	),
@@ -87,17 +87,17 @@ return array(
 
 	'templates' => array(
 		'parsers' => array(
-			'callback.replaceClasses' => array(
+			'callback_replace-classes' => array(
 				'templates' => array('mod_bootstrap_modal*'),
 			),
 		),
 
 		'modifiers' => array(
-			'callback.replaceImageClasses' => array(
+			'callback_replace-image-classes' => array(
 				'templates' => array('mod_bootstrap_modal*'),
 			),
 
-			'callback.replaceTableClasses' => array(
+			'callback_replace-table-classes' => array(
 				'templates' => array('mod_bootstrap_modal*'),
 			),
 		),
