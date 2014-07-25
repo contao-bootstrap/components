@@ -217,7 +217,7 @@ class Subscriber implements EventSubscriberInterface
 		$isModal =
 			Bootstrap::getConfigVar('runtime.modal-footer') !== false &&
 			Bootstrap::getConfigVar('modal.adjustForm') &&
-			Bootstrap::getConfigVar(sprintf('form.widgets.%s.modalFooter', $widget->type));
+			Bootstrap::getConfigVar(sprintf('form.widgets.%s.modal-footer', $widget->type));
 
 		return $isModal;
 	}
