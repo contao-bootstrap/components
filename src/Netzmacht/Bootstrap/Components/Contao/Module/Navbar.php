@@ -50,11 +50,13 @@ class Navbar extends \Module
 		$collection = \ModuleModel::findBy(array('tl_module.id IN(' . $ids . ')'), array());
 		$models     = array();
 
-		while($collection->next()) {
-			$model = $collection->current();
-			$model->bootstrap_inNavbar = true;
+		if($collection) {
+			while($collection->next()) {
+				$model = $collection->current();
+				$model->bootstrap_inNavbar = true;
 
-			$models[$model->id] = $model;
+				$models[$model->id] = $model;
+			}
 		}
 
 		foreach ($config as $module) {
