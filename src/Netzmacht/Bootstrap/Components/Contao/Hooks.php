@@ -10,9 +10,10 @@ class Hooks
 
 	/**
 	 * @param \Model $element
+	 * @param $isVisible
 	 * @return bool
 	 */
-	public static function setRuntimeNavClass(\Model $element)
+	public static function setRuntimeNavClass(\Model $element, $isVisible)
 	{
 		// load module if it is a module include element
 		if($element instanceof \ContentModel && $element->type == 'module') {
@@ -20,7 +21,7 @@ class Hooks
 		}
 
 		if(!$element instanceof \ModuleModel) {
-			return true;
+			return $isVisible;
 		}
 
 		// do not limit for navigation module. so every module can access it
@@ -42,7 +43,7 @@ class Hooks
 
 		Bootstrap::setConfigVar('runtime.nav-class', $class);
 
-		return true;
+		return $isVisible;
 	}
 
 } 
