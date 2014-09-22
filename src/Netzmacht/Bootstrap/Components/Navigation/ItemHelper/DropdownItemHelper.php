@@ -153,7 +153,7 @@ class DropdownItemHelper extends Attributes implements ItemHelper
 			}
 		}
 
-		if($this->item['type'] == 'm17Folder') {
+		if($this->item['type'] == 'm17Folder' || $this->item['type'] == 'folder') {
 			$this->isHeader = ($level != 1 && ($level % 2) == 1);
 		}
 
