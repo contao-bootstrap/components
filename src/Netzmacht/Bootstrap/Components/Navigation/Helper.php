@@ -157,15 +157,16 @@ class Helper
 			case '2':
 				$attributes->addClass('dropdown-menu');
 				break;
-
-			default:
-				$attributes->addClass('dropdown-menu')->addClass('collapse');
-				break;
 		}
 
-		if($level > 1) {
-			$disableChildrenList = !($this->template->items && ($level != 1 && ($level % 2) == 1));
-			$this->setChildrenList($disableChildrenList);
+		if($level > 1 && $this->template->items) {
+            // get the current page id
+            $pageId = $this->template->items[0]['pid'];
+            $page   = \PageModel::findByPk($pageId);
+
+            if($page && $page->type == 'm17Folder') {
+                $this->setChildrenList(false);
+            }
 		}
 	}
 } 

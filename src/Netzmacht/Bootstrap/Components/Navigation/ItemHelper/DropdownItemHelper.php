@@ -157,7 +157,7 @@ class DropdownItemHelper extends Attributes implements ItemHelper
 			$this->isHeader = ($level != 1 && ($level % 2) == 1);
 		}
 
-		if($this->item['subitems'] && ($level % 2) == 0) {
+		if($this->item['subitems'] && $level == 2) {
 			$this->isDropdown = true;
 		}
 	}
