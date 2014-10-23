@@ -102,4 +102,14 @@ return array(
 			),
 		),
 	),
+    'config' => array(
+        'options' => array(
+            'dropdown' => array(
+                'formless' => array(
+                    'mod_quicklink',
+                    'mod_quicknav',
+                ),
+            ),
+        ),
+    ),
 );
