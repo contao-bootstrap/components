@@ -6,8 +6,7 @@ namespace Netzmacht\Bootstrap\Components\Modal;
 use Netzmacht\Bootstrap\Core\Bootstrap;
 use Netzmacht\Bootstrap\Core\Event\InitializeEnvironmentEvent;
 use Netzmacht\Bootstrap\Core\Event\ReplaceInsertTagsEvent;
-use Netzmacht\FormHelper\Event\GenerateEvent;
-use Netzmacht\FormHelper\Event\SelectLayoutEvent;
+use Netzmacht\Contao\FormHelper\Event\ViewEvent;
 use Netzmacht\Html\Element;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -56,22 +55,23 @@ class Subscriber implements EventSubscriberInterface
 
 
 	/**
-	 * @param SelectLayoutEvent $event
+	 * @param ViewEvent $event
 	 */
-	public function selectLayout(SelectLayoutEvent $event)
+	public function selectLayout(ViewEvent $event)
 	{
+        $view   = $event->getView();
 		$widget = $event->getWidget();
 
 		if($this->isPartOfModalFooter($widget)) {
-			$event->setLayout('bootstrap_hidden');
+            $view->setLayout('bootstrap_hidden');
 		}
 	}
 
 
 	/**
-	 * @param GenerateEvent $event
+	 * @param ViewEvent $event
 	 */
-	public function createModalFooter(GenerateEvent $event)
+	public function createModalFooter(ViewEvent $event)
 	{
 		$widget  = $event->getWidget();
 		$element = $event->getContainer()->getElement();

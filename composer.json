@@ -28,7 +28,8 @@
         "menatwork/contao-multicolumnwizard":"~3.2"
     },
     "conflict": {
-        "netzmacht/contao-bootstrap": "*"
+        "netzmacht/contao-bootstrap": "*",
+        "netzmacht/contao-form-helper": "~0.3"
     },
     "autoload": {
         "psr-0": { "Netzmacht\\Bootstrap\\Components\\": "src/" }
