@@ -38,6 +38,12 @@
         "contao": {
             "sources":{
                 "module": "system/modules/bootstrap-components"
+            },
+            "transifex": {
+                "project": "contao-bootstrap",
+                "prefix": "components-",
+                "languages_cto": "module/languages",
+                "languages_tx": ".tx"
             }
         },
         "branch-alias": {
