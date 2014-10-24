@@ -38,8 +38,8 @@ class Subscriber implements EventSubscriberInterface
 		return array (
 			InitializeEnvironmentEvent::NAME   => 'presetConfig',
 			ReplaceInsertTagsEvent::NAME       => 'replaceInsertTags',
-			'form-helper.select-widget-layout' => 'selectLayout',
-			'form-helper.generate-widget'      =>  'createModalFooter',
+			'form-helper.create-view'          => 'selectLayout',
+			'form-helper.generate-view'        =>  'createModalFooter',
 		);
 	}
 
