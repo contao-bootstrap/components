@@ -37,6 +37,10 @@ class Carousel extends Wrapper
 				->addClass('slide')
 				->setAttribute('id', $cssID[0]);
 
+            if ($cssID[1]) {
+                $attributes->addClass($cssID[1]);
+            }
+
 			if($this->bootstrap_autostart) {
 				$attributes->setAttribute('data-ride', 'carousel');
 			}
