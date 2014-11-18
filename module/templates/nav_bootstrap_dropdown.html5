@@ -27,7 +27,9 @@
 						<?php echo $itemHelper->getDropdownToggle(); ?>
 					</a>
 				<?php else: ?>
-					<a <?php echo $itemHelper; ?><?php echo $item['target']; ?>><?php echo $item['link']; ?></a>
+					<?php if(!empty($item['link'])): ?>
+						<a <?php echo $itemHelper; ?><?php echo $item['target']; ?>><?php echo $item['link']; ?></a>
+					<?php endif; ?>
 				<?php endif; ?>
 				<?php echo $item['subitems']; ?>
 			</li>
