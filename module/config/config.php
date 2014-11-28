@@ -24,8 +24,6 @@ $GLOBALS['TL_HOOKS']['isVisibleElement'][] = array('Netzmacht\Bootstrap\Componen
 
 // Event Subscribers
 $GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Bootstrap\Components\Modal\Subscriber';
-$GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Bootstrap\Components\Navigation\xNavigation';
-
 
 // Wrapper settings
 $GLOBALS['TL_WRAPPERS']['start'][]      = 'bootstrap_carouselStart';
