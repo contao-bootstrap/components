@@ -103,7 +103,7 @@ class Modal extends \Module
 			exit;
 		}
 
-		$GLOBALS['TL_BODY']['bootstrap-modal-' . $this->id] = $content;
+        Bootstrap::setConfigVar('runtime.modals.' . $this->id, $content);
 		return '';
 	}
 

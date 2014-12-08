@@ -46,4 +46,17 @@ class Hooks
 		return $isVisible;
 	}
 
+    /**
+     * Render modals when
+     * @param $strBuffer
+     *
+     * @return mixed
+     */
+    public function appendModals($strBuffer)
+    {
+        $modals = implode('', Bootstrap::getConfigVar('runtime.modals', array()));
+
+        return str_replace('</body>', $modals . '</body>', $strBuffer);
+    }
+
 } 
