@@ -1,16 +1,16 @@
 <!-- indexer::stop -->
 <?php if(!$this->hideFrame): ?>
 <div <?php echo $this->attributes; ?>>
-<?php endif; ?>
-<?php if(!$this->hideContent): ?>
 	<div class="modal-dialog<?php echo $this->size; ?>">
 		<div class="modal-content">
+<?php endif; ?>
+<?php if(!$this->hideContent): ?>
 			<div class="modal-header">
 				<?php echo $this->closeButton; ?>
 				<?php echo $this->title; ?>
 			</div>
 
-			<div class="modal-body">
+			<div class="modal-body">dsffds
 				<?php echo $this->content; ?>
 			</div>
 
@@ -18,10 +18,10 @@
 			<div class="modal-footer">
 				<?php echo $this->footer; ?>
 			</div>
-			<?php endif; ?>
+<?php endif; ?>
+<?php endif; ?>
 		</div>
 	</div>
-<?php endif; ?>
 <?php if(!$this->hideFrame): ?>
 </div>
 <?php endif; ?>

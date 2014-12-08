@@ -56,7 +56,9 @@ class Modal extends \Module
 			$url = \Controller::generateFrontendUrl($GLOBALS['objPage']->row()) . '?bootstrap_modal=' . $this->id;
 			//$url = sprintf(Bootstrap::getConfigVar('modal.remoteUrl'), $GLOBALS['objPage']->id, $this->id);
 			$modal
-				->setAttribute('data-remote', $url)
+                ->setAttribute('role', 'dialog')
+                ->setAttribute('aria-hidden', true)
+                ->setAttribute('taxindex', '-1')
 				->render($this->Template);
 
 			return;
@@ -90,8 +92,13 @@ class Modal extends \Module
 			return $template->parse();
 		}
 
-		if($this->bootstrap_modalAjax && \Input::get('bootstrap_modal') == $this->id ) {
-			$this->isAjax = true;
+		if(\Input::get('bootstrap_modal') == $this->id ) {
+            if ($this->bootstrap_modalAjax) {
+                $this->isAjax = true;
+            }
+
+            echo '';
+            exit;
 		}
 
 		$content = parent::generate();
@@ -130,7 +137,7 @@ class Modal extends \Module
 				// TODO move this to an event or hook
 				if($this->isAjax && $config->get('form.styleSelect.enabled')) {
 					$content .= sprintf(
-						'<script>$(\'.%s\').selectpicker(\'render\');</script>',
+						'<script>jQuery(\'.%s\').selectpicker(\'render\');</script>',
 						$config->get('form.styleSelect.class')
 					);
 				}
