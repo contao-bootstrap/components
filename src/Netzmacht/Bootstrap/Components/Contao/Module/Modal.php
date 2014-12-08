@@ -8,9 +8,9 @@ use Netzmacht\Bootstrap\Components\Button\Group;
 use Netzmacht\Bootstrap\Components\Button\Toolbar;
 use Netzmacht\Bootstrap\Components\Modal\Modal as Component;
 use Netzmacht\Bootstrap\Core\Bootstrap;
-use Netzmacht\FormHelper\Element\StaticHtml;
 use Netzmacht\Html\Attributes;
 use Netzmacht\Html\Element;
+use Netzmacht\Html\Element\StaticHtml;
 
 class Modal extends \Module
 {
@@ -213,4 +213,4 @@ class Modal extends \Module
 
 		return $buttons;
 	}
-} 
+}
