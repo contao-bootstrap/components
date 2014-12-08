@@ -35,10 +35,10 @@ class Subscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array (
-            InitializeEnvironmentEvent::NAME   => 'presetConfig',
-            ReplaceInsertTagsEvent::NAME       => 'replaceInsertTags',
-            'form-helper.create-view'          => 'selectLayout',
-            'form-helper.generate-view'        =>  'createModalFooter',
+            InitializeEnvironmentEvent::NAME => 'presetConfig',
+            ReplaceInsertTagsEvent::NAME     => 'replaceInsertTags',
+            'form-helper.create-view'        => 'selectLayout',
+            'form-helper.generate-view'      =>  'createModalFooter',
         );
     }
 
