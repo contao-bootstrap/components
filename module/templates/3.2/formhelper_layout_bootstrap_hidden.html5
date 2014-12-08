@@ -1,4 +1,0 @@
-<div class="form-group sr-only<?php if($this->hasErrors()): ?> has-error<?php endif; ?>">
-	<?php echo $label; ?>
-	<?php echo $container; ?>
-</div>

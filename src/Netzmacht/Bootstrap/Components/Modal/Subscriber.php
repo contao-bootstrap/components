@@ -85,6 +85,8 @@ class Subscriber implements EventSubscriberInterface
             $copy->setId('md_' . $element->getId());
             $copy->addClass('btn');
 
+            $event->getView()->getAttributes()->addClass('sr-only');
+
             $buttons[] = $copy;
             Bootstrap::setConfigVar('runtime.modal-footer', $buttons);
         }
