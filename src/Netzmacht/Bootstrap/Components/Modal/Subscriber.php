@@ -2,7 +2,6 @@
 
 namespace Netzmacht\Bootstrap\Components\Modal;
 
-
 use Netzmacht\Bootstrap\Core\Bootstrap;
 use Netzmacht\Bootstrap\Core\Event\InitializeEnvironmentEvent;
 use Netzmacht\Bootstrap\Core\Event\ReplaceInsertTagsEvent;
@@ -143,7 +142,12 @@ class Subscriber implements EventSubscriberInterface
         if($count == 2 || $count == 3) {
             switch($params[0]) {
                 case 'remote':
-                    $buffer = \Controller::generateFrontendUrl($GLOBALS['objPage']->row()) . '?bootstrap_modal=' . $params[1];
+                    if (TL_MODE === 'FE') {
+                        $buffer = \Controller::generateFrontendUrl($GLOBALS['objPage']->row()) . '?bootstrap_modal=' . $params[1];
+                    } else {
+                        $buffer = '{{modal::' . $params[1] . '}}';
+                    }
+
                     break;
 
                 case 'url':
