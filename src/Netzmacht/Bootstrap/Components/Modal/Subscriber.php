@@ -37,7 +37,6 @@ class Subscriber implements EventSubscriberInterface
         return array (
             InitializeEnvironmentEvent::NAME => 'presetConfig',
             ReplaceInsertTagsEvent::NAME     => 'replaceInsertTags',
-            'form-helper.create-view'        => 'selectLayout',
             'form-helper.generate-view'      =>  'createModalFooter',
         );
     }
@@ -51,21 +50,6 @@ class Subscriber implements EventSubscriberInterface
         $config = $event->getEnvironment()->getConfig();
         $config->set('runtime.modal-footer', false);
     }
-
-
-    /**
-     * @param ViewEvent $event
-     */
-    public function selectLayout(ViewEvent $event)
-    {
-        $view   = $event->getView();
-        $widget = $event->getWidget();
-
-        if($this->isPartOfModalFooter($widget)) {
-            $view->setLayout('bootstrap_hidden');
-        }
-    }
-
 
     /**
      * @param ViewEvent $event
