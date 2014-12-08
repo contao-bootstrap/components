@@ -15,151 +15,142 @@ use Netzmacht\Bootstrap\Components\Navigation\ItemHelper;
 use Netzmacht\Bootstrap\Core\Bootstrap;
 use Netzmacht\Html\Attributes;
 
-
 /**
  * Class NavbarItemHelper
  * @package Netzmacht\Bootstrap\Navigation\ItemHelper
  */
 class DropdownItemHelper extends Attributes implements ItemHelper
 {
-	/**
-	 * @var array
-	 */
-	protected $item;
+    /**
+     * @var array
+     */
+    protected $item;
 
-	/**
-	 * @var \FrontendTemplate
-	 */
-	protected $template;
+    /**
+     * @var \FrontendTemplate
+     */
+    protected $template;
 
-	/**
-	 * @var bool
-	 */
-	protected $isHeader = false;
+    /**
+     * @var bool
+     */
+    protected $isHeader = false;
 
-	/**
-	 * @var bool
-	 */
-	protected $isDropdown = false;
+    /**
+     * @var bool
+     */
+    protected $isDropdown = false;
 
-	/**
-	 * @var array
-	 */
-	protected $itemClass = array();
+    /**
+     * @var array
+     */
+    protected $itemClass = array();
 
+    /**
+     * @param array $item
+     * @param \FrontendTemplate $template
+     * @param array $attributes
+     */
+    public function __construct(array $item, \FrontendTemplate $template, $attributes = array())
+    {
+        $this->item     = $item;
+        $this->template = $template;
 
-	/**
-	 * @param array $item
-	 * @param \FrontendTemplate $template
-	 * @param array $attributes
-	 */
-	function __construct(array $item, \FrontendTemplate $template, $attributes = array())
-	{
-		$this->item     = $item;
-		$this->template = $template;
+        parent::__construct($attributes);
 
-		parent::__construct($attributes);
+        $this->initialize();
+    }
 
-		$this->initialize();
-	}
+    /**
+     * @return \FrontendTemplate
+     */
+    public function getTemplate()
+    {
+        return $this->template;
+    }
 
+    /**
+     * @return boolean
+     */
+    public function isHeader()
+    {
+        return $this->isHeader;
+    }
 
-	/**
-	 * @return \FrontendTemplate
-	 */
-	public function getTemplate()
-	{
-		return $this->template;
-	}
+    /**
+     * @return array
+     */
+    public function getItem()
+    {
+        return $this->item;
+    }
 
+    /**
+     * @return string
+     */
+    public function getDropdownToggle()
+    {
+        return Bootstrap::getConfigVar('dropdown.toggle');
+    }
 
-	/**
-	 * @return boolean
-	 */
-	public function isHeader()
-	{
-		return $this->isHeader;
-	}
+    /**
+     * @return boolean
+     */
+    public function IsDropdown()
+    {
+        return $this->isDropdown;
+    }
 
+    /**
+     * @param bool $asArray
+     * @return string|array
+     */
+    public function getItemClass($asArray=false)
+    {
+        if ($asArray) {
+            return $this->itemClass;
+        }
 
-	/**
-	 * @return array
-	 */
-	public function getItem()
-	{
-		return $this->item;
-	}
+        return implode(' ', $this->itemClass);
+    }
 
+    /**
+     *
+     */
+    private function initialize()
+    {
+        $level = intval(substr($this->template->level, 6))+1;
 
-	/**
-	 * @return string
-	 */
-	public function getDropdownToggle()
-	{
-		return Bootstrap::getConfigVar('dropdown.toggle');
-	}
+        $pass  = array('href', 'accesskey', 'tabindex');
+        foreach ($pass as $attribute) {
+            $this->setAttribute($attribute, $this->item[$attribute]);
+        }
 
+        $title = $this->item['pageTitle'] ?: $this->item['title'];
+        $this->setAttribute('title', $title);
 
-	/**
-	 * @return boolean
-	 */
-	public function IsDropdown()
-	{
-		return $this->isDropdown;
-	}
+        if ($this->item['nofollow']) {
+            $this->setAttribute('rel', 'nofollow');
+        }
 
+        if ($this->item['class']) {
+            $classes = trimsplit(' ', $this->item['class']);
+            foreach ($classes as $class) {
+                $this->itemClass[] = $class;
+            }
 
-	/**
-	 * @param bool $asArray
-	 * @return string|array
-	 */
-	public function getItemClass($asArray=false)
-	{
-		if($asArray) {
-			return $this->itemClass;
-		}
+            if (in_array('trail', $this->itemClass)) {
+                $this->itemClass[] = 'active';
+            }
+        }
 
-		return implode(' ', $this->itemClass);
-	}
+        if ($this->item['type'] == 'm17Folder' || $this->item['type'] == 'folder') {
+            $this->isHeader = ($level != 1 && ($level % 2) == 1);
+        }
 
+        if ($this->item['subitems'] && $level == 2) {
+            $this->isDropdown = true;
+        }
+    }
 
-	/**
-	 *
-	 */
-	private function initialize()
-	{
-		$level = intval(substr($this->template->level, 6))+1;
-
-		$pass  = array('href', 'accesskey', 'tabindex');
-		foreach($pass as $attribute) {
-			$this->setAttribute($attribute, $this->item[$attribute]);
-		}
-
-		$title = $this->item['pageTitle'] ?: $this->item['title'];
-		$this->setAttribute('title', $title);
-
-		if($this->item['nofollow']) {
-			$this->setAttribute('rel', 'nofollow');
-		}
-
-		if($this->item['class']) {
-			$classes = trimsplit(' ', $this->item['class']);
-			foreach($classes as $class) {
-				$this->itemClass[] = $class;
-			}
-
-			if(in_array('trail', $this->itemClass)) {
-				$this->itemClass[] = 'active';
-			}
-		}
-
-		if($this->item['type'] == 'm17Folder' || $this->item['type'] == 'folder') {
-			$this->isHeader = ($level != 1 && ($level % 2) == 1);
-		}
-
-		if($this->item['subitems'] && $level == 2) {
-			$this->isDropdown = true;
-		}
-	}
-
-} 
+}

@@ -4,117 +4,113 @@ namespace Netzmacht\Bootstrap\Components\Contao\Module;
 
 use Netzmacht\Bootstrap\Core\Bootstrap;
 
-
 /**
  * Class NavbarModule
  * @package Netzmacht\Bootstrap\Components\Contao\Module
  */
 class Navbar extends \Module
 {
-	/**
-	 * @var string
-	 */
-	protected $strTemplate = 'mod_navbar';
+    /**
+     * @var string
+     */
+    protected $strTemplate = 'mod_navbar';
 
+    /**
+     * @param        $module
+     * @param string $column
+     */
+    public function __construct($module, $column='main')
+    {
+        parent::__construct($module, $column);
 
-	/**
-	 * @param        $module
-	 * @param string $column
-	 */
-	public function __construct($module, $column='main')
-	{
-		parent::__construct($module, $column);
+        if ($this->bootstrap_navbarTemplate != '') {
+            $this->strTemplate = $this->bootstrap_navbarTemplate;
+        }
+    }
 
-		if($this->bootstrap_navbarTemplate != '') {
-			$this->strTemplate = $this->bootstrap_navbarTemplate;
-		}
-	}
+    /**
+     * Compile the current element
+     */
+    protected function compile()
+    {
+        $config  = deserialize($this->bootstrap_navbarModules, true);
+        $modules = array();
+        $ids     = array();
 
+        // get ids
+        foreach ($config as $index => $module) {
+            $ids[$index] = intval($module['module']);
+        }
 
-	/**
-	 * Compile the current element
-	 */
-	protected function compile()
-	{
-		$config  = deserialize($this->bootstrap_navbarModules, true);
-		$modules = array();
-		$ids     = array();
+        // prefetch modules, so only 1 query is required
+        $ids        = implode(',', $ids);
+        $collection = \ModuleModel::findBy(array('tl_module.id IN(' . $ids . ')'), array());
+        $models     = array();
 
-		// get ids
-		foreach($config as $index => $module) {
-			$ids[$index] = intval($module['module']);
-		}
+        if ($collection) {
+            while ($collection->next()) {
+                $model = $collection->current();
+                $model->bootstrap_inNavbar = true;
 
-		// prefetch modules, so only 1 query is required
-		$ids        = implode(',', $ids);
-		$collection = \ModuleModel::findBy(array('tl_module.id IN(' . $ids . ')'), array());
-		$models     = array();
+                $models[$model->id] = $model;
+            }
+        }
 
-		if($collection) {
-			while($collection->next()) {
-				$model = $collection->current();
-				$model->bootstrap_inNavbar = true;
+        foreach ($config as $module) {
+            $id = $module['module'];
 
-				$models[$model->id] = $model;
-			}
-		}
+            if ($id != '' && array_key_exists($id, $models)) {
+                $modules[] = $this->generateModule($module, $models[$id]);
+            }
+        }
 
-		foreach ($config as $module) {
-			$id = $module['module'];
+        if ($this->cssID[1] == '') {
+            $cssID    = $this->cssID;
+            $cssID[1] = 'navbar-default';
 
-			if($id != '' && array_key_exists($id, $models)) {
-				$modules[] = $this->generateModule($module, $models[$id]);
-			}
-		}
+            $this->cssID = $cssID;
+        }
 
-		if($this->cssID[1] == '') {
-			$cssID    = $this->cssID;
-			$cssID[1] = 'navbar-default';
+        $this->Template->modules = $modules;
+    }
 
-			$this->cssID = $cssID;
-		}
+    /**
+     * @param $module
+     * @param \ModuleModel $model
+     * @return array
+     */
+    protected function generateModule($module, \ModuleModel $model)
+    {
+        $class = $module['cssClass'];
 
-		$this->Template->modules = $modules;
-	}
+        if ($module['floating']) {
+            if ($class != '') {
+                $class .= ' ';
+            }
 
+            $class .= 'navbar-' . $module['floating'];
+        }
 
-	/**
-	 * @param $module
-	 * @param \ModuleModel $model
-	 * @return array
-	 */
-	protected function generateModule($module, \ModuleModel $model)
-	{
-		$class = $module['cssClass'];
+        // TODO: Do we have to make this list configurable?
+        if (in_array($model->type, array('navigation', 'customnav', 'quicklink'))) {
+            $navClass = 'nav navbar-nav';
 
-		if($module['floating']) {
-			if($class != '') {
-				$class .= ' ';
-			}
+            if ($module['floating']) {
+                $navClass .= ' navbar-' . $module['floating'];
+            }
 
-			$class .= 'navbar-' . $module['floating'];
-		}
+            Bootstrap::setConfigVar('runtime.nav-class', $navClass);
+        }
 
-		// TODO: Do we have to make this list configurable?
-		if(in_array($model->type, array('navigation', 'customnav', 'quicklink'))) {
-			$navClass = 'nav navbar-nav';
+        $rendered = $this->getFrontendModule($model);
+        Bootstrap::setConfigVar('runtime.nav-class', '');
 
-			if($module['floating']) {
-				$navClass .= ' navbar-' . $module['floating'];
-			}
+        return array(
+            'type'   => 'module',
+            'module' => $rendered,
+            'id'     => $module['module'],
+            'class'  => $class,
+        );
+    }
 
-			Bootstrap::setConfigVar('runtime.nav-class', $navClass);
-		}
-
-		$rendered = $this->getFrontendModule($model);
-		Bootstrap::setConfigVar('runtime.nav-class', '');
-
-		return array(
-			'type'   => 'module',
-			'module' => $rendered,
-			'id'     => $module['module'],
-			'class'  => $class,
-		);
-	}
-
-} 
+}

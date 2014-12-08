@@ -19,28 +19,24 @@ use Netzmacht\Bootstrap\Core\Contao\ContentElement\Wrapper;
 class AccordionGroup extends Wrapper
 {
 
-	/**
-	 * @var string
-	 */
-	protected $strTemplate = 'ce_accordion_group';
+    /**
+     * @var string
+     */
+    protected $strTemplate = 'ce_accordion_group';
 
+    /**
+     * compile accordion group
+     */
+    protected function compile()
+    {
+        if ($this->wrapper->isTypeOf(Wrapper\Helper::TYPE_START)) {
+            Bootstrap::setConfigVar('runtime.accordion-group', 'accordion-group-' . $this->id);
+            Bootstrap::setConfigVar('runtime.accordion-group-first', true);
 
-	/**
-	 * compile accordion group
-	 */
-	protected function compile()
-	{
-		if($this->wrapper->isTypeOf(Wrapper\Helper::TYPE_START))
-		{
-			Bootstrap::setConfigVar('runtime.accordion-group', 'accordion-group-' . $this->id);
-			Bootstrap::setConfigVar('runtime.accordion-group-first', true);
-
-			$this->Template->groupId = Bootstrap::getConfigVar('runtime.accordion-group');
-		}
-		else
-		{
-			Bootstrap::setConfigVar('runtime.accordion-group', null);
-			Bootstrap::setConfigVar('runtime.accordion-group-first', null);
-		}
-	}
+            $this->Template->groupId = Bootstrap::getConfigVar('runtime.accordion-group');
+        } else {
+            Bootstrap::setConfigVar('runtime.accordion-group', null);
+            Bootstrap::setConfigVar('runtime.accordion-group-first', null);
+        }
+    }
 }

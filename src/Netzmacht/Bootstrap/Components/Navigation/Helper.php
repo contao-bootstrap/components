@@ -12,161 +12,152 @@ use Netzmacht\Html\Attributes;
 class Helper
 {
 
-	/**
-	 * @var \FrontendTemplate
-	 */
-	protected $template;
+    /**
+     * @var \FrontendTemplate
+     */
+    protected $template;
 
-	/**
-	 * @var bool
-	 */
-	protected $newList = true;
+    /**
+     * @var bool
+     */
+    protected $newList = true;
 
-	/**
-	 * @var Attributes
-	 */
-	protected $listAttributes;
+    /**
+     * @var Attributes
+     */
+    protected $listAttributes;
 
-	/**
-	 * @var \ModuleModel
-	 */
-	protected $module;
+    /**
+     * @var \ModuleModel
+     */
+    protected $module;
 
-	/**
-	 * @var callable
-	 */
-	protected $itemHelperFactory;
+    /**
+     * @var callable
+     */
+    protected $itemHelperFactory;
 
+    /**
+     * @param \FrontendTemplate $template
+     * @param Callable $itemHelperFactory
+     */
+    public function __construct(\FrontendTemplate $template, $itemHelperFactory)
+    {
+        $this->template          = $template;
+        $this->listAttributes    = new Attributes();
+        $this->itemHelperFactory = $itemHelperFactory;
 
-	/**
-	 * @param \FrontendTemplate $template
-	 * @param Callable $itemHelperFactory
-	 */
-	function __construct(\FrontendTemplate $template, $itemHelperFactory)
-	{
-		$this->template          = $template;
-		$this->listAttributes    = new Attributes();
-		$this->itemHelperFactory = $itemHelperFactory;
+        $this->initialize();
+    }
 
-		$this->initialize();
-	}
+    /**
+     * @param \FrontendTemplate $template
+     * @param $itemHelper
+     * @throws \InvalidArgumentException
+     * @return static
+     */
+    public static function create(\FrontendTemplate $template, $itemHelper)
+    {
+        $factory = Bootstrap::getConfigVar('navigation.item-helper.' . $itemHelper);
 
+        if (!$factory) {
+            throw new \InvalidArgumentException(sprintf('Navigation item helper "%s" is not registered', $itemHelper));
+        }
 
-	/**
-	 * @param \FrontendTemplate $template
-	 * @param $itemHelper
-	 * @throws \InvalidArgumentException
-	 * @return static
-	 */
-	public static function create(\FrontendTemplate $template, $itemHelper)
-	{
-		$factory = Bootstrap::getConfigVar('navigation.item-helper.' . $itemHelper);
+        return new static($template, $factory);
+    }
 
-		if(!$factory) {
-			throw new \InvalidArgumentException(sprintf('Navigation item helper "%s" is not registered', $itemHelper));
-		}
+    /**
+     * @return \FrontendTemplate
+     */
+    public function getTemplate()
+    {
+        return $this->template;
+    }
 
-		return new static($template, $factory);
-	}
+    /**
+     * @param array $item
+     * @return ItemHelper
+     */
+    public function getItemHelper(array $item)
+    {
+        if (is_string($this->itemHelperFactory)) {
+            $class  = $this->itemHelperFactory;
+            $helper = new $class($item, $this->template);
+        } else {
+            $helper = call_user_func($this->itemHelperFactory, $item, $this->template);
+        }
 
+        return $helper;
+    }
 
-	/**
-	 * @return \FrontendTemplate
-	 */
-	public function getTemplate()
-	{
-		return $this->template;
-	}
+    /**
+     * @return bool
+     */
+    public function isChildrenList()
+    {
+        return $this->newList;
+    }
 
+    /**
+     * @param boolean $newList
+     */
+    public function setChildrenList($newList)
+    {
+        $this->newList = $newList;
+    }
 
-	/**
-	 * @param array $item
-	 * @return ItemHelper
-	 */
-	public function getItemHelper(array $item)
-	{
-		if(is_string($this->itemHelperFactory)) {
-			$class  = $this->itemHelperFactory;
-			$helper = new $class($item, $this->template);
-		}
-		else {
-			$helper = call_user_func($this->itemHelperFactory, $item, $this->template);
-		}
+    /**
+     * @param Attributes $listAttributes
+     */
+    public function setListAttributes(Attributes $listAttributes)
+    {
+        $this->listAttributes = $listAttributes;
+    }
 
-		return $helper;
-	}
+    /**
+     * @return Attributes
+     */
+    public function getListAttributes()
+    {
+        return $this->listAttributes;
+    }
 
+    /**
+     * Initialize
+     */
+    private function initialize()
+    {
+        $level      = substr($this->template->level, 6);
+        $attributes = $this->listAttributes;
 
-	/**
-	 * @return bool
-	 */
-	public function isChildrenList()
-	{
-		return $this->newList;
-	}
+        $attributes->addClass($this->template->level);
 
+        switch ($level) {
+            case '1':
+                $class = Bootstrap::getConfigVar('runtime.nav-class');
 
-	/**
-	 * @param boolean $newList
-	 */
-	public function setChildrenList($newList)
-	{
-		$this->newList = $newList;
-	}
+                if ($class) {
+                    $attributes->addClass('nav');
+                    $attributes->addClass($class);
+                    Bootstrap::setConfigVar('runtime.nav-class', '');
+                }
 
+                break;
 
-	/**
-	 * @param Attributes $listAttributes
-	 */
-	public function setListAttributes(Attributes $listAttributes)
-	{
-		$this->listAttributes = $listAttributes;
-	}
+            case '2':
+                $attributes->addClass('dropdown-menu');
+                break;
+        }
 
-
-	/**
-	 * @return Attributes
-	 */
-	public function getListAttributes()
-	{
-		return $this->listAttributes;
-	}
-
-	/**
-	 * Initialize
-	 */
-	private function initialize()
-	{
-		$level      = substr($this->template->level, 6);
-		$attributes = $this->listAttributes;
-
-		$attributes->addClass($this->template->level);
-
-		switch($level) {
-			case '1':
-				$class = Bootstrap::getConfigVar('runtime.nav-class');
-
-				if($class) {
-					$attributes->addClass('nav');
-					$attributes->addClass($class);
-					Bootstrap::setConfigVar('runtime.nav-class', '');
-				}
-
-				break;
-
-			case '2':
-				$attributes->addClass('dropdown-menu');
-				break;
-		}
-
-		if($level > 1 && $this->template->items) {
+        if ($level > 1 && $this->template->items) {
             // get the current page id
             $pageId = $this->template->items[0]['pid'];
             $page   = \PageModel::findByPk($pageId);
 
-            if($page && ($page->type == 'm17Folder' || $page->type == 'folder')) {
+            if ($page && ($page->type == 'm17Folder' || $page->type == 'folder')) {
                 $this->setChildrenList(false);
             }
-		}
-	}
-} 
+        }
+    }
+}

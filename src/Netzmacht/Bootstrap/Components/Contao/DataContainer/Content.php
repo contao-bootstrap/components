@@ -11,70 +11,66 @@
 
 namespace Netzmacht\Bootstrap\Components\Contao\DataContainer;
 
-
 use Netzmacht\Bootstrap\Core\Contao\ContentElement\Wrapper\Helper;
 
 class Content
 {
 
-	/**
-	 * count existing tab separators elements
-	 *
-	 * @param \Database\Result $model
-	 * @param Helper $helper
-	 *
-	 * @return int
-	 */
-	public function countExistingTabSeparators(\Database\Result $model, Helper $helper)
-	{
-		if($helper->isTypeOf(Helper::TYPE_START)) {
-			$id = $model->id;
-		}
-		else {
-			$id = $model->bootstrap_parentId;
-		}
+    /**
+     * count existing tab separators elements
+     *
+     * @param \Database\Result $model
+     * @param Helper $helper
+     *
+     * @return int
+     */
+    public function countExistingTabSeparators(\Database\Result $model, Helper $helper)
+    {
+        if ($helper->isTypeOf(Helper::TYPE_START)) {
+            $id = $model->id;
+        } else {
+            $id = $model->bootstrap_parentId;
+        }
 
-		$number = \ContentModel::countBy(
-			'type=? AND bootstrap_parentId',
-			array($helper->getTypeName(Helper::TYPE_SEPARATOR), $id)
-		);
+        $number = \ContentModel::countBy(
+            'type=? AND bootstrap_parentId',
+            array($helper->getTypeName(Helper::TYPE_SEPARATOR), $id)
+        );
 
-		return $number;
-	}
+        return $number;
+    }
 
+    /**
+     * count required tab separator elements
+     *
+     * @param \Database\Result $model
+     * @param Helper $helper
+     *
+     * @return int
+     */
+    public function countRequiredTabSeparators(\Database\Result $model, Helper $helper)
+    {
+        if (!$helper->isTypeOf(Helper::TYPE_START)) {
+            $model = \ContentModel::findByPk($model->bootstrap_parentId);
+        }
 
-	/**
-	 * count required tab separator elements
-	 *
-	 * @param \Database\Result $model
-	 * @param Helper $helper
-	 *
-	 * @return int
-	 */
-	public function countRequiredTabSeparators(\Database\Result $model, Helper $helper)
-	{
-		if(!$helper->isTypeOf(Helper::TYPE_START)) {
-			$model = \ContentModel::findByPk($model->bootstrap_parentId);
-		}
+        $tabs = array();
 
-		$tabs = array();
+        if ($model->bootstrap_tabs) {
+            $tabs = deserialize($model->bootstrap_tabs, true);
+        } elseif (\Input::post('bootstrap_tabs')) {
+            $tabs = \Input::post('bootstrap_tabs');
+        }
 
-		if($model->bootstrap_tabs) {
-			$tabs = deserialize($model->bootstrap_tabs, true);
-		}
-		elseif(\Input::post('bootstrap_tabs')) {
-			$tabs = \Input::post('bootstrap_tabs');
-		}
+        $count = 0;
 
-		$count = 0;
+        foreach ($tabs as $tab) {
+            if ($tab['type'] != 'dropdown') {
+                $count++;
+            }
+        }
 
-		foreach($tabs as $tab) {
-			if($tab['type'] != 'dropdown') {
-				$count++;
-			}
-		}
+        return $count > 0 ? ($count - 1 ) : 0;
+    }
 
-		return $count > 0 ? ($count - 1 ) : 0;
-	}
-
-} 
+}

@@ -11,29 +11,28 @@ use Netzmacht\Html\Attributes;
 class Divider extends Attributes implements ItemInterface
 {
 
-	/**
-	 * @param array $attributes
-	 */
-	function __construct(array $attributes = array())
-	{
-		$attributes = array_merge_recursive(
-			array(
-				'role'  => 'presentation',
-				'class' => array('divider'),
-			),
-			$attributes
-		);
+    /**
+     * @param array $attributes
+     */
+    public function __construct(array $attributes = array())
+    {
+        $attributes = array_merge_recursive(
+            array(
+                'role'  => 'presentation',
+                'class' => array('divider'),
+            ),
+            $attributes
+        );
 
-		parent::__construct($attributes);
-	}
+        parent::__construct($attributes);
+    }
 
+    /**
+     * @return string
+     */
+    public function generate()
+    {
+        return sprintf('<li %s></li>', parent::generate());
+    }
 
-	/**
-	 * @return string
-	 */
-	public function generate()
-	{
-		return sprintf('<li %s></li>', parent::generate());
-	}
-
-} 
+}

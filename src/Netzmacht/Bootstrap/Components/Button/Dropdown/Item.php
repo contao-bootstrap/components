@@ -12,47 +12,44 @@ use Netzmacht\Html\Attributes;
 class Item extends Attributes implements ItemInterface
 {
 
-	/**
-	 * @var
-	 */
-	protected $button;
+    /**
+     * @var
+     */
+    protected $button;
 
+    /**
+     * @param Button $button
+     * @param array $attributes
+     */
+    public function __construct(Button $button, array $attributes = array())
+    {
+        $attributes = array_merge_recursive(
+            array(
+                'role'  => 'presenation',
+            ),
+            $attributes
+        );
 
-	/**
-	 * @param Button $button
-	 * @param array $attributes
-	 */
-	function __construct(Button $button, array $attributes = array())
-	{
-		$attributes = array_merge_recursive(
-			array(
-				'role'  => 'presenation',
-			),
-			$attributes
-		);
+        $button->removeClass('btn');
+        $this->button = $button;
 
-		$button->removeClass('btn');
-		$this->button = $button;
+        parent::__construct($attributes);
+    }
 
-		parent::__construct($attributes);
-	}
+    /**
+     * @return Button
+     */
+    public function getButton()
+    {
+        return $this->button;
+    }
 
+    /**
+     * @return string
+     */
+    public function generate()
+    {
+        return sprintf('<li %s>%s%s</li>', parent::generate(), PHP_EOL, $this->getButton()->generate());
+    }
 
-	/**
-	 * @return Button
-	 */
-	public function getButton()
-	{
-		return $this->button;
-	}
-
-
-	/**
-	 * @return string
-	 */
-	public function generate()
-	{
-		return sprintf('<li %s>%s%s</li>', parent::generate(), PHP_EOL, $this->getButton()->generate());
-	}
-
-} 
+}

@@ -19,56 +19,53 @@ use Netzmacht\Bootstrap\Core\Bootstrap;
  */
 class Helper
 {
-	/**
-	 * @return string
-	 */
-	public static function getGroup()
-	{
-		return Bootstrap::getConfigVar('runtime.accordion-group');
-	}
+    /**
+     * @return string
+     */
+    public static function getGroup()
+    {
+        return Bootstrap::getConfigVar('runtime.accordion-group');
+    }
 
+    /**
+     * @param \Template $template
+     * @return string
+     */
+    public static function preparePanel(\Template $template)
+    {
+        self::setAccordionState($template);
+        self::setPanelClass($template);
 
-	/**
-	 * @param \Template $template
-	 * @return string
-	 */
-	public static function preparePanel(\Template $template)
-	{
-		self::setAccordionState($template);
-		self::setPanelClass($template);
+        return static::getGroup();
+    }
 
-		return static::getGroup();
-	}
+    /**
+     * @param \Template $template
+     */
+    public static function setAccordionState(\Template $template)
+    {
+        $group = static::getGroup();
 
+        if ($group) {
+            if (Bootstrap::getConfigVar('runtime.accordion-group-first')) {
+                $template->accordion = 'collapse in';
+                Bootstrap::setConfigVar('runtime.accordion-group-first', false);
+            } else {
+                $template->accordion = 'collapse';
+            }
+        } else {
+            $template->accordion = $template->accordion == 'accordion' ? 'collapse' : $template->accordion;
+        }
+    }
 
-	/**
-	 * @param \Template $template
-	 */
-	public static function setAccordionState(\Template $template)
-	{
-		$group = static::getGroup();
+    /**
+     * @param \Template $template
+     */
+    public static function setPanelClass(\Template $template)
+    {
+        if ($template->class) {
+            $template->class = 'panel panel-default';
+        }
+    }
 
-		if($group) {
-			if(Bootstrap::getConfigVar('runtime.accordion-group-first')) {
-				$template->accordion = 'collapse in';
-				Bootstrap::setConfigVar('runtime.accordion-group-first', false);
-			} else {
-				$template->accordion = 'collapse';
-			}
-		} else {
-			$template->accordion = $template->accordion == 'accordion' ? 'collapse' : $template->accordion;
-		}
-	}
-
-
-	/**
-	 * @param \Template $template
-	 */
-	public static function setPanelClass(\Template $template)
-	{
-		if($template->class) {
-			$template->class = 'panel panel-default';
-		}
-	}
-
-} 
+}

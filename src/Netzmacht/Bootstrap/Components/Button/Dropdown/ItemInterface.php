@@ -13,4 +13,4 @@ use Netzmacht\Html\CastsToString;
 interface ItemInterface extends CastsToString
 {
 
-} 
+}

@@ -41,7 +41,6 @@ class Subscriber implements EventSubscriberInterface
         );
     }
 
-
     /**
      * @param InitializeEnvironmentEvent $event
      */
@@ -59,7 +58,7 @@ class Subscriber implements EventSubscriberInterface
         $widget  = $event->getWidget();
         $element = $event->getContainer()->getElement();
 
-        if($this->isPartOfModalFooter($widget)) {
+        if ($this->isPartOfModalFooter($widget)) {
             $buttons = (array) Bootstrap::getConfigVar('runtime.modal-footer');
 
             // create copy for footer
@@ -75,7 +74,6 @@ class Subscriber implements EventSubscriberInterface
             Bootstrap::setConfigVar('runtime.modal-footer', $buttons);
         }
     }
-
 
     /**
      * Replace modal tag, modal tag supports following formats:
@@ -100,33 +98,33 @@ class Subscriber implements EventSubscriberInterface
      *
      * modal::url::
      *
-     * @param ReplaceInsertTagsEvent $event
+     * @param  ReplaceInsertTagsEvent $event
      * @return void
      */
     public function replaceInsertTags(ReplaceInsertTagsEvent $event)
     {
-        if($event->getTag() != 'modal') {
+        if ($event->getTag() != 'modal') {
             return;
         }
 
         $params = $event->getParams();
 
-        if(is_numeric($params[0])) {
+        if (is_numeric($params[0])) {
             array_insert($params, 0, array('remote'));
         }
 
-        if(!isset($GLOBALS['TL_BODY']['bootstrap-modal-' . $params[1]])) {
+        if (!isset($GLOBALS['TL_BODY']['bootstrap-modal-' . $params[1]])) {
             $model = \ModuleModel::findByPk($params[1]);
 
-            if($model != null && $model->type == 'bootstrap_modal') {
+            if ($model != null && $model->type == 'bootstrap_modal') {
                 $event->setHtml(\Controller::getFrontendModule($params[1]));
             }
         }
 
         $count = count($params);
 
-        if($count == 2 || $count == 3) {
-            switch($params[0]) {
+        if ($count == 2 || $count == 3) {
+            switch ($params[0]) {
                 case 'remote':
                     if (TL_MODE === 'FE') {
                         $buffer = \Controller::generateFrontendUrl($GLOBALS['objPage']->row()) . '?bootstrap_modal=' . $params[1];
@@ -140,14 +138,14 @@ class Subscriber implements EventSubscriberInterface
                 case 'link':
                     $model = \ModuleModel::findByPk($params[1]);
 
-                    if($model === null || $model->type != 'bootstrap_modal') {
+                    if ($model === null || $model->type != 'bootstrap_modal') {
                         return;
                     }
 
                     $cssId = deserialize($model->cssID, true);
                     $buffer = '#' . ($cssId[0] != '' ? $cssId[0] : 'modal-' . $model->id);
 
-                    if($params[0] != 'link') {
+                    if ($params[0] != 'link') {
                         break;
                     }
 
@@ -160,23 +158,22 @@ class Subscriber implements EventSubscriberInterface
             }
 
             $event->setHtml($buffer);
-        }
-        elseif($count == 4 || $count == 5) {
-            switch($params[0]) {
+        } elseif ($count == 4 || $count == 5) {
+            switch ($params[0]) {
                 case 'url':
                 case 'link':
                 case 'remote':
                     $params[0] = $GLOBALS['objPage']->id;
                     $buffer = vsprintf(Bootstrap::getConfigVar('modal.remoteDynamicUrl'), $params);
 
-                    if($params[0] != 'link') {
+                    if ($params[0] != 'link') {
                         break;
                     }
 
-                    if($count == 4) {
+                    if ($count == 4) {
                         $model = \ModuleModel::findByPk($params[1]);
 
-                        if($model === null || $model->type != 'bootstrap_modal') {
+                        if ($model === null || $model->type != 'bootstrap_modal') {
                             return;
                         }
 
@@ -197,9 +194,8 @@ class Subscriber implements EventSubscriberInterface
         }
     }
 
-
     /**
-     * @param \Widget $widget
+     * @param  \Widget $widget
      * @return bool
      */
     protected function isPartOfModalFooter(\Widget $widget)
