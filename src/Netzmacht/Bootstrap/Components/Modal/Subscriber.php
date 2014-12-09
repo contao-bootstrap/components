@@ -99,7 +99,10 @@ class Subscriber implements EventSubscriberInterface
      * modal::url::
      *
      * @param  ReplaceInsertTagsEvent $event
+     *
      * @return void
+     *
+     * @SuppressWarnings(PHPMD.Superglobals)
      */
     public function replaceInsertTags(ReplaceInsertTagsEvent $event)
     {
@@ -107,83 +110,20 @@ class Subscriber implements EventSubscriberInterface
             return;
         }
 
-        $params = $event->getParams();
-
-        if (is_numeric($params[0])) {
-            array_insert($params, 0, array('remote'));
-        }
-
-        if (!Bootstrap::getConfigVar('runtime.modals.' . $params[1])) {
-            $model = \ModuleModel::findByPk($params[1]);
-
-            if ($model != null && $model->type == 'bootstrap_modal') {
-                $event->setHtml(\Controller::getFrontendModule($params[1]));
-            }
-        }
+        $params = $this->prepareParams($event);
+        $this->loadModal($event, $params);
 
         $count = count($params);
 
         if ($count == 2 || $count == 3) {
             switch ($params[0]) {
                 case 'remote':
-                    if (TL_MODE === 'FE') {
-                        $buffer = \Controller::generateFrontendUrl($GLOBALS['objPage']->row()) . '?bootstrap_modal=' . $params[1];
-                    } else {
-                        $buffer = '{{modal::' . $params[1] . '}}';
-                    }
-
+                    $buffer = $this->generateRemoteInsertTag($params);
                     break;
 
                 case 'url':
                 case 'link':
-                    $model = \ModuleModel::findByPk($params[1]);
-
-                    if ($model === null || $model->type != 'bootstrap_modal') {
-                        return;
-                    }
-
-                    $cssId = deserialize($model->cssID, true);
-                    $buffer = '#' . ($cssId[0] != '' ? $cssId[0] : 'modal-' . $model->id);
-
-                    if ($params[0] != 'link') {
-                        break;
-                    }
-
-                    $params[2] = ($count == 3) ? $params[2] : $model->name;
-                    $buffer    = sprintf('<a href="%s" data-toggle="modal">%s</a>', $buffer, $params[2]);
-                    break;
-
-                default:
-                    return;
-            }
-
-            $event->setHtml($buffer);
-        } elseif ($count == 4 || $count == 5) {
-            switch ($params[0]) {
-                case 'url':
-                case 'link':
-                case 'remote':
-                    $params[0] = $GLOBALS['objPage']->id;
-                    $buffer = vsprintf(Bootstrap::getConfigVar('modal.remoteDynamicUrl'), $params);
-
-                    if ($params[0] != 'link') {
-                        break;
-                    }
-
-                    if ($count == 4) {
-                        $model = \ModuleModel::findByPk($params[1]);
-
-                        if ($model === null || $model->type != 'bootstrap_modal') {
-                            return;
-                        }
-
-                        $params[6] = $model->name;
-
-                        $cssId  = deserialize($model->cssID, true);
-                        $cssId  = '#' . ($cssId[0] != '' ? $cssId[0] : 'modal-' . $model->id);
-                        $buffer = sprintf( '<a href="%s" data-toggle="modal" data-remote="%s">%s</a>', $cssId, $buffer, $params[6]);
-                    }
-
+                    $buffer = $this->generateLinkInsertTag($params);
                     break;
 
                 default:
@@ -192,6 +132,8 @@ class Subscriber implements EventSubscriberInterface
 
             $event->setHtml($buffer);
         }
+
+        $this->replaceDeprecatedInsertTag($event, $params, $count);
     }
 
     /**
@@ -208,4 +150,109 @@ class Subscriber implements EventSubscriberInterface
         return $isModal;
     }
 
+    /**
+     * @param ReplaceInsertTagsEvent $event
+     *
+     * @return array
+     */
+    private function prepareParams(ReplaceInsertTagsEvent $event)
+    {
+        $params = $event->getParams();
+
+        if (is_numeric($params[0])) {
+            array_insert($params, 0, array('remote'));
+
+            return $params;
+        }
+
+        return $params;
+    }
+
+    /**
+     * @param ReplaceInsertTagsEvent $event
+     * @param                        $params
+     *
+     * @return void
+     */
+    private function loadModal(ReplaceInsertTagsEvent $event, $params)
+    {
+        if (!Bootstrap::getConfigVar('runtime.modals.' . $params[1])) {
+            $model = \ModuleModel::findByPk($params[1]);
+
+            if ($model != null && $model->type == 'bootstrap_modal') {
+                $event->setHtml(\Controller::getFrontendModule($params[1]));
+            }
+        }
+    }
+
+    /**
+     * @param $params
+     *
+     * @return string
+     *
+     * @SuppressWarnings(PHPMD.Superglobals)
+     */
+    private function generateRemoteInsertTag($params)
+    {
+        if (TL_MODE === 'FE') {
+            $buffer = \Controller::generateFrontendUrl($GLOBALS['objPage']->row()) . '?bootstrap_modal=' . $params[1];
+
+            return $buffer;
+        } else {
+            $buffer = '{{modal::' . $params[1] . '}}';
+
+            return $buffer;
+        }
+    }
+
+    private function generateLinkInsertTag($params)
+    {
+        $model = \ModuleModel::findByPk($params[1]);
+        $count = count($params);
+
+        if ($model === null || $model->type != 'bootstrap_modal') {
+            return '';
+        }
+
+        $cssId = deserialize($model->cssID, true);
+        $buffer = '#' . ($cssId[0] != '' ? $cssId[0] : 'modal-' . $model->id);
+
+        if ($params[0] === 'link') {
+            $params[2] = ($count == 3) ? $params[2] : $model->name;
+            $buffer    = sprintf('<a href="%s" data-toggle="modal">%s</a>', $buffer, $params[2]);
+        }
+
+        return $buffer;
+    }
+
+    /**
+     * @param ReplaceInsertTagsEvent $event
+     * @param                        $params
+     * @param                        $count
+     *
+     * @SuppressWarnings(PHPMD.Superglobals)
+     */
+    private function replaceDeprecatedInsertTag(ReplaceInsertTagsEvent $event, $params, $count)
+    {
+        if (($count == 4 || $count == 5) && in_array($params[0], array('url', 'link', 'remote'))) {
+            $params[0] = $GLOBALS['objPage']->id;
+            $buffer    = vsprintf(Bootstrap::getConfigVar('modal.remoteDynamicUrl'), $params);
+
+            if ($params[0] === 'link' && $count === 4) {
+                $model = \ModuleModel::findByPk($params[1]);
+
+                if ($model === null || $model->type != 'bootstrap_modal') {
+                    return;
+                }
+
+                $params[6] = $model->name;
+
+                $cssId  = deserialize($model->cssID, true);
+                $cssId  = '#' . ($cssId[0] != '' ? $cssId[0] : 'modal-' . $model->id);
+                $buffer = sprintf('<a href="%s" data-toggle="modal" data-remote="%s">%s</a>', $cssId, $buffer, $params[6]);
+            }
+
+            $event->setHtml($buffer);
+        }
+    }
 }
