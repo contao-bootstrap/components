@@ -3,7 +3,6 @@
 namespace Netzmacht\Bootstrap\Components\Contao\ContentElement;
 
 use Netzmacht\Bootstrap\Components\Button\Factory;
-use Netzmacht\Bootstrap\Components\Button\Button;
 use Netzmacht\Bootstrap\Components\Button\Group;
 use Netzmacht\Bootstrap\Components\Button\Toolbar;
 
@@ -55,7 +54,7 @@ class Buttons extends \ContentElement
                 return strpos($item, 'btn-') !== false;
             });
 
-            if ($class) {
+            if (!$class && $this->bootstrap_buttonStyle) {
                 $child->addClass($this->bootstrap_buttonStyle);
             }
         }
