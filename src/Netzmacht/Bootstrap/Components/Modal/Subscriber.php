@@ -148,7 +148,7 @@ class Subscriber implements EventSubscriberInterface
 
             $classes = array_filter(explode(' ', $event->getParam(1)));
             $classes = array_map(
-                function($class) {
+                function ($class) {
                     return 'btn-' . $class;
                 },
                 $classes
@@ -378,6 +378,8 @@ class Subscriber implements EventSubscriberInterface
      * @param string $label   Optional custom label.
      *
      * @return Standalone|null
+     *
+     * @SuppressWarnings(PHPMD.Superglobals)
      */
     private function createLink($modelId, $label = null)
     {

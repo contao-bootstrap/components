@@ -108,7 +108,7 @@ class Tab extends Wrapper
                 $cssId = $i . '-' . $cssId;
             }
 
-            $ids[]           = $cssId;
+            $ids[]          = $cssId;
             $tabs[$i]['id'] = $cssId;
 
             if ($t['type'] != 'dropdown' && !$tab) {
@@ -150,7 +150,7 @@ class Tab extends Wrapper
                 $cssId = $i . '-' . $cssId;
             }
 
-            $ids[]           = $cssId;
+            $ids[]          = $cssId;
             $tabs[$i]['id'] = $cssId;
 
             if ($t['type'] != 'dropdown') {

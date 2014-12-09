@@ -173,23 +173,16 @@ class Helper
 
         $attributes->addClass($this->template->level);
 
-        switch ($level) {
-            case '1':
-                $class = Bootstrap::getConfigVar('runtime.nav-class');
+        if ($level === '1') {
+            $class = Bootstrap::getConfigVar('runtime.nav-class');
 
-                if ($class) {
-                    $attributes->addClass('nav');
-                    $attributes->addClass($class);
-                    Bootstrap::setConfigVar('runtime.nav-class', '');
-                }
-
-                break;
-
-            case '2':
-                $attributes->addClass('dropdown-menu');
-                break;
-
-            default:
+            if ($class) {
+                $attributes->addClass('nav');
+                $attributes->addClass($class);
+                Bootstrap::setConfigVar('runtime.nav-class', '');
+            }
+        } elseif ($level === '2') {
+            $attributes->addClass('dropdown-menu');
         }
 
         if ($level > 1 && $this->template->items) {
@@ -197,9 +190,22 @@ class Helper
             $pageId = $this->template->items[0]['pid'];
             $page   = \PageModel::findByPk($pageId);
 
-            if ($level > 2 && $page && ($page->type == 'm17Folder' || $page->type == 'folder')) {
-               $this->setChildrenList(false);
+            if ($this->disableChildrenList($level, $page)) {
+                $this->setChildrenList(false);
             }
         }
+    }
+
+    /**
+     * Should children list be disabled.
+     *
+     * @param int             $level Current level.
+     * @param \PageModel|null $page  Parent page.
+     *
+     * @return bool
+     */
+    private function disableChildrenList($level, $page)
+    {
+        return $level > 2 && $page && ($page->type == 'm17Folder' || $page->type == 'folder');
     }
 }
