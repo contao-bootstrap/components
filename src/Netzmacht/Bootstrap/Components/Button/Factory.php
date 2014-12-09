@@ -13,52 +13,30 @@ class Factory
      */
     public static function createFromFieldset($definition)
     {
-        if (!is_array($definition)) {
-            $definition = deserialize($definition, true);
-        }
+        $definition = self::parseDefinition($definition);
+        $root       = new Group();
+        $group      = $root;
 
-        $root     = new Group();
-        $group    = $root;
         /** @var bool|Dropdown $dropdown */
         $dropdown = false;
 
         foreach ($definition as $button) {
             // dont add empty items
-            if ($button['label'] == '' && $button['type'] != 'group' && $button['type'] != 'dropdown') {
+            if (self::isInvalidDefinition($button)) {
                 continue;
             }
 
             // encode value
-            if (isset($button['button']) && $button['button'] == 'link') {
-                if (substr($button['value'], 0, 7) == 'mailto:') {
-                    $button['value'] = \String::encodeEmail($button['value']);
-                } else {
-                    $button['value'] = ampersand($button['value']);
-                }
-            }
+            $button = self::encodeVAlue($button);
 
             // finish dropdown
-            if ($dropdown !== false && ($button['type'] != 'child' && $button['type'] != 'header')) {
+            if (self::hasToCloseDropdown($dropdown, $button)) {
                 $dropdown = false;
             }
 
             // create new group
             if ($button['type'] == 'group') {
-                if (!$root instanceof Toolbar) {
-                    $group = $root;
-                    $root  = static::createToolbar($button['attributes'], true);
-
-                    if ($group instanceof Group) {
-                        $root->addChild($group);
-                    }
-                }
-
-                if ($dropdown !== false) {
-                    $dropdown = false;
-                }
-
-                $group = static::createGroup($button['attributes'], true);
-                $root->addChild($group);
+                $group = self::createNewGroup($root, $button, $dropdown);
             }
 
             // create dropdown
@@ -72,23 +50,7 @@ class Factory
 
             // add dropdown child
             elseif ($button['type'] == 'child' || $button['type'] == 'header') {
-                if ($dropdown === false) {
-                    // TODO throw exception?
-                    continue;
-                }
-
-                if ($button['type'] == 'child') {
-                    $child = static::createDropdownItem($button['label'], $button['url'], $button['attributes'], true);
-                } else {
-                    if ($dropdown->getChildren()) {
-                        $child = static::createDropdownDivider();
-                        $dropdown->addChild($child);
-                    }
-
-                    $child = static::createDropdownHeader($button['label'], $button['attributes'], true);
-                }
-
-                $dropdown->addChild($child);
+                static::parseDropdownChild($dropdown, $button);
             } elseif ($dropdown !== false) {
                 $child = static::createDropdownItem($button['label'], $button['url'], $button['attributes'], true);
                 $dropdown->addChild($child);
@@ -238,4 +200,120 @@ class Factory
         }
     }
 
+    /**
+     * @param $root
+     * @param $button
+     *
+     * @return Toolbar
+     */
+    protected static function enableToolbar($root, $button)
+    {
+        if (!$root instanceof Toolbar) {
+            $group = $root;
+            $root  = static::createToolbar($button['attributes'], true);
+
+            if ($group instanceof Group) {
+                $root->addChild($group);
+            }
+        }
+
+        return $root;
+    }
+
+    private static function parseDropdownChild($dropdown, $button)
+    {
+        if ($dropdown === false || !$dropdown instanceof Dropdown) {
+            // TODO throw exception?
+            return;
+        }
+
+        if ($button['type'] == 'child') {
+            $child = static::createDropdownItem($button['label'], $button['url'], $button['attributes'], true);
+        } else {
+            if ($dropdown->getChildren()) {
+                $child = static::createDropdownDivider();
+                $dropdown->addChild($child);
+            }
+
+            $child = static::createDropdownHeader($button['label'], $button['attributes'], true);
+        }
+
+        $dropdown->addChild($child);
+    }
+
+    /**
+     * @param $definition
+     *
+     * @return mixed
+     */
+    protected static function parseDefinition($definition)
+    {
+        if (!is_array($definition)) {
+            $definition = deserialize($definition, true);
+
+            return $definition;
+        }
+
+        return $definition;
+    }
+
+    /**
+     * @param $button
+     *
+     * @return bool
+     */
+    protected static function isInvalidDefinition($button)
+    {
+        return $button['label'] == '' && $button['type'] != 'group' && $button['type'] != 'dropdown';
+    }
+
+    /**
+     * @param $button
+     *
+     * @return mixed
+     */
+    protected static function encodeVAlue($button)
+    {
+        if (isset($button['button']) && $button['button'] == 'link') {
+            if (substr($button['value'], 0, 7) == 'mailto:') {
+                $button['value'] = \String::encodeEmail($button['value']);
+            } else {
+                $button['value'] = ampersand($button['value']);
+            }
+        }
+
+        return $button;
+    }
+
+    /**
+     * @param $root
+     * @param $button
+     * @param $dropdown
+     *
+     * @return \Netzmacht\Bootstrap\Components\Button\Group
+     */
+    protected static function createNewGroup(&$root, $button, &$dropdown)
+    {
+        $root = self::enableToolbar($root, $button);
+
+        if ($dropdown !== false) {
+            $dropdown = false;
+        }
+
+        $group = static::createGroup($button['attributes'], true);
+        $root->addChild($group);
+
+        return $group;
+    }
+
+    /**
+     * @param $dropdown
+     * @param $button
+     *
+     * @return bool
+     */
+    protected static function hasToCloseDropdown($dropdown, $button)
+    {
+        return $dropdown !== false && ($button['type'] != 'child' && $button['type'] != 'header');
+    }
 }
