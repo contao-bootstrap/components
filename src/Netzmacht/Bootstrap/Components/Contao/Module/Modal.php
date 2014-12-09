@@ -39,7 +39,10 @@ class Modal extends \Module
         $modal = new Component();
         $modal
             ->setId($this->cssID[0])
-            ->setSize($this->bootstrap_modalSize);
+            ->setSize($this->bootstrap_modalSize)
+            ->setAttribute('role', 'dialog')
+            ->setAttribute('aria-hidden', 'true')
+            ->setAttribute('taxindex', '-1');
 
         if ($this->cssID[1]) {
             $modal->addClass($this->cssID[1]);
@@ -52,13 +55,7 @@ class Modal extends \Module
         }
 
         if ($this->Template->hideContent) {
-            $url = \Controller::generateFrontendUrl($GLOBALS['objPage']->row()) . '?bootstrap_modal=' . $this->id;
-            //$url = sprintf(Bootstrap::getConfigVar('modal.remoteUrl'), $GLOBALS['objPage']->id, $this->id);
-            $modal
-                ->setAttribute('role', 'dialog')
-                ->setAttribute('aria-hidden', true)
-                ->setAttribute('taxindex', '-1')
-                ->render($this->Template);
+            $modal->render($this->Template);
 
             return;
         }
