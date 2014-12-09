@@ -197,8 +197,8 @@ class Helper
             $pageId = $this->template->items[0]['pid'];
             $page   = \PageModel::findByPk($pageId);
 
-            if ($page && ($page->type == 'm17Folder' || $page->type == 'folder')) {
-                $this->setChildrenList(false);
+            if ($level > 2 && $page && ($page->type == 'm17Folder' || $page->type == 'folder')) {
+               $this->setChildrenList(false);
             }
         }
     }
