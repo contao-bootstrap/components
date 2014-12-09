@@ -16,40 +16,53 @@ use Netzmacht\Bootstrap\Core\Bootstrap;
 use Netzmacht\Html\Attributes;
 
 /**
- * Class NavbarItemHelper
+ * Class NavbarItemHelper is made for dropdown navigation link in the navbar.
+ *
  * @package Netzmacht\Bootstrap\Navigation\ItemHelper
  */
 class DropdownItemHelper extends Attributes implements ItemHelper
 {
     /**
+     * Current item.
+     *
      * @var array
      */
     protected $item;
 
     /**
+     * Item template.
+     *
      * @var \FrontendTemplate
      */
     protected $template;
 
     /**
+     * Item is a header.
+     *
      * @var bool
      */
     protected $isHeader = false;
 
     /**
+     * Item is a dropdown.
+     *
      * @var bool
      */
     protected $isDropdown = false;
 
     /**
+     * Item classes.
+     *
      * @var array
      */
     protected $itemClass = array();
 
     /**
-     * @param array $item
-     * @param \FrontendTemplate $template
-     * @param array $attributes
+     * Construct.
+     *
+     * @param array             $item       Current navigation item.
+     * @param \FrontendTemplate $template   Parent template.
+     * @param array             $attributes Additional attributes.
      */
     public function __construct(array $item, \FrontendTemplate $template, $attributes = array())
     {
@@ -62,7 +75,7 @@ class DropdownItemHelper extends Attributes implements ItemHelper
     }
 
     /**
-     * @return \FrontendTemplate
+     * {@inheritdoc}
      */
     public function getTemplate()
     {
@@ -70,7 +83,7 @@ class DropdownItemHelper extends Attributes implements ItemHelper
     }
 
     /**
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isHeader()
     {
@@ -78,7 +91,7 @@ class DropdownItemHelper extends Attributes implements ItemHelper
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function getItem()
     {
@@ -86,7 +99,7 @@ class DropdownItemHelper extends Attributes implements ItemHelper
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getDropdownToggle()
     {
@@ -94,7 +107,7 @@ class DropdownItemHelper extends Attributes implements ItemHelper
     }
 
     /**
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isDropdown()
     {
@@ -102,10 +115,9 @@ class DropdownItemHelper extends Attributes implements ItemHelper
     }
 
     /**
-     * @param bool $asArray
-     * @return string|array
+     * {@inheritdoc}
      */
-    public function getItemClass($asArray=false)
+    public function getItemClass($asArray = false)
     {
         if ($asArray) {
             return $this->itemClass;
@@ -115,11 +127,13 @@ class DropdownItemHelper extends Attributes implements ItemHelper
     }
 
     /**
+     * Initialize the helper.
      *
+     * @return void
      */
     private function initialize()
     {
-        $level = intval(substr($this->template->level, 6))+1;
+        $level = (intval(substr($this->template->level, 6)) + 1);
 
         $this->initializeAttributes();
         $this->initializeCssClass();
@@ -133,6 +147,11 @@ class DropdownItemHelper extends Attributes implements ItemHelper
         }
     }
 
+    /**
+     * Initialize attributes.
+     *
+     * @return void
+     */
     private function initializeAttributes()
     {
         $pass = array('href', 'accesskey', 'tabindex');
@@ -148,6 +167,11 @@ class DropdownItemHelper extends Attributes implements ItemHelper
         }
     }
 
+    /**
+     * Initialize css classes.
+     *
+     * @return void
+     */
     private function initializeCssClass()
     {
         if ($this->item['class']) {

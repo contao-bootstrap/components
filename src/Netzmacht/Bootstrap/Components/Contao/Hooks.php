@@ -4,12 +4,22 @@ namespace Netzmacht\Bootstrap\Components\Contao;
 
 use Netzmacht\Bootstrap\Core\Bootstrap;
 
+/**
+ * Class Hooks contains hooks which are required for the components.
+ *
+ * @package Netzmacht\Bootstrap\Components\Contao
+ */
 class Hooks
 {
-
     /**
-     * @param \Model $element
-     * @param $isVisible
+     * Set runtime navigation class.
+     *
+     * This method is triggered by the isVisibleElement Hook. This means that when being logged in as backend user
+     * using the frontend preview it does not work!
+     *
+     * @param \Model $element   Current element model.
+     * @param bool   $isVisible Visible state.
+     *
      * @return bool
      */
     public static function setRuntimeNavClass(\Model $element, $isVisible)
@@ -44,16 +54,16 @@ class Hooks
     }
 
     /**
-     * Render modals when
-     * @param $strBuffer
+     * Append modals to the html body.
      *
-     * @return mixed
+     * @param string $buffer Frontend template output buffer.
+     *
+     * @return string
      */
-    public function appendModals($strBuffer)
+    public function appendModals($buffer)
     {
         $modals = implode('', Bootstrap::getConfigVar('runtime.modals', array()));
 
-        return str_replace('</body>', $modals . '</body>', $strBuffer);
+        return str_replace('</body>', $modals . '</body>', $buffer);
     }
-
 }

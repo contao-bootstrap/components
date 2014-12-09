@@ -5,21 +5,26 @@ namespace Netzmacht\Bootstrap\Components\Contao\Module;
 use Netzmacht\Bootstrap\Core\Bootstrap;
 
 /**
- * Class NavbarModule
+ * Navbar frontend module.
+ *
  * @package Netzmacht\Bootstrap\Components\Contao\Module
  */
 class Navbar extends \Module
 {
     /**
+     * Template name.
+     *
      * @var string
      */
     protected $strTemplate = 'mod_navbar';
 
     /**
-     * @param        $module
-     * @param string $column
+     * Construct.
+     *
+     * @param \ModuleModel $module Module model.
+     * @param string       $column Column type.
      */
-    public function __construct($module, $column='main')
+    public function __construct($module, $column = 'main')
     {
         parent::__construct($module, $column);
 
@@ -29,7 +34,9 @@ class Navbar extends \Module
     }
 
     /**
-     * Compile the current element
+     * Compile the navbar.
+     *
+     * @return void
      */
     protected function compile()
     {
@@ -49,10 +56,9 @@ class Navbar extends \Module
 
         if ($collection) {
             while ($collection->next()) {
-                $model = $collection->current();
+                $model                     = $collection->current();
                 $model->bootstrap_inNavbar = true;
-
-                $models[$model->id] = $model;
+                $models[$model->id]        = $model;
             }
         }
 
@@ -75,8 +81,11 @@ class Navbar extends \Module
     }
 
     /**
-     * @param $module
-     * @param \ModuleModel $model
+     * Generate a frontend module.
+     *
+     * @param array        $module Module configuration.
+     * @param \ModuleModel $model  Module model.
+     *
      * @return array
      */
     protected function generateModule($module, \ModuleModel $model)
@@ -91,7 +100,9 @@ class Navbar extends \Module
             $class .= 'navbar-' . $module['floating'];
         }
 
+        // @codingStandardsIgnoreStart
         // TODO: Do we have to make this list configurable?
+        // @codingStandardsIgnoreEnd
         if (in_array($model->type, array('navigation', 'customnav', 'quicklink'))) {
             $navClass = 'nav navbar-nav';
 
@@ -112,5 +123,4 @@ class Navbar extends \Module
             'class'  => $class,
         );
     }
-
 }

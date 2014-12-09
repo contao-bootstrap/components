@@ -16,45 +16,65 @@ use Netzmacht\Html\CastsToString;
 use Netzmacht\Html\Element\StaticHtml;
 use Netzmacht\Html\Element;
 
+/**
+ * Class Modal is used to render modal elements.
+ *
+ * @package Netzmacht\Bootstrap\Components\Modal
+ */
 class Modal extends Attributes
 {
     /**
+     * Close button.
+     *
      * @var CastsToString
      */
     private $closeButton;
 
     /**
+     * Title.
+     *
      * @var CastsToString
      */
     private $title;
 
     /**
+     * Modal size.
+     *
      * @var string
      */
     private $size;
 
     /**
+     * Modal content.
+     *
      * @var CastsToString
      */
     private $content;
 
     /**
+     * Modal footer.
+     *
      * @var CastsToString
      */
     private $footer;
 
     /**
+     * Template name.
+     *
      * @var string
      */
     private $template = 'bootstrap_modal';
 
     /**
-     * @param array       $attributes
-     * @param string|null $template
+     * Construct.
+     *
+     * @param array       $attributes Optional attributes.
+     * @param string|null $template   Optional template.
      */
-    public function __construct(array $attributes = array(), $template=null)
+    public function __construct(array $attributes = array(), $template = null)
     {
-        $attributes = array_merge(array(
+        $attributes = array_merge(
+            array(
                 'class' => array('modal', 'fade')
             ),
             $attributes
@@ -68,6 +88,8 @@ class Modal extends Attributes
     }
 
     /**
+     * Generate the modal by using the template.
+     *
      * @return string
      */
     public function generate()
@@ -79,7 +101,10 @@ class Modal extends Attributes
     }
 
     /**
-     * @param  \Template $template
+     * Render the modal to a specific template.
+     *
+     * @param \Template $template Template name.
+     *
      * @return $this
      */
     public function render(\Template $template)
@@ -95,11 +120,14 @@ class Modal extends Attributes
     }
 
     /**
-     * @param  CastsToString $closeButton
-     * @param  bool          $create
+     * Set close button.
+     *
+     * @param CastsToString|string $closeButton Close button as string or CastsToString element.
+     * @param bool                 $create      Set true if just a string is given and the button shall be created.
+     *
      * @return $this
      */
-    public function setCloseButton($closeButton, $create=false)
+    public function setCloseButton($closeButton, $create = false)
     {
         if ($create) {
             $closeButton = Element::create('button')
@@ -115,6 +143,8 @@ class Modal extends Attributes
     }
 
     /**
+     * Get the close button.
+     *
      * @return CastsToString
      */
     public function getCloseButton()
@@ -123,7 +153,10 @@ class Modal extends Attributes
     }
 
     /**
-     * @param  CastsToString|string $content
+     * Set the content.
+     *
+     * @param CastsToString|string $content Modal content.
+     *
      * @return $this
      */
     public function setContent($content)
@@ -134,6 +167,8 @@ class Modal extends Attributes
     }
 
     /**
+     * Get the content.
+     *
      * @return CastsToString
      */
     public function getContent()
@@ -142,17 +177,22 @@ class Modal extends Attributes
     }
 
     /**
-     * @param  CastsToString|string $footer
+     * Set the footer.
+     *
+     * @param CastsToString|string $footer Modal footer content.
+     *
      * @return $this
      */
     public function setFooter($footer)
     {
-        $this->footer = $content = $this->convertToCastsToString($footer);
+        $this->footer = $this->convertToCastsToString($footer);
 
         return $this;
     }
 
     /**
+     * Get the footer.
+     *
      * @return CastsToString|string
      */
     public function getFooter()
@@ -161,7 +201,10 @@ class Modal extends Attributes
     }
 
     /**
-     * @param  CastsToString|string $title
+     * Set the title.
+     *
+     * @param CastsToString|string $title Modal title.
+     *
      * @return $this
      */
     public function setTitle($title)
@@ -178,14 +221,22 @@ class Modal extends Attributes
     }
 
     /**
-     * @param string $size
+     * Set the size.
+     *
+     * @param string $size Bootstrap modal size class.
+     *
+     * @return $this
      */
     public function setSize($size)
     {
         $this->size = $size;
+
+        return $this;
     }
 
     /**
+     * Get the size.
+     *
      * @return string
      */
     public function getSize()
@@ -194,6 +245,8 @@ class Modal extends Attributes
     }
 
     /**
+     * Get the title.
+     *
      * @return CastsToString
      */
     public function getTitle()
@@ -202,14 +255,22 @@ class Modal extends Attributes
     }
 
     /**
-     * @param string $template
+     * Set the template.
+     *
+     * @param string $template Tempalte name.
+     *
+     * @return $this
      */
     public function setTemplate($template)
     {
         $this->template = $template;
+
+        return $this;
     }
 
     /**
+     * Get the template name.
+     *
      * @return string
      */
     public function getTemplate()
@@ -218,7 +279,10 @@ class Modal extends Attributes
     }
 
     /**
-     * @param $content
+     * Convert string to CastsToString.
+     *
+     * @param mixed $content Given content.
+     *
      * @return CastsToString
      */
     private function convertToCastsToString($content)
@@ -229,5 +293,4 @@ class Modal extends Attributes
 
         return $content;
     }
-
 }

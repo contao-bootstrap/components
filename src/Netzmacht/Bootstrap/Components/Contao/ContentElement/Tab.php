@@ -13,40 +13,48 @@ use Netzmacht\Bootstrap\Core\Bootstrap;
 use Netzmacht\Bootstrap\Core\Contao\ContentElement\Wrapper;
 
 /**
- * Class ContentTab
+ * Tab content element.
  *
  * @package Netzmacht\Bootstrap
  */
 class Tab extends Wrapper
 {
-
     /**
+     * Template name.
+     *
      * @var string
      */
     protected $strTemplate = 'ce_bootstrap_tab';
 
     /**
-     * @var
+     * Tab definition.
+     *
+     * @var array
      */
     protected $tabDefinition;
 
     /**
-     * @var mixed
+     * Prepared tabs.
+     *
+     * @var array
      */
-    protected $tabs;
+    protected $tabs = array();
 
     /**
-     * @var
+     * Current tab.
+     *
+     * @var array
      */
     protected $currentTab;
 
     /**
-     * prepare tab content element
-     * @param $objElement
+     * Construct. Prepare tab content element.
+     *
+     * @param \ContentModel $element Content model.
      */
-    public function __construct($objElement)
+    public function __construct($element)
     {
-        parent::__construct($objElement);
+        parent::__construct($element);
 
         // load tab definitions
         if ($this->wrapper->isTypeOf(Wrapper\Helper::TYPE_START)) {
@@ -57,7 +65,9 @@ class Tab extends Wrapper
     }
 
     /**
-     * compile tabs
+     * Compile tabs.
+     *
+     * @return void
      */
     protected function compile()
     {
@@ -67,6 +77,8 @@ class Tab extends Wrapper
     }
 
     /**
+     * Generate title.
+     *
      * @return string
      */
     protected function generateTitle()
@@ -78,6 +90,11 @@ class Tab extends Wrapper
         return '';
     }
 
+    /**
+     * Initialize start element.
+     *
+     * @return void
+     */
     private function initializeStartElement()
     {
         $tabs = deserialize($this->bootstrap_tabs, true);
@@ -96,6 +113,11 @@ class Tab extends Wrapper
         $this->fade       = $this->bootstrap_fade;
     }
 
+    /**
+     * Initialize separator.
+     *
+     * @return void
+     */
     private function initializeSeparator()
     {
         $elements = \Database::getInstance()

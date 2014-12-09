@@ -5,15 +5,25 @@ namespace Netzmacht\Bootstrap\Components\Button;
 use Netzmacht\Html\CastsToString;
 use Netzmacht\Html\Attributes;
 
+/**
+ * Class ChildAware is used for elements with children.
+ *
+ * @package Netzmacht\Bootstrap\Components\Button
+ */
 class ChildAware extends Attributes implements CastsToString
 {
     /**
+     * List of child elements.
+     *
      * @var CastsToString[]
      */
     protected $children = array();
 
     /**
-     * @param $child
+     * Add a child.
+     *
+     * @param CastsToString|string $child Child.
+     *
      * @return $this
      */
     public function addChild($child)
@@ -24,7 +34,10 @@ class ChildAware extends Attributes implements CastsToString
     }
 
     /**
-     * @param array $children
+     * Add multiple children.
+     *
+     * @param array|CastsToString[] $children Children being added.
+     *
      * @return $this
      */
     public function addChildren(array $children)
@@ -37,17 +50,25 @@ class ChildAware extends Attributes implements CastsToString
     }
 
     /**
-     * @param $callback
+     * Run a callback for each child.
+     *
+     * @param \Callable $callback Callback which accepts the child as argument.
+     *
+     * @return $this
      */
     public function eachChild($callback)
     {
         foreach ($this->children as $child) {
             call_user_func($callback, $child);
         }
+
+        return $this;
     }
 
     /**
-     * @return CastsToString
+     * Get children.
+     *
+     * @return CastsToString[]
      */
     public function getChildren()
     {
@@ -55,6 +76,8 @@ class ChildAware extends Attributes implements CastsToString
     }
 
     /**
+     * Generate the element.
+     *
      * @return string
      */
     public function generate()
@@ -70,6 +93,8 @@ class ChildAware extends Attributes implements CastsToString
     }
 
     /**
+     * Generate children.
+     *
      * @return string
      */
     protected function generateChildren()
@@ -84,6 +109,8 @@ class ChildAware extends Attributes implements CastsToString
     }
 
     /**
+     * Generate the attributes.
+     *
      * @return string
      */
     protected function generateAttributes()

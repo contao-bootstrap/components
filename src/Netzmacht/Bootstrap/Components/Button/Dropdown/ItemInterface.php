@@ -10,7 +10,11 @@ namespace Netzmacht\Bootstrap\Components\Button\Dropdown;
 
 use Netzmacht\Html\CastsToString;
 
+/**
+ * Dropdown ItemInterface.
+ *
+ * @package Netzmacht\Bootstrap\Components\Button\Dropdown
+ */
 interface ItemInterface extends CastsToString
 {
-
 }

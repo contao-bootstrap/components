@@ -13,19 +13,23 @@ use Netzmacht\Bootstrap\Core\Bootstrap;
 use Netzmacht\Bootstrap\Core\Contao\ContentElement\Wrapper;
 
 /**
- * Class ContentAccordionGroup
+ * Accordion group content element.
+ *
  * @package Netzmacht\Bootstrapgegeg
  */
 class AccordionGroup extends Wrapper
 {
-
     /**
+     * Template name.
+     *
      * @var string
      */
     protected $strTemplate = 'ce_accordion_group';
 
     /**
-     * compile accordion group
+     * Compile accordion group.
+     *
+     * @return void
      */
     protected function compile()
     {

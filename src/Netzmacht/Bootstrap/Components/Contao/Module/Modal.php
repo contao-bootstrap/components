@@ -8,31 +8,42 @@ use Netzmacht\Bootstrap\Components\Button\Group;
 use Netzmacht\Bootstrap\Components\Button\Toolbar;
 use Netzmacht\Bootstrap\Components\Modal\Modal as Component;
 use Netzmacht\Bootstrap\Core\Bootstrap;
+use Netzmacht\Bootstrap\Core\Config;
 use Netzmacht\Html\Attributes;
 use Netzmacht\Html\Element;
 use Netzmacht\Html\Element\StaticHtml;
 
+/**
+ * Modal frontend module.
+ *
+ * @package Netzmacht\Bootstrap\Components\Contao\Module
+ */
 class Modal extends \Module
 {
     /**
-     * template
+     * Tempalte name.
+     *
      * @var string
      */
     protected $strTemplate = 'mod_bootstrap_modal';
 
     /**
-     * @var
+     * Form buttons.
+     *
+     * @var array
      */
     private $formButtons;
 
     /**
-     * compile
+     * Compile the module.
+     *
+     * @return void
      */
     protected function compile()
     {
         if ($this->cssID[0] == '') {
-            $cssID = $this->cssID;
-            $cssID[0] = 'modal-' . $this->id;
+            $cssID       = $this->cssID;
+            $cssID[0]    = 'modal-' . $this->id;
             $this->cssID = $cssID;
         }
 
@@ -76,18 +87,22 @@ class Modal extends \Module
     }
 
     /**
+     * Generate the modal.
+     *
      * @return string
+     *
+     * @SuppressWarnings(PHPMD.ExitExpression)
      */
     public function generate()
     {
         if (TL_MODE == 'BE') {
-            $template = new \FrontendTemplate('be_wildcard');
+            $template           = new \FrontendTemplate('be_wildcard');
             $template->wildcard = '### modal window ###';
 
             return $template->parse();
         }
 
-        if (\Input::get('bootstrap_modal') == $this->id ) {
+        if (\Input::get('bootstrap_modal') == $this->id) {
             if ($this->bootstrap_modalAjax) {
                 $this->isAjax = true;
             }
@@ -111,6 +126,8 @@ class Modal extends \Module
     }
 
     /**
+     * Get modal content.
+     *
      * @return string
      */
     private function getContent()
@@ -120,33 +137,15 @@ class Modal extends \Module
         switch ($this->bootstrap_modalContentType) {
             case 'article':
                 return $this->getArticle($this->bootstrap_article, false, true);
-                break;
 
             case 'form':
-                $config->set('runtime.modal-footer', '');
-                $content     = $this->getForm($this->form);
-                $this->formButtons = $config->get('runtime.modal-footer');
-                $config->set('runtime.modal-footer', false);
-
-                // render style select if it is used
-                // TODO move this to an event or hook
-                if ($this->isAjax && $config->get('form.styleSelect.enabled')) {
-                    $content .= sprintf(
-                        '<script>jQuery(\'.%s\').selectpicker(\'render\');</script>',
-                        $config->get('form.styleSelect.class')
-                    );
-                }
-
-                return $content;
-                break;
+                return $this->generateForm($config);
 
             case 'module':
                 return $this->getFrontendModule($this->bootstrap_module);
-                break;
 
             case 'html':
                 return (TL_MODE == 'FE') ? $this->html : htmlspecialchars($this->bootstrap_html);
-                break;
 
             case 'template':
                 ob_start();
@@ -155,17 +154,18 @@ class Modal extends \Module
                 ob_end_clean();
 
                 return $buffer;
-                break;
 
             case 'text':
                 return \String::toHtml5($this->bootstrap_text);
-                break;
-        }
 
-        return '';
+            default:
+                return '';
+        }
     }
 
     /**
+     * Get the buttons toolbar/group.
+     *
      * @return Group|Toolbar|string
      */
     public function getButtons()
@@ -191,20 +191,23 @@ class Modal extends \Module
                 }
             }
 
-            $buttons->eachChild(function ($item) use ($style) {
-                if (!$item instanceof Attributes) {
-                    return;
-                }
+            $buttons->eachChild(
+                function ($item) use ($style) {
+                    if ($item instanceof Attributes) {
+                        $classes = $item->getAttribute('class');
+                        $classes = array_filter(
+                            $classes,
+                            function ($class) {
+                                return strpos($class, 'btn-') !== false;
+                            }
+                        );
 
-                $classes = $item->getAttribute('class');
-                $classes = array_filter($classes, function ($class) {
-                    return strpos($class, 'btn-') !== false;
-                });
-
-                if (empty($classes)) {
-                    $item->addClass($style);
+                        if (empty($classes)) {
+                            $item->addClass($style);
+                        }
+                    }
                 }
-            });
+            );
 
             $buttons->removeClass('btn-group');
         } else {
@@ -212,5 +215,33 @@ class Modal extends \Module
         }
 
         return $buttons;
+    }
+
+    /**
+     * Generate the form.
+     *
+     * @param Config $config Bootstrap config.
+     *
+     * @return string
+     */
+    private function generateForm($config)
+    {
+        $config->set('runtime.modal-footer', '');
+        $content           = $this->getForm($this->form);
+        $this->formButtons = $config->get('runtime.modal-footer');
+        $config->set('runtime.modal-footer', false);
+
+        // render style select if it is used
+        // @codingStandardsIgnoreStart
+        // TODO move this to an event or hook
+        // @codingStandardsIgnoreEnd
+        if ($this->isAjax && $config->get('form.styleSelect.enabled')) {
+            $content .= sprintf(
+                '<script>jQuery(\'.%s\').selectpicker(\'render\');</script>',
+                $config->get('form.styleSelect.class')
+            );
+        }
+
+        return $content;
     }
 }

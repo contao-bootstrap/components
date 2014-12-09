@@ -6,40 +6,53 @@ use Netzmacht\Bootstrap\Core\Bootstrap;
 use Netzmacht\Html\Attributes;
 
 /**
- * Class Helper
+ * Class Helper is the main helper being accessed in navigation templates. It creates the item helpers.
+ *
  * @package Netzmacht\Bootstrap\Navigation
  */
 class Helper
 {
 
     /**
+     * Navigation item template.
+     *
      * @var \FrontendTemplate
      */
     protected $template;
 
     /**
+     * Create a new list.
+     *
      * @var bool
      */
     protected $newList = true;
 
     /**
+     * List attributes.
+     *
      * @var Attributes
      */
     protected $listAttributes;
 
     /**
+     * News module model.
+     *
      * @var \ModuleModel
      */
     protected $module;
 
     /**
+     * Item helper factory.
+     *
      * @var callable
      */
     protected $itemHelperFactory;
 
     /**
-     * @param \FrontendTemplate $template
-     * @param Callable $itemHelperFactory
+     * Construct.
+     *
+     * @param \FrontendTemplate $template          Navigation template.
+     * @param \Callable         $itemHelperFactory Item helper factory.
      */
     public function __construct(\FrontendTemplate $template, $itemHelperFactory)
     {
@@ -51,9 +64,13 @@ class Helper
     }
 
     /**
-     * @param \FrontendTemplate $template
-     * @param $itemHelper
-     * @throws \InvalidArgumentException
+     * Create a helper instance for current navigation template.
+     *
+     * @param \FrontendTemplate $template   Navigation template.
+     * @param string            $itemHelper Item helper name.
+     *
+     * @throws \InvalidArgumentException If item helper is not registered.
+     *
      * @return static
      */
     public static function create(\FrontendTemplate $template, $itemHelper)
@@ -68,6 +85,8 @@ class Helper
     }
 
     /**
+     * Get the navigation template.
+     *
      * @return \FrontendTemplate
      */
     public function getTemplate()
@@ -76,7 +95,10 @@ class Helper
     }
 
     /**
-     * @param array $item
+     * Get an item helper.
+     *
+     * @param array $item Current item.
+     *
      * @return ItemHelper
      */
     public function getItemHelper(array $item)
@@ -92,6 +114,8 @@ class Helper
     }
 
     /**
+     * Consider if navigation should create a new list.
+     *
      * @return bool
      */
     public function isChildrenList()
@@ -100,22 +124,36 @@ class Helper
     }
 
     /**
-     * @param boolean $newList
+     * Enable or disable new list.
+     *
+     * @param boolean $newList Enable new list.
+     *
+     * @return $this
      */
     public function setChildrenList($newList)
     {
         $this->newList = $newList;
+
+        return $this;
     }
 
     /**
-     * @param Attributes $listAttributes
+     * Set list attributes.
+     *
+     * @param Attributes $listAttributes List attributes.
+     *
+     * @return $this
      */
     public function setListAttributes(Attributes $listAttributes)
     {
         $this->listAttributes = $listAttributes;
+
+        return $this;
     }
 
     /**
+     * Get list attributes.
+     *
      * @return Attributes
      */
     public function getListAttributes()
@@ -124,7 +162,9 @@ class Helper
     }
 
     /**
-     * Initialize
+     * Initialize the helper.
+     *
+     * @return void
      */
     private function initialize()
     {
@@ -148,6 +188,8 @@ class Helper
             case '2':
                 $attributes->addClass('dropdown-menu');
                 break;
+
+            default:
         }
 
         if ($level > 1 && $this->template->items) {

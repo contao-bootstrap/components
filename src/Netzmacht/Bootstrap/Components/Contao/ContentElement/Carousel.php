@@ -5,20 +5,31 @@ namespace Netzmacht\Bootstrap\Components\Contao\ContentElement;
 use Netzmacht\Bootstrap\Core\Contao\ContentElement\Wrapper;
 use Netzmacht\Html\Attributes;
 
+/**
+ * Carousel content element.
+ *
+ * @package Netzmacht\Bootstrap\Components\Contao\ContentElement
+ */
 class Carousel extends Wrapper
 {
     /**
+     * Template name.
+     *
      * @var string
      */
     protected $strTemplate = 'ce_bootstrap_carousel';
 
     /**
+     * Carousel identifier pattern.
+     *
      * @var string
      */
     protected $identifier = 'carousel-%s';
 
     /**
-     * compile wrapper element
+     * Compile wrapper element.
+     *
+     * @return void
      */
     protected function compile()
     {
@@ -54,7 +65,7 @@ class Carousel extends Wrapper
             $start = \ContentModel::findByPk($this->bootstrap_parentId);
 
             if ($start !== null) {
-                $start->cssID = deserialize($start->cssID, true);
+                $start->cssID          = deserialize($start->cssID, true);
                 $this->Template->start = $start;
 
                 if ($start->cssID[0] == '') {

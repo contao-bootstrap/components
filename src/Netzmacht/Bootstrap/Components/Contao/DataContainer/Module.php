@@ -11,10 +11,15 @@
 
 namespace Netzmacht\Bootstrap\Components\Contao\DataContainer;
 
+/**
+ * Class Module provides callbacks being used in the tl_module dca.
+ *
+ * @package Netzmacht\Bootstrap\Components\Contao\DataContainer
+ */
 class Module
 {
     /**
-     * Get all articles and return them as array
+     * Get all articles and return them as array.
      *
      * @return array
      *
@@ -28,7 +33,10 @@ class Module
 
         // Limit pages to the user's pagemounts
         if ($user->isAdmin) {
-            $objArticle = \Database::getInstance()->execute("SELECT a.id, a.pid, a.title, a.inColumn, p.title AS parent FROM tl_article a LEFT JOIN tl_page p ON p.id=a.pid ORDER BY parent, a.sorting");
+            $objArticle = \Database::getInstance()->execute(
+                'SELECT a.id, a.pid, a.title, a.inColumn, p.title AS parent FROM tl_article a
+                LEFT JOIN tl_page p ON p.id=a.pid ORDER BY parent, a.sorting'
+            );
         } else {
             foreach ($user->pagemounts as $id) {
                 $pids[] = $id;
@@ -41,10 +49,10 @@ class Module
 
             $pids = implode(',', array_map('intval', array_unique($pids)));
 
-            $objArticle = \Database::getInstance()
-                ->execute(
-                    "SELECT a.id, a.pid, a.title, a.inColumn, p.title AS parent
-                    FROM tl_article a LEFT JOIN tl_page p ON p.id=a.pid WHERE a.pid IN(" . $pids . ") ORDER BY parent, a.sorting"
+            $objArticle = \Database::getInstance()->execute(
+                'SELECT a.id, a.pid, a.title, a.inColumn, p.title AS parent
+                FROM tl_article a LEFT JOIN tl_page p ON p.id=a.pid WHERE a.pid IN(' . $pids . ')
+                ORDER BY parent, a.sorting'
             );
         }
 
@@ -53,8 +61,10 @@ class Module
             \Controller::loadLanguageFile('tl_article');
 
             while ($objArticle->next()) {
-                $key = $objArticle->parent . ' (ID ' . $objArticle->pid . ')';
-                $articles[$key][$objArticle->id] = $objArticle->title . ' (' . ($GLOBALS['TL_LANG']['tl_article'][$objArticle->inColumn] ?: $objArticle->inColumn) . ', ID ' . $objArticle->id . ')';
+                $key                             = $objArticle->parent . ' (ID ' . $objArticle->pid . ')';
+                $articles[$key][$objArticle->id] = $objArticle->title
+                    . ' (' . ($GLOBALS['TL_LANG']['tl_article'][$objArticle->inColumn] ?: $objArticle->inColumn)
+                    . ', ID ' . $objArticle->id . ')';
             }
         }
 
@@ -62,7 +72,7 @@ class Module
     }
 
     /**
-     * Get all modules prepared for select wizard
+     * Get all modules prepared for select wizard.
      *
      * @return array
      */

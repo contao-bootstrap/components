@@ -6,20 +6,24 @@ use Netzmacht\Bootstrap\Components\Button\Button;
 use Netzmacht\Html\Attributes;
 
 /**
- * Class Item
+ * Class Item.
+ *
  * @package Netzmacht\Bootstrap\Buttons\Helper\Dropdown
  */
 class Item extends Attributes implements ItemInterface
 {
-
     /**
-     * @var
+     * Item button.
+     *
+     * @var Button
      */
     protected $button;
 
     /**
-     * @param Button $button
-     * @param array $attributes
+     * Construct.
+     *
+     * @param Button $button     Item button.
+     * @param array  $attributes Html attributes.
      */
     public function __construct(Button $button, array $attributes = array())
     {
@@ -37,6 +41,8 @@ class Item extends Attributes implements ItemInterface
     }
 
     /**
+     * Get the button.
+     *
      * @return Button
      */
     public function getButton()
@@ -45,11 +51,12 @@ class Item extends Attributes implements ItemInterface
     }
 
     /**
+     * Generate the item.
+     *
      * @return string
      */
     public function generate()
     {
         return sprintf('<li %s>%s%s</li>', parent::generate(), PHP_EOL, $this->getButton()->generate());
     }
-
 }

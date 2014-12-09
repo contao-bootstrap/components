@@ -6,18 +6,23 @@ use Netzmacht\Bootstrap\Core\Bootstrap;
 use Netzmacht\Html\Attributes;
 
 /**
- * Class ContentButton
+ * Button content element.
+ *
  * @package Netzmacht\Bootstrap
  */
 class Button extends \ContentElement
 {
     /**
+     * Template name.
+     *
      * @var string
      */
     protected $strTemplate = 'ce_bootstrap_button';
 
     /**
-     * compile button element, inspired by ContentHyperlink
+     * Compile button element, inspired by ContentHyperlink.
+     *
+     * @return void
      */
     protected function compile()
     {
@@ -43,21 +48,29 @@ class Button extends \ContentElement
     }
 
     /**
-     * @param $attributes
+     * Set title link.
+     *
+     * @param Attributes $attributes Link attributes.
+     *
+     * @return void
      */
-    protected function setLinkTitle($attributes)
+    protected function setLinkTitle(Attributes $attributes)
     {
         if ($this->linkTitle == '') {
             $this->linkTitle = $this->url;
         }
-        // @See: #6258
+        // See Contao issue: #6258
         if (TL_MODE !== 'BE') {
             $attributes->setAttribute('title', $this->titleText ?: $this->linkTitle);
         }
     }
 
     /**
-     * @param $attributes
+     * Set Link href.
+     *
+     * @param Attributes $attributes Link attributes.
+     *
+     * @return void
      */
     protected function setHref(Attributes $attributes)
     {
@@ -69,7 +82,11 @@ class Button extends \ContentElement
     }
 
     /**
-     * @param $attributes
+     * Set css classes.
+     *
+     * @param Attributes $attributes Link attributes.
+     *
+     * @return void
      */
     protected function setCssClass(Attributes $attributes)
     {
@@ -83,7 +100,11 @@ class Button extends \ContentElement
     }
 
     /**
-     * @param $attributes
+     * Enable lightbox.
+     *
+     * @param Attributes $attributes Link attributes.
+     *
+     * @return void
      */
     protected function enableLightbox(Attributes $attributes)
     {
@@ -99,7 +120,11 @@ class Button extends \ContentElement
     }
 
     /**
-     * @param $attributes
+     * Set data attributes.
+     *
+     * @param Attributes $attributes Link attributes.
+     *
+     * @return void
      */
     protected function setDataAttributes(Attributes $attributes)
     {

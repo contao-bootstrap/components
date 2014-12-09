@@ -9,6 +9,11 @@ use Netzmacht\Contao\FormHelper\Event\ViewEvent;
 use Netzmacht\Html\Element;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+/**
+ * Class Subscriber handles events which are related for the modal component.
+ *
+ * @package Netzmacht\Bootstrap\Components\Modal
+ */
 class Subscriber implements EventSubscriberInterface
 {
 
@@ -37,12 +42,16 @@ class Subscriber implements EventSubscriberInterface
         return array (
             InitializeEnvironmentEvent::NAME => 'presetConfig',
             ReplaceInsertTagsEvent::NAME     => 'replaceInsertTags',
-            'form-helper.generate-view'      =>  'createModalFooter',
+            'form-helper.generate-view'      => 'createModalFooter',
         );
     }
 
     /**
-     * @param InitializeEnvironmentEvent $event
+     * Preset modal config.
+     *
+     * @param InitializeEnvironmentEvent $event Initialize Bootstrap environment event.
+     *
+     * @return void
      */
     public function presetConfig(InitializeEnvironmentEvent $event)
     {
@@ -51,7 +60,11 @@ class Subscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param ViewEvent $event
+     * Create modal footer.
+     *
+     * @param ViewEvent $event Form helper view event.
+     *
+     * @return void
      */
     public function createModalFooter(ViewEvent $event)
     {
@@ -76,7 +89,9 @@ class Subscriber implements EventSubscriberInterface
     }
 
     /**
-     * Replace modal tag, modal tag supports following formats:
+     * Replace modal tag.
+     *
+     * Modal tag supports following formats:
      *
      * modal::id
      *      - SimpleAjax.php?modal=id?page=Pageid
@@ -90,15 +105,17 @@ class Subscriber implements EventSubscriberInterface
      * modal::id::type::typeid
      *      - SimpleAjax.php?modal=id?page=Pageid&dynamic=type&id=typeid
      * modal::link::id::type::typeid
-     *      - <a href="SimpleAjax.php?modal=id?page=Pageid&dynamic=type&id=typeid" data-toggle="modal" data-remote="SimpleAjax.php?modal=id?page=Pageid&dynamic=type&id=typeid">Module name</a>
+     *      - <a href="SimpleAjax.php?modal=id?page=Pageid&dynamic=type&id=typeid" data-toggle="modal"
+     *              data-remote="SimpleAjax.php?modal=id?page=Pageid&dynamic=type&id=typeid">Module name</a>
      *      - The data-target is nessecary because Bootstrap ony checks for data-remote if content is cached
      *      - href attribute is set for accessibility issues
      * modal::link::id::type::typeid::title
-     *      - <a href="SimpleAjax.php?modal=id?page=Pageid&dynamic=type&id=typeid" data-toggle="modal" data-remote="SimpleAjax.php?modal=id?page=Pageid&dynamic=type&id=typeid">Title</a>
+     *      - <a href="SimpleAjax.php?modal=id?page=Pageid&dynamic=type&id=typeid" data-toggle="modal"
+     *              data-remote="SimpleAjax.php?modal=id?page=Pageid&dynamic=type&id=typeid">Title</a>
      *
      * modal::url::
      *
-     * @param  ReplaceInsertTagsEvent $event
+     * @param ReplaceInsertTagsEvent $event Replace insert tag event.
      *
      * @return void
      *
@@ -137,7 +154,10 @@ class Subscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param  \Widget $widget
+     * Consider if form widget should be moved to the modal footer.
+     *
+     * @param \Widget $widget Form widget.
+     *
      * @return bool
      */
     protected function isPartOfModalFooter(\Widget $widget)
@@ -151,7 +171,9 @@ class Subscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param ReplaceInsertTagsEvent $event
+     * Prepare insert tag params.
+     *
+     * @param ReplaceInsertTagsEvent $event Replace insert tag event.
      *
      * @return array
      */
@@ -169,8 +191,10 @@ class Subscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param ReplaceInsertTagsEvent $event
-     * @param                        $params
+     * Load modal.
+     *
+     * @param ReplaceInsertTagsEvent $event  Replace insert tag event.
+     * @param array                  $params Insert tag params.
      *
      * @return void
      */
@@ -186,7 +210,9 @@ class Subscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param $params
+     * Generate remote insert tag.
+     *
+     * @param array $params Insert tag params.
      *
      * @return string
      *
@@ -205,6 +231,13 @@ class Subscriber implements EventSubscriberInterface
         }
     }
 
+    /**
+     * Generate link insert tag.
+     *
+     * @param array $params Insert tag params.
+     *
+     * @return string
+     */
     private function generateLinkInsertTag($params)
     {
         $model = \ModuleModel::findByPk($params[1]);
@@ -214,7 +247,7 @@ class Subscriber implements EventSubscriberInterface
             return '';
         }
 
-        $cssId = deserialize($model->cssID, true);
+        $cssId  = deserialize($model->cssID, true);
         $buffer = '#' . ($cssId[0] != '' ? $cssId[0] : 'modal-' . $model->id);
 
         if ($params[0] === 'link') {
@@ -226,9 +259,13 @@ class Subscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param ReplaceInsertTagsEvent $event
-     * @param                        $params
-     * @param                        $count
+     * Replace deprecated insert tag.
+     *
+     * @param ReplaceInsertTagsEvent $event  Replace insert tag event.
+     * @param array                  $params Insert tag params.
+     * @param int                    $count  Number of params.
+     *
+     * @return void
      *
      * @SuppressWarnings(PHPMD.Superglobals)
      */
@@ -249,7 +286,12 @@ class Subscriber implements EventSubscriberInterface
 
                 $cssId  = deserialize($model->cssID, true);
                 $cssId  = '#' . ($cssId[0] != '' ? $cssId[0] : 'modal-' . $model->id);
-                $buffer = sprintf('<a href="%s" data-toggle="modal" data-remote="%s">%s</a>', $cssId, $buffer, $params[6]);
+                $buffer = sprintf(
+                    '<a href="%s" data-toggle="modal" data-remote="%s">%s</a>',
+                    $cssId,
+                    $buffer,
+                    $params[6]
+                );
             }
 
             $event->setHtml($buffer);

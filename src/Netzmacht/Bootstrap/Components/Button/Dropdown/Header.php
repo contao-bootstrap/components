@@ -4,16 +4,24 @@ namespace Netzmacht\Bootstrap\Components\Button\Dropdown;
 
 use Netzmacht\Html\Attributes;
 
+/**
+ * Dropdown header.
+ *
+ * @package Netzmacht\Bootstrap\Components\Button\Dropdown
+ */
 class Header extends Attributes implements ItemInterface
 {
-
     /**
+     * Header label.
+     *
      * @var string
      */
     protected $label;
 
     /**
-     * @param array $attributes
+     * Construct.
+     *
+     * @param array $attributes Html attributes.
      */
     public function __construct(array $attributes = array())
     {
@@ -29,14 +37,22 @@ class Header extends Attributes implements ItemInterface
     }
 
     /**
-     * @param string $label
+     * Set the label.
+     *
+     * @param string $label Header label.
+     *
+     * @return $this
      */
     public function setLabel($label)
     {
         $this->label = $label;
+
+        return $this;
     }
 
     /**
+     * Get the label.
+     *
      * @return string
      */
     public function getLabel()
@@ -45,14 +61,16 @@ class Header extends Attributes implements ItemInterface
     }
 
     /**
+     * Generate the header.
+     *
      * @return string
      */
     public function generate()
     {
-        return sprintf('<li %s>%s</li>',
+        return sprintf(
+            '<li %s>%s</li>',
             parent::generate(),
             $this->label
         );
     }
-
 }

@@ -5,16 +5,24 @@ namespace Netzmacht\Bootstrap\Components\Button;
 use Netzmacht\Bootstrap\Components\Button\Dropdown\ItemInterface;
 use Netzmacht\Bootstrap\Core\Bootstrap;
 
+/**
+ * Dropdown button.
+ *
+ * @package Netzmacht\Bootstrap\Components\Button
+ */
 class Dropdown extends ChildAware
 {
-
     /**
+     * Toggle button.
+     *
      * @var Button
      */
     protected $toggle;
 
     /**
-     * @param array $attributes
+     * Construct.
+     *
+     * @param array $attributes Html attributes.
      */
     public function __construct(array $attributes = array())
     {
@@ -32,15 +40,23 @@ class Dropdown extends ChildAware
     }
 
     /**
-     * @param $label
+     * Set the label.
+     *
+     * @param string $label The label.
+     *
+     * @return $this
      */
     public function setLabel($label)
     {
         $this->toggle->setLabel($label);
+
+        return $this;
     }
 
     /**
-     * @return mixed
+     * Get the label.
+     *
+     * @return string
      */
     public function getLabel()
     {
@@ -48,15 +64,8 @@ class Dropdown extends ChildAware
     }
 
     /**
-     * @param ItemInterface $child
-     * @return $this
-     */
-    public function addChild($child)
-    {
-        return parent::addChild($child);
-    }
-
-    /**
+     * Generate the dropdown.
+     *
      * @return string
      */
     public function generate()
@@ -74,6 +83,8 @@ class Dropdown extends ChildAware
     }
 
     /**
+     * Generate the children.
+     *
      * @return string
      */
     protected function generateChildren()

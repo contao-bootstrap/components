@@ -8,19 +8,23 @@ use Netzmacht\Bootstrap\Components\Button\Group;
 use Netzmacht\Bootstrap\Components\Button\Toolbar;
 
 /**
- * Class ContentToolbar
+ * Buttons content element.
+ *
  * @package Netzmacht\Bootstrap
  */
 class Buttons extends \ContentElement
 {
-
     /**
+     * Template name.
+     *
      * @var string
      */
     protected $strTemplate = 'ce_bootstrap_buttons';
 
     /**
-     * compile the button toolbar
+     * Compile the button toolbar.
+     *
+     * @return void
      */
     protected function compile()
     {
@@ -35,7 +39,11 @@ class Buttons extends \ContentElement
     }
 
     /**
-     * @param $child
+     * Add button style.
+     *
+     * @param mixed $child Current child.
+     *
+     * @return void
      */
     public function addButtonStyle($child)
     {
@@ -52,5 +60,4 @@ class Buttons extends \ContentElement
             }
         }
     }
-
 }

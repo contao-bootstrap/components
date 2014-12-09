@@ -5,21 +5,31 @@ namespace Netzmacht\Bootstrap\Components\Button;
 use Netzmacht\Html\Attributes;
 use Netzmacht\Html\CastsToString;
 
+/**
+ * Button element.
+ *
+ * @package Netzmacht\Bootstrap\Components\Button
+ */
 class Button extends Attributes implements CastsToString
 {
-
     /**
+     * Button tag.
+     *
      * @var string
      */
     protected $tag = 'a';
 
     /**
+     * Button label.
+     *
      * @var string
      */
     protected $label;
 
     /**
-     * @param array $attributes
+     * Construct.
+     *
+     * @param array $attributes Html attributes.
      */
     public function __construct(array $attributes = array())
     {
@@ -34,14 +44,22 @@ class Button extends Attributes implements CastsToString
     }
 
     /**
-     * @param string $tag
+     * Set the tag.
+     *
+     * @param string $tag Html tag name.
+     *
+     * @return $this
      */
     public function setTag($tag)
     {
         $this->tag = $tag;
+
+        return $this;
     }
 
     /**
+     * Get the tag.
+     *
      * @return string
      */
     public function getTag()
@@ -50,15 +68,23 @@ class Button extends Attributes implements CastsToString
     }
 
     /**
-     * @param mixed $label
+     * Set the label.
+     *
+     * @param mixed $label Button label.
+     *
+     * @return $this
      */
     public function setLabel($label)
     {
         $this->label = $label;
+
+        return $this;
     }
 
     /**
-     * @return mixed
+     * Get the label.
+     *
+     * @return string|CastsToString
      */
     public function getLabel()
     {
@@ -66,6 +92,8 @@ class Button extends Attributes implements CastsToString
     }
 
     /**
+     * Generate the button.
+     *
      * @return string
      */
     public function generate()
@@ -79,5 +107,4 @@ class Button extends Attributes implements CastsToString
             PHP_EOL
         );
     }
-
 }

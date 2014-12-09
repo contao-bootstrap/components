@@ -4,11 +4,18 @@ namespace Netzmacht\Bootstrap\Components\Button;
 
 use Netzmacht\Html\Attributes;
 
+/**
+ * Button factory.
+ *
+ * @package Netzmacht\Bootstrap\Components\Button
+ */
 class Factory
 {
-
     /**
-     * @param $definition
+     * Create button from fieldset defintiion.
+     *
+     * @param string|array $definition Button definition.
+     *
      * @return Group|Toolbar
      */
     public static function createFromFieldset($definition)
@@ -27,29 +34,28 @@ class Factory
             }
 
             // encode value
-            $button = self::encodeVAlue($button);
+            $button = self::encodeValue($button);
 
             // finish dropdown
             if (self::hasToCloseDropdown($dropdown, $button)) {
                 $dropdown = false;
             }
 
-            // create new group
             if ($button['type'] == 'group') {
-                $group = self::createNewGroup($root, $button, $dropdown);
-            }
+                // create new group
 
-            // create dropdown
-            elseif ($button['type'] == 'dropdown') {
-                $dropdown = static::createDropdown($button['label'], $button['attributes'], true);
+                $group = self::createNewGroup($root, $button, $dropdown);
+            } elseif ($button['type'] == 'dropdown') {
+                // create dropdown
+
+                $dropdown      = static::createDropdown($button['label'], $button['attributes'], true);
                 $dropdownGroup = static::createGroup();
                 $dropdownGroup->addChild($dropdown);
 
                 $group->addChild($dropdownGroup);
-            }
+            } elseif ($button['type'] == 'child' || $button['type'] == 'header') {
+                // add dropdown child
 
-            // add dropdown child
-            elseif ($button['type'] == 'child' || $button['type'] == 'header') {
                 static::parseDropdownChild($dropdown, $button);
             } elseif ($dropdown !== false) {
                 $child = static::createDropdownItem($button['label'], $button['url'], $button['attributes'], true);
@@ -64,13 +70,16 @@ class Factory
     }
 
     /**
-     * @param $label
-     * @param $url
-     * @param array $attributes
-     * @param bool $fromFieldset
+     * Create a button.
+     *
+     * @param string $label        Button label.
+     * @param string $url          Button href url.
+     * @param array  $attributes   Additional html attributes.
+     * @param bool   $fromFieldset Set true if attributes comes from fieldset definitions have to be transformed.
+     *
      * @return Button
      */
-    public static function createButton($label, $url, array $attributes=array(), $fromFieldset=false)
+    public static function createButton($label, $url, array $attributes = array(), $fromFieldset = false)
     {
         $button = new Button();
         $button->setLabel($label);
@@ -81,11 +90,14 @@ class Factory
     }
 
     /**
-     * @param array $attributes
-     * @param bool $fromFieldset
+     * Create button group.
+     *
+     * @param array $attributes   Additional html attributes.
+     * @param bool  $fromFieldset Set true if attributes comes from fieldset definitions have to be transformed.
+     *
      * @return Group
      */
-    public static function createGroup(array $attributes=array(), $fromFieldset=false)
+    public static function createGroup(array $attributes = array(), $fromFieldset = false)
     {
         $group = new Group();
         static::applyAttributes($group, $attributes, $fromFieldset);
@@ -94,11 +106,14 @@ class Factory
     }
 
     /**
-     * @param array $attributes
-     * @param bool $fromFieldset
+     * Create button toolbar.
+     *
+     * @param array $attributes   Additional html attributes.
+     * @param bool  $fromFieldset Set true if attributes comes from fieldset definitions have to be transformed.
+     *
      * @return Toolbar
      */
-    public static function createToolbar(array $attributes=array(), $fromFieldset=false)
+    public static function createToolbar(array $attributes = array(), $fromFieldset = false)
     {
         $toolbar = new Toolbar();
         static::applyAttributes($toolbar, $attributes, $fromFieldset);
@@ -107,12 +122,15 @@ class Factory
     }
 
     /**
-     * @param string $label
-     * @param array $attributes
-     * @param bool $fromFieldset
+     * Create dropdown button.
+     *
+     * @param string $label        Dropdown button.
+     * @param array  $attributes   Additional html attributes.
+     * @param bool   $fromFieldset Set true if attributes comes from fieldset definitions have to be transformed.
+     *
      * @return Dropdown
      */
-    public static function createDropdown($label, array $attributes=array(), $fromFieldset=false)
+    public static function createDropdown($label, array $attributes = array(), $fromFieldset = false)
     {
         $dropdown = new Dropdown();
         $dropdown->setLabel($label);
@@ -123,12 +141,15 @@ class Factory
     }
 
     /**
-     * @param string $label
-     * @param array $attributes
-     * @param bool $fromFieldset
+     * Create dropdown header.
+     *
+     * @param string $label        Dropdown button.
+     * @param array  $attributes   Additional html attributes.
+     * @param bool   $fromFieldset Set true if attributes comes from fieldset definitions have to be transformed.
+     *
      * @return Dropdown\Header
      */
-    public static function createDropdownHeader($label, array $attributes=array(), $fromFieldset=false)
+    public static function createDropdownHeader($label, array $attributes = array(), $fromFieldset = false)
     {
         $dropdown = new Dropdown\Header();
         $dropdown->setLabel($label);
@@ -139,11 +160,14 @@ class Factory
     }
 
     /**
-     * @param array $attributes
-     * @param bool $fromFieldset
+     * Create dropdown divider.
+     *
+     * @param array $attributes   Additional html attributes.
+     * @param bool  $fromFieldset Set true if attributes comes from fieldset definitions have to be transformed.
+     *
      * @return Dropdown\Divider
      */
-    public static function createDropdownDivider(array $attributes=array(), $fromFieldset=false)
+    public static function createDropdownDivider(array $attributes = array(), $fromFieldset = false)
     {
         $dropdown = new Dropdown\Divider();
         static::applyAttributes($dropdown, $attributes, $fromFieldset);
@@ -152,13 +176,16 @@ class Factory
     }
 
     /**
-     * @param $label
-     * @param $url
-     * @param array $attributes
-     * @param bool $fromFieldset
+     * Create dropdown item.
+     *
+     * @param string $label        Dropdown label.
+     * @param string $url          Dropdown url.
+     * @param array  $attributes   Additional html attributes.
+     * @param bool   $fromFieldset Set true if attributes comes from fieldset definitions have to be transformed.
+     *
      * @return Dropdown\Item
      */
-    public static function createDropdownItem($label, $url, array $attributes=array(), $fromFieldset=false)
+    public static function createDropdownItem($label, $url, array $attributes = array(), $fromFieldset = false)
     {
         $button = static::createButton($label, $url, $attributes, $fromFieldset);
         $button->setAttribute('role', 'menuitem');
@@ -168,11 +195,15 @@ class Factory
     }
 
     /**
-     * @param Attributes $node
-     * @param array $attributes
-     * @param bool $fromFieldset
+     * Apply attributes.
+     *
+     * @param Attributes $node         Attrbiutes alement.
+     * @param array      $attributes   Html attributes which being applied.
+     * @param bool       $fromFieldset Set true if attributes comes from fieldset definitions have to be transformed.
+     *
+     * @return void
      */
-    protected static function applyAttributes(Attributes $node, array $attributes, $fromFieldset=false)
+    protected static function applyAttributes(Attributes $node, array $attributes, $fromFieldset = false)
     {
         if (empty($attributes)) {
             return;
@@ -201,8 +232,10 @@ class Factory
     }
 
     /**
-     * @param $root
-     * @param $button
+     * Enable the toolbar.
+     *
+     * @param mixed $root   Current root element.
+     * @param array $button Button definition.
      *
      * @return Toolbar
      */
@@ -220,10 +253,20 @@ class Factory
         return $root;
     }
 
+    /**
+     * Parse dropdown child.
+     *
+     * @param Dropdown|bool $dropdown Current dropdown element.
+     * @param array         $button   Button definition.
+     *
+     * @return void
+     */
     private static function parseDropdownChild($dropdown, $button)
     {
         if ($dropdown === false || !$dropdown instanceof Dropdown) {
+            // @codingStandardsIgnoreStart
             // TODO throw exception?
+            // @codingStandardsIgnoreEnd
             return;
         }
 
@@ -242,9 +285,11 @@ class Factory
     }
 
     /**
-     * @param $definition
+     * Parse button definition.
      *
-     * @return mixed
+     * @param string|array $definition Button definition.
+     *
+     * @return array
      */
     protected static function parseDefinition($definition)
     {
@@ -258,7 +303,9 @@ class Factory
     }
 
     /**
-     * @param $button
+     * Consider if definition is invalid.
+     *
+     * @param array $button Button definition.
      *
      * @return bool
      */
@@ -268,11 +315,13 @@ class Factory
     }
 
     /**
-     * @param $button
+     * Encode button value.
      *
-     * @return mixed
+     * @param array $button Button definition.
+     *
+     * @return button
      */
-    protected static function encodeVAlue($button)
+    protected static function encodeValue($button)
     {
         if (isset($button['button']) && $button['button'] == 'link') {
             if (substr($button['value'], 0, 7) == 'mailto:') {
@@ -286,9 +335,11 @@ class Factory
     }
 
     /**
-     * @param $root
-     * @param $button
-     * @param $dropdown
+     * Create a new group element.
+     *
+     * @param mixed         $root     Current root.
+     * @param array         $button   Button definition.
+     * @param Dropdown|bool $dropdown Dropdown element.
      *
      * @return \Netzmacht\Bootstrap\Components\Button\Group
      */
@@ -307,8 +358,10 @@ class Factory
     }
 
     /**
-     * @param $dropdown
-     * @param $button
+     * Check if dropdown has to be closed.
+     *
+     * @param Dropdown|bool $dropdown Dropdown element.
+     * @param array         $button   Button definition.
      *
      * @return bool
      */

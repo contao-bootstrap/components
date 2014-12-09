@@ -2,16 +2,21 @@
 
 namespace Netzmacht\Bootstrap\Components\Button;
 
+/**
+ * Button group.
+ *
+ * @package Netzmacht\Bootstrap\Components\Button
+ */
 class Group extends ChildAware
 {
-
     /**
-     * @param array $attributes
+     * Construct.
+     *
+     * @param array $attributes Html attributes.
      */
     public function __construct(array $attributes = array())
     {
         parent::__construct($attributes);
         $this->addClass('btn-group');
     }
-
 }

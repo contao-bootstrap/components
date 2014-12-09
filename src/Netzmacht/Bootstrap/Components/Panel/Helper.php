@@ -14,12 +14,15 @@ namespace Netzmacht\Bootstrap\Components\Panel;
 use Netzmacht\Bootstrap\Core\Bootstrap;
 
 /**
- * Class Helper
+ * Class Helper provides helper functionality for panels.
+ *
  * @package Netzmacht\Bootstrap\Panel\Panel
  */
 class Helper
 {
     /**
+     * Get current accordion group.
+     *
      * @return string
      */
     public static function getGroup()
@@ -28,7 +31,10 @@ class Helper
     }
 
     /**
-     * @param \Template $template
+     * Prepare the panel.
+     *
+     * @param \Template $template Panel template.
+     *
      * @return string
      */
     public static function preparePanel(\Template $template)
@@ -40,7 +46,11 @@ class Helper
     }
 
     /**
-     * @param \Template $template
+     * Set the accordion state.
+     *
+     * @param \Template $template Panel template.
+     *
+     * @return void
      */
     public static function setAccordionState(\Template $template)
     {
@@ -59,13 +69,16 @@ class Helper
     }
 
     /**
-     * @param \Template $template
+     * Set panel class if no class is set.
+     *
+     * @param \Template $template Panel template.
+     *
+     * @return void
      */
     public static function setPanelClass(\Template $template)
     {
-        if ($template->class) {
+        if (!$template->class) {
             $template->class = 'panel panel-default';
         }
     }
-
 }

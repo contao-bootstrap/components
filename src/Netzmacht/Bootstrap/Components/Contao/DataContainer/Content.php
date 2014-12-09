@@ -13,14 +13,18 @@ namespace Netzmacht\Bootstrap\Components\Contao\DataContainer;
 
 use Netzmacht\Bootstrap\Core\Contao\ContentElement\Wrapper\Helper;
 
+/**
+ * Class Content provides callbacks for tl_content dca.
+ *
+ * @package Netzmacht\Bootstrap\Components\Contao\DataContainer
+ */
 class Content
 {
-
     /**
-     * count existing tab separators elements
+     * Count existing tab separators elements.
      *
-     * @param \Database\Result $model
-     * @param Helper $helper
+     * @param \Database\Result $model  Current row.
+     * @param Helper           $helper Wrapper helper.
      *
      * @return int
      */
@@ -41,10 +45,10 @@ class Content
     }
 
     /**
-     * count required tab separator elements
+     * Count required tab separator elements.
      *
-     * @param \Database\Result $model
-     * @param Helper $helper
+     * @param \Database\Result $model  Current row.
+     * @param Helper           $helper Wrapper helper.
      *
      * @return int
      */
@@ -72,5 +76,4 @@ class Content
 
         return $count > 0 ? ($count - 1 ) : 0;
     }
-
 }
