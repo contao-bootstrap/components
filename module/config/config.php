@@ -20,8 +20,8 @@ $GLOBALS['FE_MOD']['miscellaneous']['bootstrap_modal']   = 'Netzmacht\Bootstrap\
 $GLOBALS['FE_MOD']['navigationMenu']['bootstrap_navbar'] = 'Netzmacht\Bootstrap\Components\Contao\Module\Navbar';
 
 // Hooks
-$GLOBALS['TL_HOOKS']['isVisibleElement'][]       = array('Netzmacht\Bootstrap\Components\Contao\Hooks', 'setRuntimeNavClass');
-$GLOBALS['TL_HOOKS']['outputFrontendTemplate'][] = array('Netzmacht\Bootstrap\Components\Contao\Hooks', 'appendModals');
+$GLOBALS['TL_HOOKS']['isVisibleElement'][]   = array('Netzmacht\Bootstrap\Components\Contao\Hooks', 'setRuntimeNavClass');
+$GLOBALS['TL_HOOKS']['modifyFrontendPage'][] = array('Netzmacht\Bootstrap\Components\Contao\Hooks', 'appendModals');
 
 // Event Subscribers
 $GLOBALS['TL_EVENT_SUBSCRIBERS'][] = 'Netzmacht\Bootstrap\Components\Modal\Subscriber';

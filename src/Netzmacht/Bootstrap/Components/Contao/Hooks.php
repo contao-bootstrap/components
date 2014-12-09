@@ -63,6 +63,7 @@ class Hooks
     public function appendModals($buffer)
     {
         $modals = implode('', Bootstrap::getConfigVar('runtime.modals', array()));
+        $modals = str_replace(array('{{request_token}}', '[{]', '[}]'), array(REQUEST_TOKEN, '{{', '}}'), $modals);
 
         return str_replace('</body>', $modals . '</body>', $buffer);
     }
