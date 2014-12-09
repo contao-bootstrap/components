@@ -113,7 +113,7 @@ class Subscriber implements EventSubscriberInterface
             array_insert($params, 0, array('remote'));
         }
 
-        if (!isset($GLOBALS['TL_BODY']['bootstrap-modal-' . $params[1]])) {
+        if (!Bootstrap::getConfigVar('runtime.modals.' . $params[1])) {
             $model = \ModuleModel::findByPk($params[1]);
 
             if ($model != null && $model->type == 'bootstrap_modal') {
