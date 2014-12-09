@@ -7,6 +7,7 @@ use Netzmacht\Bootstrap\Core\Event\InitializeEnvironmentEvent;
 use Netzmacht\Bootstrap\Core\Event\ReplaceInsertTagsEvent;
 use Netzmacht\Contao\FormHelper\Event\ViewEvent;
 use Netzmacht\Html\Element;
+use Netzmacht\Html\Element\Standalone;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -41,7 +42,11 @@ class Subscriber implements EventSubscriberInterface
     {
         return array (
             InitializeEnvironmentEvent::NAME => 'presetConfig',
-            ReplaceInsertTagsEvent::NAME     => 'replaceInsertTags',
+            ReplaceInsertTagsEvent::NAME     => array(
+                array('replaceModalInsertTag'),
+                array('replaceModalLinkInsertTag'),
+                array('replaceModalButtonInsertTag')
+            ),
             'form-helper.generate-view'      => 'createModalFooter',
         );
     }
@@ -89,6 +94,79 @@ class Subscriber implements EventSubscriberInterface
     }
 
     /**
+     * Replace modal insert tag.
+     *
+     * This insert tag will replace the modal::* insert tag. It only creates an link.
+     *
+     * Supported formats are:
+     *
+     * modal_link::id
+     *  - Creates an link to a modal by using modal modul name as label.
+     *
+     * modal_link::id::Custom title
+     *  - creates an link to a modal with a custom title
+     *
+     * @param ReplaceInsertTagsEvent $event Replace insert tag event.
+     *
+     * @return void
+     */
+    public function replaceModalLinkInsertTag(ReplaceInsertTagsEvent $event)
+    {
+        if ($event->getTag() === 'modal_link') {
+            $element = $this->createLink($event->getParam(0), $event->getParam(1));
+
+            if ($element) {
+                $event->setHtml($element->generate());
+            }
+        }
+    }
+
+    /**
+     * Replace modal insert tag.
+     *
+     * This insert tag will replace the modal::* insert tag. It only creates an link.
+     *
+     * Supported formats are:
+     *
+     * modal_btn::id::default sm
+     *  - Creates an link to a modal by using modal modul name as label.
+     *  - Transforms 2nd param to btn-* classes
+     *
+     * modal_btn::id::default sm::Custom title
+     *  - creates an link to a modal with a custom title
+     *
+     * @param ReplaceInsertTagsEvent $event Replace insert tag event.
+     *
+     * @return void
+     */
+    public function replaceModalButtonInsertTag(ReplaceInsertTagsEvent $event)
+    {
+        if ($event->getTag() === 'modal_btn') {
+            $element = $this->createLink($event->getParam(0), $event->getParam(2));
+            $element
+                ->addClass('btn');
+
+            $classes = array_filter(explode(' ', $event->getParam(1)));
+            $classes = array_map(
+                function($class) {
+                    return 'btn-' . $class;
+                },
+                $classes
+            );
+
+            if ($classes) {
+                $element->addClasses($classes);
+            } else {
+                $element->addClass('btn-default');
+            }
+
+            if ($element) {
+                $event->setHtml($element->generate());
+            }
+        }
+    }
+
+    /**
      * Replace modal tag.
      *
      * Modal tag supports following formats:
@@ -121,14 +199,14 @@ class Subscriber implements EventSubscriberInterface
      *
      * @SuppressWarnings(PHPMD.Superglobals)
      */
-    public function replaceInsertTags(ReplaceInsertTagsEvent $event)
+    public function replaceModalInsertTag(ReplaceInsertTagsEvent $event)
     {
         if ($event->getTag() != 'modal') {
             return;
         }
 
         $params = $this->prepareParams($event);
-        $this->loadModal($event, $params);
+        $this->loadModal($params[1]);
 
         $count = count($params);
 
@@ -193,19 +271,14 @@ class Subscriber implements EventSubscriberInterface
     /**
      * Load modal.
      *
-     * @param ReplaceInsertTagsEvent $event  Replace insert tag event.
-     * @param array                  $params Insert tag params.
+     * @param int $modalId Modal model id.
      *
      * @return void
      */
-    private function loadModal(ReplaceInsertTagsEvent $event, $params)
+    private function loadModal($modalId)
     {
-        if (!Bootstrap::getConfigVar('runtime.modals.' . $params[1])) {
-            $model = \ModuleModel::findByPk($params[1]);
-
-            if ($model != null && $model->type == 'bootstrap_modal') {
-                $event->setHtml(\Controller::getFrontendModule($params[1]));
-            }
+        if (!Bootstrap::getConfigVar('runtime.modals.' . $modalId)) {
+            \Controller::getFrontendModule($modalId);
         }
     }
 
@@ -296,5 +369,49 @@ class Subscriber implements EventSubscriberInterface
 
             $event->setHtml($buffer);
         }
+    }
+
+    /**
+     * Create link from insert tag.
+     *
+     * @param int    $modelId Modal model id.
+     * @param string $label   Optional custom label.
+     *
+     * @return Standalone|null
+     */
+    private function createLink($modelId, $label = null)
+    {
+        $model = \ModuleModel::findByPk($modelId);
+        if (!$model) {
+            return null;
+        }
+
+        $cssId    = deserialize($model->cssID, true);
+        $selector = '#' . ($cssId[0] ?: 'modal-' . $model->id);
+
+        $this->loadModal($modelId);
+
+        $element = Element::create('a');
+
+        if ($model->bootstrap_modalAjax && TL_MODE === 'FE') {
+            $page = $GLOBALS['objPage']->row();
+            $link = \Controller::generateFrontendUrl($page) . '?bootstrap_modal=' . $model->id;
+
+            $element
+                ->setAttribute('href', $link)
+                ->setAttribute('data-target', $selector);
+        } else {
+            $element->setAttribute('href', $selector);
+        }
+
+        $element->setAttribute('data-toggle', 'modal');
+
+        if (!$label) {
+            $element->addChild($model->name);
+        } else {
+            $element->addChild($label);
+        }
+
+        return $element;
     }
 }
