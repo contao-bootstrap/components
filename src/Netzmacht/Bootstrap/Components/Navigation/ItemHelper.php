@@ -34,7 +34,7 @@ interface ItemHelper extends CastsToString
     /**
      * @return boolean
      */
-    public function IsDropdown();
+    public function isDropdown();
 
     /**
      * @param bool $asArray

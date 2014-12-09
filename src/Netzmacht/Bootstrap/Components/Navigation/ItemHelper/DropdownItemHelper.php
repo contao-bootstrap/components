@@ -96,7 +96,7 @@ class DropdownItemHelper extends Attributes implements ItemHelper
     /**
      * @return boolean
      */
-    public function IsDropdown()
+    public function isDropdown()
     {
         return $this->isDropdown;
     }
@@ -121,28 +121,8 @@ class DropdownItemHelper extends Attributes implements ItemHelper
     {
         $level = intval(substr($this->template->level, 6))+1;
 
-        $pass  = array('href', 'accesskey', 'tabindex');
-        foreach ($pass as $attribute) {
-            $this->setAttribute($attribute, $this->item[$attribute]);
-        }
-
-        $title = $this->item['pageTitle'] ?: $this->item['title'];
-        $this->setAttribute('title', $title);
-
-        if ($this->item['nofollow']) {
-            $this->setAttribute('rel', 'nofollow');
-        }
-
-        if ($this->item['class']) {
-            $classes = trimsplit(' ', $this->item['class']);
-            foreach ($classes as $class) {
-                $this->itemClass[] = $class;
-            }
-
-            if (in_array('trail', $this->itemClass)) {
-                $this->itemClass[] = 'active';
-            }
-        }
+        $this->initializeAttributes();
+        $this->initializeCssClass();
 
         if ($this->item['type'] == 'm17Folder' || $this->item['type'] == 'folder') {
             $this->isHeader = ($level != 1 && ($level % 2) == 1);
@@ -153,4 +133,32 @@ class DropdownItemHelper extends Attributes implements ItemHelper
         }
     }
 
+    private function initializeAttributes()
+    {
+        $pass = array('href', 'accesskey', 'tabindex');
+        foreach ($pass as $attribute) {
+            $this->setAttribute($attribute, $this->item[$attribute]);
+        }
+
+        $title = $this->item['pageTitle'] ?: $this->item['title'];
+        $this->setAttribute('title', $title);
+
+        if ($this->item['nofollow']) {
+            $this->setAttribute('rel', 'nofollow');
+        }
+    }
+
+    private function initializeCssClass()
+    {
+        if ($this->item['class']) {
+            $classes = trimsplit(' ', $this->item['class']);
+            foreach ($classes as $class) {
+                $this->itemClass[] = $class;
+            }
+
+            if (in_array('trail', $this->itemClass)) {
+                $this->itemClass[] = 'active';
+            }
+        }
+    }
 }
