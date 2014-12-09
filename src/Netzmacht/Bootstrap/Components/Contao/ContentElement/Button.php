@@ -39,7 +39,7 @@ class Button extends \ContentElement
             $attributes->setAttribute('target', '_blank');
         }
 
-        if ($this->icon) {
+        if ($this->bootstrap_icon) {
             $this->Template->icon = Bootstrap::generateIcon($this->bootstrap_icon);
         }
 

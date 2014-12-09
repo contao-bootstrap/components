@@ -1,2 +1,2 @@
 
-<a <?php echo $this->attributes; ?>><?php echo $this->icon; ?><?php echo $this->link; ?></a>
+<a <?php echo $this->attributes; ?>><?php echo ($this->icon ? ($this->icon . ' ') : ''); ?><?php echo $this->link; ?></a>
