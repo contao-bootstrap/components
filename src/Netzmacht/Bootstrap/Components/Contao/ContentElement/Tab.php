@@ -50,50 +50,10 @@ class Tab extends Wrapper
 
         // load tab definitions
         if ($this->wrapper->isTypeOf(Wrapper\Helper::TYPE_START)) {
-            $tabs = deserialize($this->bootstrap_tabs, true);
-            $tab  = null;
-
-            foreach ($tabs as $i => $t) {
-                $tabs[$i]['id'] = standardize($t['title']);
-
-                if ($t['type'] != 'dropdown' && !$tab) {
-                    $tab = $tabs[$i];
-                }
-            }
-
-            $this->currentTab = $tab;
-            $this->tabs       = $tabs;
-            $this->fade       = $this->bootstrap_fade;
+            $this->initializeStartElement();
         } elseif ($this->wrapper->isTypeOf(Wrapper\Helper::TYPE_SEPARATOR)) {
-            $elements = \Database::getInstance()
-                ->prepare('SELECT id FROM tl_content WHERE bootstrap_parentId=? ORDER by sorting')
-                ->execute($this->bootstrap_parentId);
-
-            $elements = array_merge(array($this->bootstrap_parentId), $elements->fetchEach('id'));
-            $parent   = \ContentModel::findByPK($this->bootstrap_parentId);
-            $index    = 0;
-
-            if ($parent) {
-                $this->fade = $parent->bootstrap_fade;
-            }
-
-            $tabs = deserialize($parent->bootstrap_tabs, true);
-
-            foreach ($tabs as $i => $t) {
-                $tabs[$i]['id'] = standardize($t['title']);
-
-                if ($t['type'] != 'dropdown') {
-                    if ($elements[$index] == $this->id) {
-                        $this->currentTab = $tabs[$i];
-                        break;
-                    }
-                    $index++;
-                }
-            }
-
-            $this->tabs = $tabs;
+            $this->initializeSeparator();
         }
-
     }
 
     /**
@@ -116,5 +76,54 @@ class Tab extends Wrapper
         }
 
         return '';
+    }
+
+    private function initializeStartElement()
+    {
+        $tabs = deserialize($this->bootstrap_tabs, true);
+        $tab  = null;
+
+        foreach ($tabs as $i => $t) {
+            $tabs[$i]['id'] = standardize($t['title']);
+
+            if ($t['type'] != 'dropdown' && !$tab) {
+                $tab = $tabs[$i];
+            }
+        }
+
+        $this->currentTab = $tab;
+        $this->tabs       = $tabs;
+        $this->fade       = $this->bootstrap_fade;
+    }
+
+    private function initializeSeparator()
+    {
+        $elements = \Database::getInstance()
+            ->prepare('SELECT id FROM tl_content WHERE bootstrap_parentId=? ORDER by sorting')
+            ->execute($this->bootstrap_parentId);
+
+        $elements = array_merge(array($this->bootstrap_parentId), $elements->fetchEach('id'));
+        $parent   = \ContentModel::findByPK($this->bootstrap_parentId);
+        $index    = 0;
+
+        if ($parent) {
+            $this->fade = $parent->bootstrap_fade;
+        }
+
+        $tabs = deserialize($parent->bootstrap_tabs, true);
+
+        foreach ($tabs as $i => $t) {
+            $tabs[$i]['id'] = standardize($t['title']);
+
+            if ($t['type'] != 'dropdown') {
+                if ($elements[$index] == $this->id) {
+                    $this->currentTab = $tabs[$i];
+                    break;
+                }
+                $index++;
+            }
+        }
+
+        $this->tabs = $tabs;
     }
 }
