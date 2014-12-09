@@ -10,7 +10,7 @@
 				<?php echo $this->title; ?>
 			</div>
 
-			<div class="modal-body">dsffds
+			<div class="modal-body">
 				<?php echo $this->content; ?>
 			</div>
 

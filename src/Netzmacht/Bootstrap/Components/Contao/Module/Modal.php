@@ -106,9 +106,6 @@ class Modal extends \Module
             if ($this->bootstrap_modalAjax) {
                 $this->isAjax = true;
             }
-
-            echo '';
-            exit;
         }
 
         $content = parent::generate();
