@@ -21,22 +21,74 @@ class Button extends \ContentElement
      */
     protected function compile()
     {
+        $attributes = new Attributes();
+
+        $this->setLinkTitle($attributes);
+        $this->setHref($attributes);
+        $this->setCssClass($attributes);
+        $this->enableLightbox($attributes);
+        $this->setDataAttributes($attributes);
+
+        // Override the link target
+        if ($this->target) {
+            $attributes->setAttribute('target', '_blank');
+        }
+
+        if ($this->icon) {
+            $this->Template->icon = Bootstrap::generateIcon($this->bootstrap_icon);
+        }
+
+        $this->Template->attributes = $attributes;
+        $this->Template->link       = $this->linkTitle;
+    }
+
+    /**
+     * @param $attributes
+     */
+    protected function setLinkTitle($attributes)
+    {
         if ($this->linkTitle == '') {
             $this->linkTitle = $this->url;
         }
-
-        $attributes = new Attributes();
-        $attributes->addClass('btn');
-
         // @See: #6258
-        if (TL_MODE != 'BE') {
+        if (TL_MODE !== 'BE') {
             $attributes->setAttribute('title', $this->titleText ?: $this->linkTitle);
         }
+    }
 
+    /**
+     * @param $attributes
+     */
+    protected function setHref(Attributes $attributes)
+    {
         if (substr($this->url, 0, 7) == 'mailto:') {
             $attributes->setAttribute('href', \String::encodeEmail($this->url));
         } else {
             $attributes->setAttribute('href', ampersand($this->url));
+        }
+    }
+
+    /**
+     * @param $attributes
+     */
+    protected function setCssClass(Attributes $attributes)
+    {
+        $attributes->addClass('btn');
+
+        if ($this->cssID[1] == '') {
+            $attributes->addClass('btn-default');
+        } else {
+            $attributes->addClass($this->cssID[1]);
+        }
+    }
+
+    /**
+     * @param $attributes
+     */
+    protected function enableLightbox(Attributes $attributes)
+    {
+        if (!$this->rel) {
+            return;
         }
 
         if (strncmp($this->rel, 'lightbox', 8) !== 0) {
@@ -44,35 +96,24 @@ class Button extends \ContentElement
         } else {
             $attributes->setAttribute('data-lightbox', substr($this->rel, 9, -1));
         }
+    }
 
-        // Override the link target
-        if ($this->target) {
-            $attributes->setAttribute('target', '_blank');
-        }
-
-        if ($this->cssID[1] == '') {
-            $attributes->addClass('btn-default');
-        } else {
-            $attributes->addClass($this->cssID[1]);
-        }
-
-        if ($this->icon) {
-            $this->Template->icon = Bootstrap::generateIcon($this->bootstrap_icon);
-        }
-
+    /**
+     * @param $attributes
+     */
+    protected function setDataAttributes(Attributes $attributes)
+    {
         // add data attributes
         $this->bootstrap_dataAttributes = deserialize($this->bootstrap_dataAttributes, true);
 
-        if (!empty($this->bootstrap_dataAttributes)) {
-            foreach ($this->bootstrap_dataAttributes as $attribute) {
-                if (trim($attribute['value']) != '' && $attribute['name'] != '') {
-                    $attributes->setAttribute('data-' . $attribute['name'], $attribute['value']);
-                }
-            }
+        if (empty($this->bootstrap_dataAttributes)) {
+            return;
         }
 
-        $this->Template->attributes = $attributes;
-        $this->Template->link       = $this->linkTitle;
+        foreach ($this->bootstrap_dataAttributes as $attribute) {
+            if (trim($attribute['value']) != '' && $attribute['name'] != '') {
+                $attributes->setAttribute('data-' . $attribute['name'], $attribute['value']);
+            }
+        }
     }
-
 }
