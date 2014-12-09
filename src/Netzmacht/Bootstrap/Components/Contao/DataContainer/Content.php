@@ -27,14 +27,14 @@ class Content
     public function countExistingTabSeparators(\Database\Result $model, Helper $helper)
     {
         if ($helper->isTypeOf(Helper::TYPE_START)) {
-            $id = $model->id;
+            $modelId = $model->id;
         } else {
-            $id = $model->bootstrap_parentId;
+            $modelId = $model->bootstrap_parentId;
         }
 
         $number = \ContentModel::countBy(
             'type=? AND bootstrap_parentId',
-            array($helper->getTypeName(Helper::TYPE_SEPARATOR), $id)
+            array($helper->getTypeName(Helper::TYPE_SEPARATOR), $modelId)
         );
 
         return $number;

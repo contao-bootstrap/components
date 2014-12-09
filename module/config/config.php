@@ -16,7 +16,7 @@ $GLOBALS['TL_CTE']['bootstrap_tabs']['bootstrap_tabPart']           = 'Netzmacht
 $GLOBALS['TL_CTE']['bootstrap_tabs']['bootstrap_tabEnd']            = 'Netzmacht\Bootstrap\Components\Contao\ContentElement\Tab';
 
 // Frontend modules
-$GLOBALS['FE_MOD']['miscellaneous']['bootstrap_modal']  = 'Netzmacht\Bootstrap\Components\Contao\Module\Modal';
+$GLOBALS['FE_MOD']['miscellaneous']['bootstrap_modal']   = 'Netzmacht\Bootstrap\Components\Contao\Module\Modal';
 $GLOBALS['FE_MOD']['navigationMenu']['bootstrap_navbar'] = 'Netzmacht\Bootstrap\Components\Contao\Module\Navbar';
 
 // Hooks

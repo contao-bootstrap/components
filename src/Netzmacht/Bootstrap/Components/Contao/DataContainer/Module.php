@@ -15,10 +15,12 @@ class Module
 {
     /**
      * Get all articles and return them as array
-     * @param \DataContainer
+     *
      * @return array
+     *
+     * @SuppressWarnings(PHPMD.Superglobals)
      */
-    public function getAllArticles(\DataContainer $dc)
+    public function getAllArticles()
     {
         $user     = \BackendUser::getInstance();
         $pids     = array();
@@ -37,7 +39,13 @@ class Module
                 return $articles;
             }
 
-            $objArticle = \Database::getInstance()->execute("SELECT a.id, a.pid, a.title, a.inColumn, p.title AS parent FROM tl_article a LEFT JOIN tl_page p ON p.id=a.pid WHERE a.pid IN(". implode(',', array_map('intval', array_unique($pids))) .") ORDER BY parent, a.sorting");
+            $pids = implode(',', array_map('intval', array_unique($pids)));
+
+            $objArticle = \Database::getInstance()
+                ->execute(
+                    "SELECT a.id, a.pid, a.title, a.inColumn, p.title AS parent
+                    FROM tl_article a LEFT JOIN tl_page p ON p.id=a.pid WHERE a.pid IN(" . $pids . ") ORDER BY parent, a.sorting"
+            );
         }
 
         // Edit the result
