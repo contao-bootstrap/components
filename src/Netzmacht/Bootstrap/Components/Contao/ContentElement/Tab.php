@@ -99,9 +99,17 @@ class Tab extends Wrapper
     {
         $tabs = deserialize($this->bootstrap_tabs, true);
         $tab  = null;
+        $ids  = array();
 
         foreach ($tabs as $i => $t) {
-            $tabs[$i]['id'] = standardize($t['title']);
+            $cssId = standardize($t['title']);
+
+            if (in_array($cssId, $ids)) {
+                $cssId = $i . '-' . $cssId;
+            }
+
+            $ids[]           = $cssId;
+            $tabs[$i]['id'] = $cssId;
 
             if ($t['type'] != 'dropdown' && !$tab) {
                 $tab = $tabs[$i];
@@ -133,9 +141,17 @@ class Tab extends Wrapper
         }
 
         $tabs = deserialize($parent->bootstrap_tabs, true);
+        $ids  = array();
 
         foreach ($tabs as $i => $t) {
-            $tabs[$i]['id'] = standardize($t['title']);
+            $cssId = standardize($t['title']);
+
+            if (in_array($cssId, $ids)) {
+                $cssId = $i . '-' . $cssId;
+            }
+
+            $ids[]           = $cssId;
+            $tabs[$i]['id'] = $cssId;
 
             if ($t['type'] != 'dropdown') {
                 if ($elements[$index] == $this->id) {
